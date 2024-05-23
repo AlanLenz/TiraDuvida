@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/magnific-popup.css">
     <link rel="stylesheet" type="text/css" href="assets/css/vanilla-calendar.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>disciplinas - TiraDúvida</title>
+    <title>Disciplinas - TiraDúvida</title>
 </head>
 
 
@@ -34,9 +34,7 @@
                 <div class="row align-items-center">
                     <div class="col col-lg-3 col-5">
                         <div class="site_logo">
-                            <a class="site_link" href="index.php">
-                                <img src="assets/images/logo.png" alt="">
-                            </a>
+                            <img src="assets/images/logo.png" alt="">
                         </div>
                     </div>
                     <div class="col col-lg-6 col-2">
@@ -54,7 +52,7 @@
                             <li class="nome_aluno">Olá, John Doe</li>
                             <li class="nome_aluno"> | </li>
                             <li class="logout">
-                                <a href="index.php">
+                                <a href="login">
                                     <i class="far fa-sign-out-alt" title="Sair"></i>
                                 </a>
                             </li>
@@ -70,7 +68,7 @@
                     <div class="content_wrapper">
                         <div class="row align-items-center">
                             <ul class="breadcrumb_nav unordered_list">
-                                <li><a href="index.php"><i class="far fa-reply"></i> Voltar à página inicial</a></li>
+                                <li><a href="login"><i class="far fa-reply"></i> Voltar à página inicial</a></li>
                             </ul>
                             <h1 class="page_title">Disciplinas</h1>
                         </div>
@@ -83,18 +81,17 @@
                     <div class="row">
                         <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas.php">
+                                <a class="item_image" href="duvidas-aluno">
                                     <img src="assets/images/internet-coisas.webp" alt="Collab – Online Learning Platform">
                                 </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
-                                        <a href="duvidas.php">
+                                        <a href="duvidas-aluno">
                                             Internet das coisas
                                         </a>
                                     </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas.php" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                    <ul class="header_btns_group unordered_list justify-content-center">
+                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -138,18 +135,17 @@
                         </div>
                         <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas.php">
+                                <a class="item_image" href="duvidas-aluno">
                                     <img src="assets/images/desenvolvimento-mobile.webp" alt="Collab – Online Learning Platform">
                                 </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
-                                        <a href="duvidas.php">
+                                        <a href="duvidas-aluno">
                                             Desenvolvimento mobile
                                         </a>
                                     </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas.php" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                    <ul class="header_btns_group unordered_list justify-content-center">
+                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -193,18 +189,17 @@
                         </div>
                         <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas.php">
+                                <a class="item_image" href="duvidas-aluno">
                                     <img src="assets/images/programacao-objetos.webp" alt="Collab – Online Learning Platform">
                                 </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
-                                        <a href="duvidas.php">
+                                        <a href="duvidas-aluno">
                                             Desenvolvimento orientado à objetos
                                         </a>
                                     </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas.php" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                    <ul class="header_btns_group unordered_list justify-content-center">
+                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -248,18 +243,17 @@
                         </div>
                         <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas.php">
+                                <a class="item_image" href="duvidas-aluno">
                                     <img src="assets/images/algebra-linear.webp" alt="Collab – Online Learning Platform">
                                 </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
-                                        <a href="duvidas.php">
+                                        <a href="duvidas-aluno">
                                             Algebra linear
                                         </a>
                                     </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas.php" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                    <ul class="header_btns_group unordered_list justify-content-center">
+                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -303,18 +297,17 @@
                         </div>
                         <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas.php">
+                                <a class="item_image" href="duvidas-aluno">
                                     <img src="assets/images/metodologias-ageis.webp" alt="Collab – Online Learning Platform">
                                 </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
-                                        <a href="duvidas.php">
+                                        <a href="duvidas-aluno">
                                             Metodologias ágeis
                                         </a>
                                     </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas.php" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                    <ul class="header_btns_group unordered_list justify-content-center">
+                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -358,18 +351,17 @@
                         </div>
                         <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas.php">
+                                <a class="item_image" href="duvidas-aluno">
                                     <img src="assets/images/qualidade-software.webp" alt="Collab – Online Learning Platform">
                                 </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
-                                        <a href="duvidas.php">
+                                        <a href="duvidas-aluno">
                                             Qualidade de Software
                                         </a>
                                     </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas.php" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                    <ul class="header_btns_group unordered_list justify-content-center">
+                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -423,9 +415,7 @@
                         <div class="col col-lg-3 col-md-6 col-sm-6">
                             <div class="footer_widget">
                                 <div class="site_logo">
-                                    <a class="site_link" href="index.php">
-                                        <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
-                                    </a>
+                                    <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
                                     <p>Fale com seu professor agora!</p>
                                 </div>
                             </div>
@@ -435,44 +425,11 @@
             </div>
             <div class="copyright_widget">
                 <div class="container">
-                    <p class="copyright_text text-center mb-0">Copyright 2024 © TiraDuvida. todos direitos reservados | <a href="#">Política de privacidade</a>.</p>
+                    <p class="copyright_text text-center mb-0">Copyright 2024 © TiraDúvida. Todos direitos reservados | <a href="politica-privacidade">Política de privacidade</a>.</p>
                 </div>
             </div>
         </footer>
 
-    </div>
-
-    <div class="modal fade exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="far fa-users"></i> Integrantes de <b>Matéria</b></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="integrantes-materia">
-                        <span class="text-center">Professor(a):</span>
-                        <li class="modal-professor">John Doe</li>
-                        <span class="text-center">Alunos:</span>
-                        <li class="modal-aluno-selecionado">John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn_dark" data-bs-dismiss="modal"><span><small>Fechar</small> <small>Fechar</small></span></button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="assets/js/jquery.min.js"></script>

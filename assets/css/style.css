@@ -553,7 +553,7 @@ hr {
   top: 50%;
   font-size: 14px;
   position: absolute;
-  color: #F7FF62;
+  color: #21dde4;
   -webkit-transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -767,18 +767,18 @@ ol[type="1"]>li:not(:last-child) {
 
 .item_category_list a {
   display: block;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 16px;
   padding: 7px 12px;
-  color: #1F1D0D;
+  color: #fff;
   text-transform: uppercase;
   font-family: "Barlow", sans-serif;
-  background-color: #F6F6F6;
+  background-color: #00bf63;
 }
 
 .item_category_list a:hover {
-  background-color: #FFD32B;
+  background-color: #21dde4;
 }
 
 .meta_info_list {
@@ -1895,6 +1895,9 @@ blockquote p {
 .comments_list .comments_list>li {
   padding: 5px 0 0 30px;
 }
+.comments_list>li {
+  margin-bottom: 30px;
+}
 
 .comment_item {
   padding: 30px;
@@ -1904,6 +1907,7 @@ blockquote p {
 }
 
 .comment_item.respondida {
+  padding-bottom: 60px;
   background-color: #57f9ab;
 }
 
@@ -1974,6 +1978,16 @@ blockquote p {
   position: absolute;
   color: #1F1D0D;
   font-family: "Barlow", sans-serif;
+}
+
+.comment_item .star {
+  top: 30px;
+  right: 80px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  position: absolute;
+  color: #d5bd08;
 }
 
 .comment_form_wrap .form_item input, .comment_form_wrap .form_item textarea {
@@ -2367,12 +2381,12 @@ blockquote p {
   padding: 28px 28px 32px;
   border-radius: 8px;
   background-color: #ffffff;
-  border: 2px solid #D2D2D2;
+  border: 2px solid #00bf63;
 }
 
 .course_card:hover {
   z-index: 1;
-  border-color: #1F1D0D;
+  border-color: #00bf63;
   -webkit-transform: translate(-2px, -2px);
   transform: translate(-2px, -2px);
   -webkit-box-shadow: 10px 10px 0 0 #1F1D0D;
@@ -2391,7 +2405,8 @@ blockquote p {
 }
 
 .course_card .item_image img {
-  width: 100%;
+  width: 200px;
+  border-radius: 50%;
   display: block;
 }
 
@@ -2411,7 +2426,7 @@ blockquote p {
 
 .course_card .item_title {
   margin: 0;
-  padding: 10px 0 24px;
+  padding: 10px 0 15px;
 }
 
 .course_card .item_title>a {
@@ -2437,19 +2452,15 @@ blockquote p {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+  margin-bottom: 30px;
   align-items: center;
+  -ms-flex-align: center;
+  justify-content: center;
+  -webkit-box-align: center;
 }
 
 .course_card.list_layout:not(:last-child) {
   margin-bottom: 30px;
-}
-
-.course_card.list_layout .item_image {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 310px;
-  flex: 0 0 310px;
 }
 
 .course_card.list_layout .item_image,
@@ -3900,7 +3911,7 @@ header .header_btns_group>li:first-child {
 }
 
 .page_title {
-  font-size: 65px;
+  font-size: 50px;
   font-weight: 800;
   line-height: 68px;
   margin-bottom: 10px;
@@ -3953,6 +3964,11 @@ header .header_btns_group>li:first-child {
 .breadcrumb_nav>li>a {
   display: block;
   color: #1F1D0D;
+  border-bottom: 2px solid #1f1d0d;
+}
+
+.breadcrumb_nav>li>a:hover {
+  border-bottom: 2px solid #00bf63;
 }
 
 .breadcrumb_nav>li>button {
@@ -3985,16 +4001,18 @@ header .header_btns_group>li:first-child {
   font-family: "Barlow", sans-serif;
 }
 
-.sidebar .widget_title:before {
-  top: 2px;
+.comment_item.respondida:before {
   right: 0;
+  left: 47%;
+  bottom: 2px;
+  font-size: 35px;
   content: "\f106";
-  font-weight: 500;
+  font-weight: 900;
   position: absolute;
   font-family: "Font Awesome 5 Pro";
 }
 
-.sidebar .widget_title[aria-expanded=false]:before {
+.comment_item.respondida[aria-expanded=false]:before {
   content: "\f107";
 }
 
@@ -4489,13 +4507,13 @@ header .header_btns_group>li:first-child {
   position: relative;
   border-radius: 8px;
   background-color: #ffffff;
-  border: 2px solid #1F1D0D;
+  border: 2px solid #00bf63;
   -webkit-box-shadow: 2px 2px 30px rgba(31, 29, 13, 0.12), 10px 10px 0 0 #1F1D0D;
   box-shadow: 2px 2px 30px rgba(31, 29, 13, 0.12), 10px 10px 0 0 #1F1D0D;
 }
 
 .register_form .form_item input, .register_form .form_item textarea {
-  border-color: #1F1D0D;
+  border-color: #00bf63;
 }
 
 .register_form .icon_list>li:not(:last-child) {
@@ -5653,7 +5671,7 @@ Responsive For Mobile & Tablet Devices
   color: #fff;
   display: block;
   padding: 16px 0;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 24px;
   -webkit-transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -5725,4 +5743,22 @@ Responsive For Mobile & Tablet Devices
 
 .filtros {
   margin-top: 50px;
+}
+
+.field-icon {
+  float: right;
+  right: 10px;
+  z-index: 2;
+  margin-top: -38px;
+  position: relative;
+}
+
+#errorMessage {
+  color: #ff0000;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.contador {
+  cursor: pointer;
 }
