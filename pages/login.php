@@ -55,12 +55,12 @@
                                         <input type="text" id="emailUser" name="emailUser" placeholder="Usuário">
                                     </div>
                                     <div class="form_item">
-                                        <input id="passwordUser" type="password" class="form-control" name="passwordUser" value="">
+                                        <input id="passwordUser" type="password" class="form-control" name="passwordUser" placeholder="Senha">
                                         <span toggle="#passwordUser" class="far fa-fw fa-eye field-icon toggle-password"></span>
                                     </div>
                                     <div class="remenber_forget">
                                         <div class="forget_password">
-                                            <a href="#">Esqueci minha senha</a>
+                                            <button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal">Esqueci minha senha</a>
                                         </div>
                                     </div>
                                     <button id="buttonLoginUser" type="submit" class="btn btn_dark mb-5">
@@ -100,6 +100,27 @@
         </footer>
     </div>
 
+    <div class="modal fade exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <form id="form_esqueci_senha">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Insira seu usuário abaixo e lhe enviaremos<br/>um e-mail para redefinir sua senha</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form_item">
+                            <input type="text" id="emailUser" name="emailUser" placeholder="Insira seu usuário aqui" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="botao_enviar_email" type="submit" class="btn btn_dark"><span><small>Enviar</small> <small>Enviar</small></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -115,7 +136,15 @@
     <script src="assets/js/countdown.js"></script>
     <script src="assets/js/vanilla-calendar.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        $("#botao_enviar_email").click(function() {
+            Swal.fire({
+                title: "Email enviado!",
+                text: "Caso o usuário tenha sido informado corretamente você estará recebendo um e-mail em alguns instantes com as instruções para redefinir sua senha.",
+                icon: "success"
+            });
+        });
         $(".toggle-password").click(function() {
 
             $(this).toggleClass("fa-eye fa-eye-slash");

@@ -4512,7 +4512,7 @@ header .header_btns_group>li:first-child {
   box-shadow: 2px 2px 30px rgba(31, 29, 13, 0.12), 10px 10px 0 0 #1F1D0D;
 }
 
-.register_form .form_item input, .register_form .form_item textarea {
+.register_form .form_item input, .register_form .form_item textarea, #form_esqueci_senha .form_item input {
   border-color: #00bf63;
 }
 
@@ -5693,7 +5693,7 @@ Responsive For Mobile & Tablet Devices
   margin-bottom: 10px;
 }
 
-.forget_password a {
+.forget_password button {
   color: #1F1D0D;
   font-weight: 600;
   text-decoration: underline;
@@ -5743,12 +5743,14 @@ Responsive For Mobile & Tablet Devices
 
 .filtros {
   margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .field-icon {
-  float: right;
-  right: 10px;
   z-index: 2;
+  right: 10px;
+  float: right;
+  cursor: pointer;
   margin-top: -38px;
   position: relative;
 }
@@ -5761,4 +5763,10 @@ Responsive For Mobile & Tablet Devices
 
 .contador {
   cursor: pointer;
+}
+
+.page-404 {
+  height: 100vh;
+  display: flex;
+  align-items: center;
 }

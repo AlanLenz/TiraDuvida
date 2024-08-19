@@ -18,7 +18,6 @@
     <title>Dúvidas - TiraDúvida</title>
 </head>
 
-
 <body>
 
     <div class="page_wrapper">
@@ -64,7 +63,7 @@
 
         <main class="page_content">
 
-            <section class="details_section blog_details_section section_space_md pb-0">
+            <section class="details_section blog_details_section section_space_md">
                 <div class="container">
                     <div class="row">
                         <div class="col col-lg-7">
@@ -78,7 +77,7 @@
                                             <h1 class="page_title">Internet das coisas</h1>
                                             <div class="filtros">
                                                 <ul class="tags_list style_2 unordered_list">
-                                                    <li class="todas"><label for="filtro_todos"><span class="checkbox_item"><input id="filtro_todos" type="checkbox"> Todas (10)</span></label></li>
+                                                    <li class="todas"><label for="filtro_todos"><span class="checkbox_item"><input id="filtro_todos" type="checkbox" checked> Todas (10)</span></label></li>
                                                     <li class="pendentes"><label for="filtro_pendentes"><span class="checkbox_item"><input id="filtro_pendentes" type="checkbox"> Dúvidas pendentes (5)</span></label></li>
                                                     <li class="respondidas"><label for="filtro_respondidas"><span class="checkbox_item"><input id="filtro_respondidas" type="checkbox"> Dúvidas Respondidas (5)</span></label></li>
                                                 </ul>
@@ -188,6 +187,108 @@
                                             <div class="reply_btn contador"><i class="far fa-thumbs-up"></i> <span class="like_count">15</span></div>
                                         </div>
                                     </li>
+                                    <li>
+                                        <div class="comment_item respondida collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#duvida_2" aria-expanded="false" aria-controls="duvida_2">
+                                            <div class="comment_author">
+                                                <div class="author_content">
+                                                    <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
+                                                    <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 15:30</h4>
+                                                </div>
+                                            </div>
+                                            <h3>Blandit libero volutpat sed cras ornare arcu?</h3>
+                                            <p>
+                                                Platea dictumst vestibulum rhoncus est pellentesque
+                                                elit ullamcorper dignissim cras. Vitae ultricies leo
+                                                integer malesuada nunc vel. Nibh cras pulvinar
+                                                mattis nunc sed. Convallis a cras semper auctor
+                                                neque vitae tempus. Mattis molestie a iaculis at
+                                                erat pellentesque adipiscing.
+                                            </p>
+                                            <div class="reply_btn contador"><i class="far fa-thumbs-up"></i> <span class="like_count">15</span></div>
+                                        </div>
+                                        <ul class="comments_list unordered_list_block collapse" id="duvida_2">
+                                            <li>
+                                                <div class="comment_item resposta">
+                                                    <div class="comment_author">
+                                                        <div class="author_content">
+                                                            <h4 class="author_name"><i class="far fa-chalkboard-teacher"></i> Resposta do professor</h4>
+                                                            <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:00</h4>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                        Platea dictumst vestibulum rhoncus est
+                                                        pellentesque elit ullamcorper dignissim cras.
+                                                        Vitae ultricies leo integer malesuada nunc vel.
+                                                        Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                        cras semper auctor neque vitae tempus. Mattis
+                                                        molestie a iaculis at erat pellentesque
+                                                        adipiscing.
+                                                    </p>
+                                                    <div class="reply_btn">RESPOSTA</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="comment_item comentario">
+                                                    <div class="comment_author">
+                                                        <div class="author_content">
+                                                            <h4 class="author_name"><i class="far fa-user"></i> Comentário do aluno</h4>
+                                                            <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:15</h4>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                        Platea dictumst vestibulum rhoncus est
+                                                        pellentesque elit ullamcorper dignissim cras.
+                                                        Vitae ultricies leo integer malesuada nunc vel.
+                                                        Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                        cras semper auctor neque vitae tempus. Mattis
+                                                        molestie a iaculis at erat pellentesque
+                                                        adipiscing.
+                                                    </p>
+                                                    <div class="reply_btn">COMENTÁRIO</div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="comment_item">
+                                            <div class="comment_author">
+                                                <div class="author_content">
+                                                    <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
+                                                    <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 15:30</h4>
+                                                </div>
+                                            </div>
+                                            <h3>Blandit libero volutpat sed cras ornare arcu?</h3>
+                                            <p>
+                                                Platea dictumst vestibulum rhoncus est pellentesque
+                                                elit ullamcorper dignissim cras. Vitae ultricies leo
+                                                integer malesuada nunc vel. Nibh cras pulvinar
+                                                mattis nunc sed. Convallis a cras semper auctor
+                                                neque vitae tempus. Mattis molestie a iaculis at
+                                                erat pellentesque adipiscing.
+                                            </p>
+                                            <div class="reply_btn contador"><i class="far fa-thumbs-up"></i> <span class="like_count">15</span></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="comment_item">
+                                            <div class="comment_author">
+                                                <div class="author_content">
+                                                    <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
+                                                    <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 15:30</h4>
+                                                </div>
+                                            </div>
+                                            <h3>Blandit libero volutpat sed cras ornare arcu?</h3>
+                                            <p>
+                                                Platea dictumst vestibulum rhoncus est pellentesque
+                                                elit ullamcorper dignissim cras. Vitae ultricies leo
+                                                integer malesuada nunc vel. Nibh cras pulvinar
+                                                mattis nunc sed. Convallis a cras semper auctor
+                                                neque vitae tempus. Mattis molestie a iaculis at
+                                                erat pellentesque adipiscing.
+                                            </p>
+                                            <div class="reply_btn contador"><i class="far fa-thumbs-up"></i> <span class="like_count">15</span></div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="pagination_wrap">
@@ -212,6 +313,195 @@
                                 </div>
                             </section>
                             <ul class="comments_list unordered_list_block">
+                                <li>
+                                    <div class="comment_item respondida collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#duvida_1" aria-expanded="false" aria-controls="duvida_1">
+                                        <div class="comment_author">
+                                            <div class="author_content">
+                                                <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
+                                                <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 15:30</h4>
+                                            </div>
+                                        </div>
+                                        <h3>Blandit libero volutpat sed cras ornare arcu?</h3>
+                                        <p>
+                                            Platea dictumst vestibulum rhoncus est pellentesque
+                                            elit ullamcorper dignissim cras. Vitae ultricies leo
+                                            integer malesuada nunc vel. Nibh cras pulvinar
+                                            mattis nunc sed. Convallis a cras semper auctor
+                                            neque vitae tempus. Mattis molestie a iaculis at
+                                            erat pellentesque adipiscing.
+                                        </p>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                        <div class="reply_btn contador"><i class="far fa-thumbs-up"></i> <span class="like_count">15</span></div>
+                                    </div>
+                                    <ul class="comments_list unordered_list_block collapse" id="duvida_1">
+                                        <li>
+                                            <div class="comment_item resposta">
+                                                <div class="comment_author">
+                                                    <div class="author_content">
+                                                        <h4 class="author_name"><i class="far fa-chalkboard-teacher"></i> Resposta do professor</h4>
+                                                        <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:00</h4>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                    Platea dictumst vestibulum rhoncus est
+                                                    pellentesque elit ullamcorper dignissim cras.
+                                                    Vitae ultricies leo integer malesuada nunc vel.
+                                                    Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                    cras semper auctor neque vitae tempus. Mattis
+                                                    molestie a iaculis at erat pellentesque
+                                                    adipiscing.
+                                                </p>
+                                                <div class="reply_btn">RESPOSTA</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="comment_item comentario">
+                                                <div class="comment_author">
+                                                    <div class="author_content">
+                                                        <h4 class="author_name"><i class="far fa-user"></i> Comentário do aluno</h4>
+                                                        <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:15</h4>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                    Platea dictumst vestibulum rhoncus est
+                                                    pellentesque elit ullamcorper dignissim cras.
+                                                    Vitae ultricies leo integer malesuada nunc vel.
+                                                    Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                    cras semper auctor neque vitae tempus. Mattis
+                                                    molestie a iaculis at erat pellentesque
+                                                    adipiscing.
+                                                </p>
+                                                <div class="reply_btn">COMENTÁRIO</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div class="comment_item respondida collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#duvida_1" aria-expanded="false" aria-controls="duvida_1">
+                                        <div class="comment_author">
+                                            <div class="author_content">
+                                                <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
+                                                <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 15:30</h4>
+                                            </div>
+                                        </div>
+                                        <h3>Blandit libero volutpat sed cras ornare arcu?</h3>
+                                        <p>
+                                            Platea dictumst vestibulum rhoncus est pellentesque
+                                            elit ullamcorper dignissim cras. Vitae ultricies leo
+                                            integer malesuada nunc vel. Nibh cras pulvinar
+                                            mattis nunc sed. Convallis a cras semper auctor
+                                            neque vitae tempus. Mattis molestie a iaculis at
+                                            erat pellentesque adipiscing.
+                                        </p>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                        <div class="reply_btn contador"><i class="far fa-thumbs-up"></i> <span class="like_count">15</span></div>
+                                    </div>
+                                    <ul class="comments_list unordered_list_block collapse" id="duvida_1">
+                                        <li>
+                                            <div class="comment_item resposta">
+                                                <div class="comment_author">
+                                                    <div class="author_content">
+                                                        <h4 class="author_name"><i class="far fa-chalkboard-teacher"></i> Resposta do professor</h4>
+                                                        <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:00</h4>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                    Platea dictumst vestibulum rhoncus est
+                                                    pellentesque elit ullamcorper dignissim cras.
+                                                    Vitae ultricies leo integer malesuada nunc vel.
+                                                    Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                    cras semper auctor neque vitae tempus. Mattis
+                                                    molestie a iaculis at erat pellentesque
+                                                    adipiscing.
+                                                </p>
+                                                <div class="reply_btn">RESPOSTA</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="comment_item comentario">
+                                                <div class="comment_author">
+                                                    <div class="author_content">
+                                                        <h4 class="author_name"><i class="far fa-user"></i> Comentário do aluno</h4>
+                                                        <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:15</h4>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                    Platea dictumst vestibulum rhoncus est
+                                                    pellentesque elit ullamcorper dignissim cras.
+                                                    Vitae ultricies leo integer malesuada nunc vel.
+                                                    Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                    cras semper auctor neque vitae tempus. Mattis
+                                                    molestie a iaculis at erat pellentesque
+                                                    adipiscing.
+                                                </p>
+                                                <div class="reply_btn">COMENTÁRIO</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div class="comment_item respondida collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#duvida_1" aria-expanded="false" aria-controls="duvida_1">
+                                        <div class="comment_author">
+                                            <div class="author_content">
+                                                <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
+                                                <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 15:30</h4>
+                                            </div>
+                                        </div>
+                                        <h3>Blandit libero volutpat sed cras ornare arcu?</h3>
+                                        <p>
+                                            Platea dictumst vestibulum rhoncus est pellentesque
+                                            elit ullamcorper dignissim cras. Vitae ultricies leo
+                                            integer malesuada nunc vel. Nibh cras pulvinar
+                                            mattis nunc sed. Convallis a cras semper auctor
+                                            neque vitae tempus. Mattis molestie a iaculis at
+                                            erat pellentesque adipiscing.
+                                        </p>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                        <div class="reply_btn contador"><i class="far fa-thumbs-up"></i> <span class="like_count">15</span></div>
+                                    </div>
+                                    <ul class="comments_list unordered_list_block collapse" id="duvida_1">
+                                        <li>
+                                            <div class="comment_item resposta">
+                                                <div class="comment_author">
+                                                    <div class="author_content">
+                                                        <h4 class="author_name"><i class="far fa-chalkboard-teacher"></i> Resposta do professor</h4>
+                                                        <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:00</h4>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                    Platea dictumst vestibulum rhoncus est
+                                                    pellentesque elit ullamcorper dignissim cras.
+                                                    Vitae ultricies leo integer malesuada nunc vel.
+                                                    Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                    cras semper auctor neque vitae tempus. Mattis
+                                                    molestie a iaculis at erat pellentesque
+                                                    adipiscing.
+                                                </p>
+                                                <div class="reply_btn">RESPOSTA</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="comment_item comentario">
+                                                <div class="comment_author">
+                                                    <div class="author_content">
+                                                        <h4 class="author_name"><i class="far fa-user"></i> Comentário do aluno</h4>
+                                                        <h4 class="comment_date"><i class="far fa-calendar-alt"></i> 20/03/2024 às 16:15</h4>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                    Platea dictumst vestibulum rhoncus est
+                                                    pellentesque elit ullamcorper dignissim cras.
+                                                    Vitae ultricies leo integer malesuada nunc vel.
+                                                    Nibh cras pulvinar mattis nunc sed. Convallis a
+                                                    cras semper auctor neque vitae tempus. Mattis
+                                                    molestie a iaculis at erat pellentesque
+                                                    adipiscing.
+                                                </p>
+                                                <div class="reply_btn">COMENTÁRIO</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li>
                                     <div class="comment_item respondida collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#duvida_1" aria-expanded="false" aria-controls="duvida_1">
                                         <div class="comment_author">
