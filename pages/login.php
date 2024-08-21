@@ -63,7 +63,7 @@
                                             <button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal">Esqueci minha senha</a>
                                         </div>
                                     </div>
-                                    <button id="buttonLoginUser" type="submit" class="btn btn_dark mb-5">
+                                    <button id="buttonLoginUser" type="submit" class="btn btn_dark">
                                         <span>
                                             <small>Entrar</small>
                                             <small>Entrar</small>
