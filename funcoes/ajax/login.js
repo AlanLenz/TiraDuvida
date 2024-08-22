@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    vsUrl = $("#vsUrl").val();
+
     $('#formLoginUser').on('submit', function (event) {
         event.preventDefault();
 
@@ -6,7 +9,7 @@ $(document).ready(function () {
         var password = $('#nUser').val();
 
         $.ajax({
-            url: 'php/login.php',
+            url: vsUrl + 'funcoes/php/login.php',
             method: 'POST',
             data: {
                 user: username,

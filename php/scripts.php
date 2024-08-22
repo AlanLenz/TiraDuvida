@@ -1,0 +1,15 @@
+<script src="<?php echo URL . "assets/js/jquery.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/popper.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/bootstrap.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/bootstrap-dropdown-ml-hack.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/wow.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/tilt.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/parallax.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/parallax-scroll.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/slick.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/magnific-popup.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/waypoint.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/counterup.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/countdown.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/vanilla-calendar.min.js" ?>"></script>
+<script src="<?php echo URL . "assets/js/main.js" ?>"></script>
