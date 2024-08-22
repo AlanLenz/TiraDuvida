@@ -6,21 +6,13 @@ define("URL", "/tiraduvida/");
 define("SERVIDOR", "localhost");
 define("BANCO", "tiraduvida");
 define("USUARIO", "root");
-define("SENHA", "");
+define("SENHA", "server");
 
-function conecta() {
+$conn = mysqli_connect(SERVIDOR, USUARIO, SENHA, BANCO);
+mysqli_set_charset($conn, "utf8");
 
-    /* Conecta-se ao banco de dados MySQL */
-    $mysqli = mysqli_connect(SERVIDOR, USUARIO, SENHA, BANCO);
-    mysqli_set_charset($mysqli, "utf8");
-
-    if (!$mysqli) {
-        error_log("ERRO AO CONECTAR AO BANCO!");
-    } else {
-        error_log("CONEXAO OK!");
-    }
-
-    return $mysqli;
+if (!$conn) {
+    error_log("ERRO AO CONECTAR AO BANCO!");
+} else {
+    error_log("CONEXAO OK!");
 }
-
-?>

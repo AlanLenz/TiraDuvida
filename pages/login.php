@@ -51,8 +51,8 @@
                                         <input type="text" id="iUser" name="nUser" placeholder="Usuário">
                                     </div>
                                     <div class="form_item">
-                                        <input id="passwordUser" type="password" class="form-control" name="passwordUser" placeholder="Senha">
-                                        <span toggle="#passwordUser" class="far fa-fw fa-eye field-icon toggle-password"></span>
+                                        <input id="iPass" type="password" class="form-control" name="nPass" placeholder="Senha">
+                                        <span toggle="#iPass" class="far fa-fw fa-eye field-icon toggle-password"></span>
                                     </div>
                                     <button id="buttonLoginUser" type="submit" class="btn btn_dark mb-5">
                                         <span>

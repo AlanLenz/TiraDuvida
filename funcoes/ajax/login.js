@@ -6,7 +6,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         var username = $('#iUser').val();
-        var password = $('#nUser').val();
+        var password = $('#iPass').val();
 
         $.ajax({
             url: vsUrl + 'funcoes/php/login.php',
