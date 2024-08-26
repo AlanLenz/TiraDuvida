@@ -5760,7 +5760,7 @@ Responsive For Mobile & Tablet Devices
   position: relative;
 }
 
-#errorMessage {
+#aviso_erro {
   color: #ff0000;
   font-weight: 500;
   margin-bottom: 5px;

@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="assets/images/favicon.webp">
     <?php
     // CSS
-    include 'php/css.php';
+    include 'includes/css.php';
     ?>
     <title><?php echo TITULO ?></title>
 </head>
@@ -16,11 +16,6 @@
 <body>
 
     <div class="page_wrapper">
-        <div class="backtotop">
-            <a href="#" class="scroll">
-                <i class="far fa-arrow-up"></i>
-            </a>
-        </div>
 
         <header class="site_header site_header_1">
             <div class="container">
@@ -45,15 +40,15 @@
                             </p>
                             <form id="formLoginUser">
                                 <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>">
-                                <div class=" register_form signup_login_form">
-                                    <div id="errorMessage" style="display: none;">Usuário ou senha incorretos</div>
+                                <div class="register_form signup_login_form">
                                     <div class="form_item">
                                         <input type="text" id="iUser" name="nUser" placeholder="Usuário">
                                     </div>
                                     <div class="form_item">
-                                        <input id="iPass" type="password" class="form-control" name="nPass" placeholder="Senha">
+                                        <input id="iPass" name="nPass" type="password" class="form-control" placeholder="Senha">
                                         <span toggle="#iPass" class="far fa-fw fa-eye field-icon toggle-password"></span>
                                     </div>
+                                    <div id="aviso_erro">Usuário ou senha incorretos</div>
                                     <button id="buttonLoginUser" type="submit" class="btn btn_dark mb-5">
                                         <span>
                                             <small>Entrar</small>
@@ -93,11 +88,11 @@
 
     <?php
     // SCRIPTS
-    include 'php/scripts.php';
+    include 'includes/scripts.php';
     ?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo URL . "funcoes/js/login.js" ?>"></script>
-    <script src="<?php echo URL . "funcoes/ajax/login.js" ?>"></script>
+    <script src="<?php echo URL . "funcoes/scripts/login.js" ?>"></script>
 </body>
 
 </html>
