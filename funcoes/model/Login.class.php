@@ -29,7 +29,7 @@ class Login extends Conexao
             FROM
                 usuario u
             WHERE
-                u.NM_USUARIO = ? AND SN_USUARIO = ? AND ST_USUARIO = 1
+                u.NM_USUARIO = ? AND SN_USUARIO = ? AND ST_USUARIO = 'A'
         ");
         $login->bindValue(1, $this->usuario);
         $login->bindValue(2, $this->senha);
@@ -94,13 +94,13 @@ class Login extends Conexao
     {
         switch ($this->tipo_usuario) {
             case 'A':
-                return 1;
+                return 'A';
             case 'P':
-                return 2;
+                return 'P';
             case 'C':
-                return 3;
+                return 'C';
             default:
-                return 0; // Valor padrão para tipos desconhecidos
+                return '0'; // Valor padrão para tipos desconhecidos
         }
     }
 

@@ -19,20 +19,15 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (data) {
+                console.log(data);
                 switch (data) {
-                    case 1:
-                        window.location.href = "disciplinas-aluno";
+                    case 'A':
+                        window.location.href = "disciplinas-aluno";                        
                         break;
-                    case 2:
+                    case 'P':
+                    case 'C':
                         window.location.href = "periodos-professor";
-                        break;
-                    case 3:
-                        window.location.href = "periodos-professor";
-                        break;
-                    case 0:
-                        CloseLoading();
-                        $("#aviso_erro").show();
-                        break;
+                        break;                   
                     default:
                         CloseLoading();
                         $("#aviso_erro").show();

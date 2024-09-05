@@ -7,7 +7,7 @@ define("URL", "/tiraduvida/");
 define("SERVIDOR", "localhost");
 define("BANCO", "tiraduvida");
 define("USUARIO", "root");
-define("SENHA", "");
+define("SENHA", "server");
 
 /* CONSTANTES DE AMBIENTE SERVIDOR */
 // define("URL", "/");
