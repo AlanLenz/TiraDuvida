@@ -18,8 +18,7 @@ $(document).ready(function () {
             contentType: false,
             cache: false,
             processData: false,
-            success: function (data) {
-                console.log(data);
+            success: function (data) {                
                 switch (data) {
                     case 'A':
                         window.location.href = "disciplinas-aluno";                        

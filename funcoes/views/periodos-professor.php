@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="utf-8">
@@ -18,6 +18,70 @@
     <title>Períodos - TiraDúvida</title>
 </head>
 
+<?php
+session_start();
+
+if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset($_SESSION['tipo_usuario'])) {
+    $usuario_id = $_SESSION['usuario_id'];
+    $usuario_login = $_SESSION['usuario_login'];
+    $tipo_usuario = $_SESSION['tipo_usuario'];
+
+    require_once 'includes/conexao-mysqli.php';
+
+    $professor_qry = "SELECT
+            p.CD_PROFESSOR,
+            p.NM_PROFESSOR                       
+        FROM
+            professor p
+        WHERE
+            p.CD_USUARIO = '$usuario_id'";
+    $professor_exec = mysqli_query($mysqli, $professor_qry);
+
+    if (mysqli_num_rows($professor_exec) == 1) {
+        while ($result = mysqli_fetch_object($professor_exec)) {
+            $_SESSION['professor_id'] = $result->CD_PROFESSOR;
+            $_SESSION['professor_nm'] = $result->NM_PROFESSOR;
+        }
+    }
+
+
+    $prof_disciplina_qry = "SELECT
+            c.CD_CURSO,
+            c.DS_CURSO,
+            d.CD_DISCIPLINA,
+            d.NR_PERIODO,
+            d.DS_DISCIPLINA
+        FROM
+            curso c
+        JOIN
+            disciplina d ON d.CD_DISCIPLINA = pd.CD_DISCIPLINA
+        JOIN
+            professor_disciplina pd ON pd.CD_DISCIPLINA = d.CD_DISCIPLINA
+        WHERE
+            pd.CD_USUARIO = $usuario_id
+            AND pd.ST_PF_DISCIPLINA = 'A'
+            AND d.ST_DISCIPLINA = 'A'";
+
+    $prof_disciplina_exec = mysqli_query($mysqli, $professor_qry);
+
+    if ($qtdDisciplina = mysqli_num_rows($prof_disciplina_exec) >= 1) {
+
+        while ($dados_disc = mysqli_fetch_object($prof_disciplina_exec)) {
+            $cdCurso        = $dados_disc->CD_CURSO;
+            $dsCurso        = $dados_disc->DS_CURSO;
+            $cdDisciplina   = $dados_disc->CD_DISCIPLINA;
+            $nrPeriodo      = $dados_disc->NR_PERIODO;
+            $dsDisciplina   = $dados_disc->DS_DISCIPLINA;
+        }
+    } else {
+        echo "Nenhuma disciplina ativa encontrada para este professor.";
+    }
+} else {
+    echo "Usuário não está logado!";
+    header("Location: login.php");
+}
+
+?>
 
 <body>
 
@@ -49,7 +113,7 @@
                                     <i class="far fa-bars"></i>
                                 </button>
                             </li>
-                            <li class="nome_aluno">Olá, Professor(a) John Doe</li>
+                            <li class="nome_aluno"><?php echo "Olá, Professor(a) " .  $_SESSION['professor_nm'] ?></li>
                             <li class="nome_aluno"> | </li>
                             <li class="logout">
                                 <a href="login">
@@ -79,6 +143,12 @@
             <section class="courses_archive_section section_space_lg">
                 <div class="container">
                     <div class="row">
+                        <?php
+                        for ($i = 0; $i < $qtdDisciplina; $i++) {
+                            echo $dsCurso[$i];
+                        }
+                        ?>
+
                         <div class="col-lg-6">
                             <div class="course_card list_layout">
                                 <div class="item_image">
@@ -107,6 +177,8 @@
                                 </div>
                             </div>
                         </div>
+                        <?  // } 
+                        ?>
                         <div class="col-lg-6">
                             <div class="course_card list_layout">
                                 <div class="item_image">
