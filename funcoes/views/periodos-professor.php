@@ -44,37 +44,34 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
         }
     }
 
-
-    $prof_disciplina_qry = "SELECT
-            c.CD_CURSO,
-            c.DS_CURSO,
-            d.CD_DISCIPLINA,
-            d.NR_PERIODO,
-            d.DS_DISCIPLINA
+    $prof_periodo_qry = "SELECT
+	        c.CD_CURSO,
+            c.DS_CURSO,            
+            d.NR_PERIODO            
         FROM
-            curso c
-        JOIN
-            disciplina d ON d.CD_DISCIPLINA = pd.CD_DISCIPLINA
-        JOIN
-            professor_disciplina pd ON pd.CD_DISCIPLINA = d.CD_DISCIPLINA
+	        curso c,
+            disciplina d,
+            professor_disciplina pd
         WHERE
-            pd.CD_USUARIO = $usuario_id
-            AND pd.ST_PF_DISCIPLINA = 'A'
-            AND d.ST_DISCIPLINA = 'A'";
+            pd.CD_USUARIO = '$usuario_id' 
+            AND pd.ST_PF_DISCIPLINA = 'A' 
+            AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA 
+            AND d.ST_DISCIPLINA = 'A'
+        GROUP BY d.NR_PERIODO";
 
-    $prof_disciplina_exec = mysqli_query($mysqli, $professor_qry);
+    $prof_periodo_exec = mysqli_query($mysqli, $prof_periodo_qry);
 
-    if ($qtdDisciplina = mysqli_num_rows($prof_disciplina_exec) >= 1) {
+    if (mysqli_num_rows($prof_periodo_exec) >= 1) {
 
-        while ($dados_disc = mysqli_fetch_object($prof_disciplina_exec)) {
-            $cdCurso        = $dados_disc->CD_CURSO;
-            $dsCurso        = $dados_disc->DS_CURSO;
-            $cdDisciplina   = $dados_disc->CD_DISCIPLINA;
-            $nrPeriodo      = $dados_disc->NR_PERIODO;
-            $dsDisciplina   = $dados_disc->DS_DISCIPLINA;
+        $qtdPeriodo = 0;
+        while ($dados_periodo = mysqli_fetch_array($prof_periodo_exec)) {
+            $cdCurso[$qtdPeriodo]        = $dados_periodo['CD_CURSO'];
+            $dsCurso[$qtdPeriodo]        = $dados_periodo['DS_CURSO'];
+            $nrPeriodo[$qtdPeriodo]      = $dados_periodo['NR_PERIODO'];
+            $qtdPeriodo++;
         }
     } else {
-        echo "Nenhuma disciplina ativa encontrada para este professor.";
+        echo "Nenhum período com disciplina ativa encontrado para este professor.";
     }
 } else {
     echo "Usuário não está logado!";
@@ -144,125 +141,41 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                 <div class="container">
                     <div class="row">
                         <?php
-                        for ($i = 0; $i < $qtdDisciplina; $i++) {
-                            echo $dsCurso[$i];
-                        }
-                        ?>
 
-                        <div class="col-lg-6">
-                            <div class="course_card list_layout">
-                                <div class="item_image">
-                                    <a href="disciplinas-professor" data-cursor-text="View">
-                                        <img src="assets/images/logo-curso-ia.jpg" alt="Collab – Online Learning Platform">
-                                    </a>
-                                </div>
-                                <div class="item_content">
-                                    <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <ul class="item_category_list unordered_list">
-                                            <li><a href="disciplinas-professor">7º Período</a></li>
-                                        </ul>
+                        // <img src="assets/images/logo-curso-ia.jpg" -> img curso ia
+                        for ($i = 0; $i < $qtdPeriodo; $i++) {
+
+                            echo '
+                                <div class="col-lg-6">
+                                    <div class="course_card list_layout">
+                                        <div class="item_image">
+                                            <a href="disciplinas-professor" data-cursor-text="View">
+                                                <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform">
+                                            </a>
+                                        </div>
+                                        <div class="item_content">
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <ul class="item_category_list unordered_list">
+                                                    <li><a href="disciplinas-professor">' . $nrPeriodo[$i] . 'º Período</a></li>
+                                                </ul>
+                                            </div>
+                                            <h3 class="item_title">
+                                                <a href="disciplinas-professor">
+                                                    ' . $dsCurso[$i] . '
+                                                </a>
+                                            </h3>
+                                            <a class="btn_unfill" href="disciplinas-professor?periodo=' . $nrPeriodo[$i] . '">
+                                                <span class="btn_text">Acessar disciplinas</span>
+                                                <span class="btn_icon">
+                                                    <i class="fas fa-long-arrow-right"></i>
+                                                    <i class="fas fa-long-arrow-right"></i>
+                                                </span>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <h3 class="item_title">
-                                        <a href="disciplinas-professor">
-                                            Engenharia de Software
-                                        </a>
-                                    </h3>
-                                    <a class="btn_unfill" href="disciplinas-professor">
-                                        <span class="btn_text">Acessar disciplinas</span>
-                                        <span class="btn_icon">
-                                            <i class="fas fa-long-arrow-right"></i>
-                                            <i class="fas fa-long-arrow-right"></i>
-                                        </span>
-                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                        <?  // } 
-                        ?>
-                        <div class="col-lg-6">
-                            <div class="course_card list_layout">
-                                <div class="item_image">
-                                    <a href="disciplinas-professor" data-cursor-text="View">
-                                        <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform">
-                                    </a>
-                                </div>
-                                <div class="item_content">
-                                    <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <ul class="item_category_list unordered_list">
-                                            <li><a href="disciplinas-professor">1º Período</a></li>
-                                        </ul>
-                                    </div>
-                                    <h3 class="item_title">
-                                        <a href="disciplinas-professor">
-                                            Inteligência Artificial
-                                        </a>
-                                    </h3>
-                                    <a class="btn_unfill" href="disciplinas-professor">
-                                        <span class="btn_text">Acessar disciplinas</span>
-                                        <span class="btn_icon">
-                                            <i class="fas fa-long-arrow-right"></i>
-                                            <i class="fas fa-long-arrow-right"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="course_card list_layout">
-                                <div class="item_image">
-                                    <a href="disciplinas-professor" data-cursor-text="View">
-                                        <img src="assets/images/logo-curso-ia.jpg" alt="Collab – Online Learning Platform">
-                                    </a>
-                                </div>
-                                <div class="item_content">
-                                    <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <ul class="item_category_list unordered_list">
-                                            <li><a href="disciplinas-professor">5º Período</a></li>
-                                        </ul>
-                                    </div>
-                                    <h3 class="item_title">
-                                        <a href="disciplinas-professor">
-                                            Engenharia de Software
-                                        </a>
-                                    </h3>
-                                    <a class="btn_unfill" href="disciplinas-professor">
-                                        <span class="btn_text">Acessar disciplinas</span>
-                                        <span class="btn_icon">
-                                            <i class="fas fa-long-arrow-right"></i>
-                                            <i class="fas fa-long-arrow-right"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="course_card list_layout">
-                                <div class="item_image">
-                                    <a href="disciplinas-professor" data-cursor-text="View">
-                                        <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform">
-                                    </a>
-                                </div>
-                                <div class="item_content">
-                                    <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <ul class="item_category_list unordered_list">
-                                            <li><a href="disciplinas-professor">2º Período</a></li>
-                                        </ul>
-                                    </div>
-                                    <h3 class="item_title">
-                                        <a href="disciplinas-professor">
-                                            Inteligência Artificial
-                                        </a>
-                                    </h3>
-                                    <a class="btn_unfill" href="disciplinas-professor">
-                                        <span class="btn_text">Acessar disciplinas</span>
-                                        <span class="btn_icon">
-                                            <i class="fas fa-long-arrow-right"></i>
-                                            <i class="fas fa-long-arrow-right"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                            ';
+                        } ?>
                     </div>
                 </div>
             </section>
