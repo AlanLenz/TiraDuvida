@@ -75,7 +75,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
     }
 } else {
     echo "Usuário não está logado!";
-    header("Location: login.php");
+    header("Location: login");
 }
 
 ?>
@@ -164,7 +164,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                                     ' . $dsCurso[$i] . '
                                                 </a>
                                             </h3>
-                                            <a class="btn_unfill" href="disciplinas-professor?periodo=' . $nrPeriodo[$i] . '">
+                                            <a class="btn_unfill" href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '">
                                                 <span class="btn_text">Acessar disciplinas</span>
                                                 <span class="btn_icon">
                                                     <i class="fas fa-long-arrow-right"></i>
