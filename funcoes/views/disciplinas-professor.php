@@ -31,6 +31,30 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
     $periodo = $_GET['periodo'];
 
     require_once 'includes/conexao-mysqli.php';
+
+    // $prof_disciplina_qry = "SELECT
+    // 	        c.CD_CURSO,
+    //             c.DS_CURSO,
+    //             d.CD_TURNO,
+    //             d.CD_DISCIPLINA,
+    //             d.NR_PERIODO,
+    //             d.DS_DISCIPLINA,
+    //             COUNT(dv.CD_DUVIDA) AS DV_TOTAL, 
+    //             SUM(CASE WHEN dv.ST_DUVIDA = 'ev' THEN 1 ELSE 0 END) AS DV_PENDENTE
+    //         FROM
+    //             curso c,
+    //             disciplina d,
+    //             professor_disciplina pd,
+    //             duvida dv
+    //         WHERE
+    //             pd.CD_USUARIO = '$usuario_id'
+    //             AND c.CD_CURSO = '$curso_id'
+    //             AND d.NR_PERIODO = '$periodo' 
+    //             AND pd.ST_PF_DISCIPLINA = 'A' 
+    //             AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA 
+    //             AND pd.CD_DISCIPLINA = dv.CD_DISCIPLINA
+    //             AND d.ST_DISCIPLINA = 'A'";
+
     $prof_disciplina_qry = "SELECT
     	        c.CD_CURSO,
                 c.DS_CURSO,
@@ -62,6 +86,8 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
             $cdDisciplina[$qtdDisciplina]   = $dados_disc['CD_DISCIPLINA'];
             $nrPeriodo[$qtdDisciplina]      = $dados_disc['NR_PERIODO'];
             $dsDisciplina[$qtdDisciplina]   = $dados_disc['DS_DISCIPLINA'];
+            $dvTotal[$qtdDisciplina]        = $dados_disc['DV_TOTAL'];
+            $dvPendente[$qtdDisciplina]     = $dados_disc['DV_PENDENTE'];
 
             switch ($dados_disc['CD_TURNO']) {
                 case 'N':
@@ -92,11 +118,11 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
     header("Location: login");
 }
 
-
-
 ?>
 
 <body>
+
+    <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>"></input>
 
     <div class="page_wrapper">
 
@@ -153,6 +179,8 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                 </div>
             </section>
 
+            <!-- <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li> -->
+
             <section class="event_section section_space_lg">
                 <div class="container">
                     <div class="row">
@@ -162,9 +190,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                             echo '
                                 <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas-professor">
-                                    <img src="assets/images/internet-coisas.webp" alt="Collab – Online Learning Platform">
-                                </a>
+                                    <a class="item_image" href="duvidas-professor">                                    
+                                        <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform" style="width: 400px; height: 250px;">
+                                    </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
                                         <a href="duvidas-professor">
@@ -172,8 +200,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                         </a>
                                     </h3>
                                     <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                        <li><a href="duvidas-professor?disciplina=' . $cdDisciplina[$i] . '" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
+                                        
+                                        <li><button type="button" onclick="modalAluno(\'' . $cdDisciplina[$i] . '\', \'' . $nmDisciplina[$i] . '\', \'' . $professor_nm . '\')" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -202,14 +231,14 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                                 <i class="far fa-calendar-alt"></i>
                                                 <span>Dúvidas enviadas</span>
                                             </div>
-                                            <span class="text-end">10</span>
+                                            <span class="text-end">' . $dvTotal[$i] . '</span>
                                         </li>
                                         <li>
                                             <div>
                                                 <i class="far fa-question"></i>
                                                 <span>Dúvidas pendentes</span>
                                             </div>
-                                            <span class="text-end">2</span>
+                                            <span class="text-end">' . $dvPendente[$i] . '</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -219,336 +248,6 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                         }
 
                         ?>
-                        <!-- <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-professor">
-                                    <img src="assets/images/internet-coisas.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-professor">
-                                            Internet das coisas
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-professor">
-                                    <img src="assets/images/desenvolvimento-mobile.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-professor">
-                                            Desenvolvimento mobile
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-professor">
-                                    <img src="assets/images/programacao-objetos.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-professor">
-                                            Desenvolvimento orientado à objetos
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-professor">
-                                    <img src="assets/images/algebra-linear.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-professor">
-                                            Algebra linear
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-professor">
-                                    <img src="assets/images/metodologias-ageis.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-professor">
-                                            Metodologias ágeis
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-professor">
-                                    <img src="assets/images/qualidade-software.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-professor">
-                                            Qualidade de Software
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </section>
@@ -578,39 +277,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 
     </div>
 
-    <div class="modal fade exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="far fa-users"></i> Integrantes de <b>Disciplina</b></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="integrantes-materia">
-                        <span class="text-center">Professor(a):</span>
-                        <li class="modal-professor">John Doe</li>
-                        <span class="text-center">Alunos:</span>
-                        <li class="modal-aluno-selecionado">John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                        <li>John Doe</li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn_dark" data-bs-dismiss="modal"><span><small>Fechar</small> <small>Fechar</small></span></button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="iModalAlunos"></div>
 
+    <script src="funcoes/js/modalAluno.js"></script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
