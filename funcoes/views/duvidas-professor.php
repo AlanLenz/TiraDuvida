@@ -68,7 +68,7 @@
                     <div class="content_wrapper">
                         <div class="row align-items-center">
                             <ul class="breadcrumb_nav unordered_list2">
-                                <li><a href="disciplinas-professor"><i class="far fa-reply"></i> Voltar à página de disciplinas</a></li>
+                                <li><a href="disciplinas-professor?curso=1&periodo=1"><i class="far fa-reply"></i> Voltar à página de disciplinas</a></li>
                                 <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal"><i class="far fa-users"></i> Visualizar integrantes da disciplina</button></li>
                             </ul>
                             <h1 class="page_title">Internet das coisas</h1>

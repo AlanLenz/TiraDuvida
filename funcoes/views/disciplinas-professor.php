@@ -200,7 +200,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                         </a>
                                     </h3>
                                     <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor?disciplina=' . $cdDisciplina[$i] . '" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
+                                        <li><a href="duvidas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
                                         
                                         <li><button type="button" onclick="modalAluno(\'' . $cdDisciplina[$i] . '\', \'' . $nmDisciplina[$i] . '\', \'' . $professor_nm . '\')" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
                                     </ul>
