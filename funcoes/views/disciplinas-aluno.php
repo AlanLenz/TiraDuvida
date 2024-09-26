@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="utf-8">
@@ -18,9 +18,125 @@
     <title>Disciplinas - TiraDúvida</title>
 </head>
 
+<?php
+
+session_start();
+
+if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset($_SESSION['tipo_usuario'])) {
+    $usuario_id = $_SESSION['usuario_id'];
+    $tipo_usuario = $_SESSION['tipo_usuario'];
+
+    require_once 'includes/conexao-mysqli.php';
+
+    $aluno_qry = "SELECT
+            a.CD_ALUNO,
+            a.NM_ALUNO                       
+        FROM
+            aluno a
+        WHERE
+            a.CD_USUARIO = '$usuario_id'";
+    $aluno_exec = mysqli_query($mysqli, $aluno_qry);
+
+    if (mysqli_num_rows($aluno_exec) == 1) {
+        while ($result = mysqli_fetch_object($aluno_exec)) {
+            $_SESSION['aluno_id'] = $result->CD_ALUNO;
+            $_SESSION['aluno_nm'] = $result->NM_ALUNO;
+            $aluno_nm = $_SESSION['aluno_nm'];
+        }
+    }
+
+    // $aluno_disciplina_qry = "SELECT
+    // 	        c.CD_CURSO,
+    //             c.DS_CURSO,
+    //             d.CD_TURNO,
+    //             d.CD_DISCIPLINA,
+    //             d.NR_PERIODO,
+    //             d.DS_DISCIPLINA,
+    //             COUNT(dv.CD_DUVIDA) AS DV_TOTAL, 
+    //             SUM(CASE WHEN dv.ST_DUVIDA = 'ev' THEN 1 ELSE 0 END) AS DV_PENDENTE
+    //         FROM
+    //             curso c,
+    //             disciplina d,
+    //             aluno_disciplina pd,
+    //             duvida dv
+    //         WHERE
+    //             pd.CD_USUARIO = '$usuario_id'
+    //             AND c.CD_CURSO = '$curso_id'
+    //             AND d.NR_PERIODO = '$periodo' 
+    //             AND pd.ST_AL_DISCIPLINA = 'A' 
+    //             AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA 
+    //             AND pd.CD_DISCIPLINA = dv.CD_DISCIPLINA
+    //             AND d.ST_DISCIPLINA = 'A'";
+
+    $aluno_disciplina_qry = "SELECT
+            c.CD_CURSO,
+            c.DS_CURSO,
+            d.CD_TURNO,
+            d.CD_DISCIPLINA,
+            d.NR_PERIODO,
+            d.DS_DISCIPLINA,
+            p.NM_PROFESSOR
+        FROM
+            curso c
+        JOIN
+            disciplina d ON c.CD_CURSO = d.CD_CURSO
+        JOIN
+            aluno_disciplina pd ON pd.CD_DISCIPLINA = d.CD_DISCIPLINA
+        JOIN
+            professor_disciplina pdp ON pdp.CD_DISCIPLINA = d.CD_DISCIPLINA
+        JOIN
+            professor p ON pdp.CD_USUARIO = p.CD_USUARIO
+        WHERE
+            pd.CD_USUARIO = '$usuario_id' AND pd.ST_AL_DISCIPLINA = 'A' AND d.ST_DISCIPLINA = 'A'";
+
+    $aluno_disciplina_exec = mysqli_query($mysqli, $aluno_disciplina_qry);
+
+    if (mysqli_num_rows($aluno_disciplina_exec) >= 1) {
+
+        $qtdDisciplina = 0;
+        while ($dados_disc = mysqli_fetch_array($aluno_disciplina_exec)) {
+            $cdCurso[$qtdDisciplina]        = $dados_disc['CD_CURSO'];
+            $dsCurso[$qtdDisciplina]        = $dados_disc['DS_CURSO'];
+            $cdTurno[$qtdDisciplina]        = $dados_disc['CD_TURNO'];
+            $cdDisciplina[$qtdDisciplina]   = $dados_disc['CD_DISCIPLINA'];
+            $nrPeriodo[$qtdDisciplina]      = $dados_disc['NR_PERIODO'];
+            $dsDisciplina[$qtdDisciplina]   = $dados_disc['DS_DISCIPLINA'];
+            $nmProfessor[$qtdDisciplina]    = $dados_disc['NM_PROFESSOR'];
+            $dvTotal[$qtdDisciplina]        = $dados_disc['DV_TOTAL'];
+            $dvPendente[$qtdDisciplina]     = $dados_disc['DV_PENDENTE'];
+
+            switch ($dados_disc['CD_TURNO']) {
+                case 'N':
+                    $dsTurno[$qtdDisciplina] = 'NOTURNO';
+                    break;
+                case 'V':
+                    $dsTurno[$qtdDisciplina] = 'VESPERTINO';
+                    break;
+                case 'M':
+                    $dsTurno[$qtdDisciplina] = 'MATUTINO';
+                    break;
+                case 'I':
+                    $dsTurno[$qtdDisciplina] = 'INTEGRAL';
+                    break;
+                default:
+                case 'N':
+                    $dsTurno[$qtdDisciplina] = 'NAO IDENTIFICADO';
+                    break;
+            }
+
+            $qtdDisciplina++;
+        }
+    } else {
+        echo "Nenhuma disciplina ativa encontrada para este aluno.";
+    }
+} else {
+    echo "Usuário não está logado!";
+    header("Location: login");
+}
+
+?>
 
 <body>
-
     <div class="page_wrapper">
 
         <div class="backtotop">
@@ -49,7 +165,7 @@
                                     <i class="far fa-bars"></i>
                                 </button>
                             </li>
-                            <li class="nome_aluno">Olá, John Doe</li>
+                            <li class="nome_aluno">Olá, <?php echo $aluno_nm ?></li>
                             <li class="nome_aluno"> | </li>
                             <li class="logout">
                                 <a href="login">
@@ -79,19 +195,23 @@
             <section class="event_section section_space_lg">
                 <div class="container">
                     <div class="row">
-                        <div class="col col-lg-4">
+                        <?php
+                        for ($i = 0; $i < $qtdDisciplina; $i++) {
+
+                            echo '
+                                <div class="col col-lg-4">
                             <div class="event_card">
-                                <a class="item_image" href="duvidas-aluno">
-                                    <img src="assets/images/internet-coisas.webp" alt="Collab – Online Learning Platform">
-                                </a>
+                                    <a class="item_image" href="duvidas-aluno">                                    
+                                        <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform" style="width: 400px; height: 250px;">
+                                    </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
                                         <a href="duvidas-aluno">
-                                            Internet das coisas
+                                            ' . $dsDisciplina[$i] . '
                                         </a>
                                     </h3>
-                                    <ul class="header_btns_group unordered_list justify-content-center">
-                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
+                                     <ul class="header_btns_group unordered_list justify-content-center">
+                                        <li><a href="duvidas-aluno?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>
@@ -99,310 +219,44 @@
                                                 <i class="far fa-chalkboard-teacher"></i>
                                                 <span>Professor(a)</span>
                                             </div>
-                                            <span class="text-end">John Doe</span>
+                                            <span class="text-end">' . $nmProfessor[$i] . '</span>
                                         </li>
                                         <li>
                                             <div>
                                                 <i class="far fa-list-ol"></i>
                                                 <span>Código</span>
                                             </div>
-                                            <span class="text-end">150941</span>
+                                            <span class="text-end">' . $cdDisciplina[$i] . '</span>
                                         </li>
                                         <li>
                                             <div>
                                                 <i class="far fa-calendar-alt"></i>
                                                 <span>Período / Turno</span>
                                             </div>
-                                            <span class="text-end">7º - Noturno</span>
+                                            <span class="text-end">' . $nrPeriodo[$i] . ' / ' . $dsTurno[$i] . '</span>
                                         </li>
                                         <li>
                                             <div>
                                                 <i class="far fa-calendar-alt"></i>
                                                 <span>Dúvidas enviadas</span>
                                             </div>
-                                            <span class="text-end">10</span>
+                                            <span class="text-end">' . $dvTotal[$i] . '</span>
                                         </li>
                                         <li>
                                             <div>
                                                 <i class="far fa-question"></i>
                                                 <span>Dúvidas pendentes</span>
                                             </div>
-                                            <span class="text-end">2</span>
+                                            <span class="text-end">' . $dvPendente[$i] . '</span>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-aluno">
-                                    <img src="assets/images/desenvolvimento-mobile.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-aluno">
-                                            Desenvolvimento mobile
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list justify-content-center">
-                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-aluno">
-                                    <img src="assets/images/programacao-objetos.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-aluno">
-                                            Desenvolvimento orientado à objetos
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list justify-content-center">
-                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-aluno">
-                                    <img src="assets/images/algebra-linear.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-aluno">
-                                            Algebra linear
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list justify-content-center">
-                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-aluno">
-                                    <img src="assets/images/metodologias-ageis.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-aluno">
-                                            Metodologias ágeis
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list justify-content-center">
-                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-lg-4">
-                            <div class="event_card">
-                                <a class="item_image" href="duvidas-aluno">
-                                    <img src="assets/images/qualidade-software.webp" alt="Collab – Online Learning Platform">
-                                </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-aluno">
-                                            Qualidade de Software
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list justify-content-center">
-                                        <li><a href="duvidas-aluno" class="btn btn_dark"><span><small>Acessar dúvidas da disciplina</small> <small>Acessar dúvidas da disciplina</small></span></a></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">John Doe</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">150941</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">7º - Noturno</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">10</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">2</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        </div>    
+                            ';
+                        }
+
+                        ?>
                     </div>
                 </div>
             </section>
