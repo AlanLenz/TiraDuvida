@@ -32,29 +32,6 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 
     require_once 'includes/conexao-mysqli.php';
 
-    // $prof_disciplina_qry = "SELECT
-    // 	        c.CD_CURSO,
-    //             c.DS_CURSO,
-    //             d.CD_TURNO,
-    //             d.CD_DISCIPLINA,
-    //             d.NR_PERIODO,
-    //             d.DS_DISCIPLINA,
-    //             COUNT(dv.CD_DUVIDA) AS DV_TOTAL, 
-    //             SUM(CASE WHEN dv.ST_DUVIDA = 'ev' THEN 1 ELSE 0 END) AS DV_PENDENTE
-    //         FROM
-    //             curso c,
-    //             disciplina d,
-    //             professor_disciplina pd,
-    //             duvida dv
-    //         WHERE
-    //             pd.CD_USUARIO = '$usuario_id'
-    //             AND c.CD_CURSO = '$curso_id'
-    //             AND d.NR_PERIODO = '$periodo' 
-    //             AND pd.ST_PF_DISCIPLINA = 'A' 
-    //             AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA 
-    //             AND pd.CD_DISCIPLINA = dv.CD_DISCIPLINA
-    //             AND d.ST_DISCIPLINA = 'A'";
-
     $prof_disciplina_qry = "SELECT
     	        c.CD_CURSO,
                 c.DS_CURSO,
@@ -71,7 +48,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                 AND c.CD_CURSO = '$curso_id'
                 AND d.NR_PERIODO = '$periodo' 
                 AND pd.ST_PF_DISCIPLINA = 'A' 
-                AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA 
+                AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA
                 AND d.ST_DISCIPLINA = 'A'";
 
     $prof_disciplina_exec = mysqli_query($mysqli, $prof_disciplina_qry);
@@ -190,19 +167,18 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                             echo '
                                 <div class="col col-lg-4">
                             <div class="event_card">
-                                    <a class="item_image" href="duvidas-professor">                                    
-                                        <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform" style="width: 400px; height: 250px;">
+                                    <a class="item_image" href="duvidas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '">                                    
+                                        <img src="assets/images/logo-curso-eng-software.webp" title="Engenharia de Software" alt="Logo Engenharia de Software">
                                     </a>
                                 <div class="item_content">
                                     <h3 class="item_title">
-                                        <a href="duvidas-professor">
+                                        <a href="duvidas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '">
                                             ' . $dsDisciplina[$i] . '
                                         </a>
                                     </h3>
                                     <ul class="header_btns_group unordered_list">
                                         <li><a href="duvidas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        
-                                        <li><button type="button" onclick="modalAluno(\'' . $cdDisciplina[$i] . '\', \'' . $nmDisciplina[$i] . '\', \'' . $professor_nm . '\')" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                        <li><button type="button" onclick="modalAluno(\'' . $cdDisciplina[$i] . '\', \'' . $dsDisciplina[$i] . '\', \'' . $professor_nm . '\')" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
                                     </ul>
                                     <ul class="meta_info_list unordered_list_block">
                                         <li>

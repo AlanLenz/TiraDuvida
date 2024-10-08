@@ -18,6 +18,78 @@
     <title>Dúvidas - TiraDúvida</title>
 </head>
 
+<?php
+
+session_start();
+
+if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset($_SESSION['tipo_usuario'])) {
+    $usuario_id = $_SESSION['usuario_id'];
+    $tipo_usuario = $_SESSION['tipo_usuario'];
+
+    require_once 'includes/conexao-mysqli.php';
+
+    $aluno_qry = "SELECT
+            a.CD_ALUNO,
+            a.NM_ALUNO                       
+        FROM
+            aluno a
+        WHERE
+            a.CD_USUARIO = '$usuario_id'";
+    $aluno_exec = mysqli_query($mysqli, $aluno_qry);
+
+    if (mysqli_num_rows($aluno_exec) == 1) {
+        while ($result = mysqli_fetch_object($aluno_exec)) {
+            $_SESSION['aluno_id'] = $result->CD_ALUNO;
+            $_SESSION['aluno_nm'] = $result->NM_ALUNO;
+            $aluno_nm = $_SESSION['aluno_nm'];
+        }
+    }
+
+    $aluno_duvidas_qry = "SELECT
+            dv.CD_DUVIDA,
+            dv.CD_DESTAQUE,
+            dv.NR_CURTIDAS,
+            dv.TP_RESPOSTA,
+            dv.DT_HR,
+            dv.ST_DUVIDA
+        FROM
+            duvida dv
+        JOIN
+            disciplina d ON dv.CD_DISCIPLINA = d.CD_DISCIPLINA
+        JOIN
+            professor_disciplina pdp ON pdp.CD_DISCIPLINA = d.CD_DISCIPLINA
+        JOIN
+            professor p ON pdp.CD_USUARIO = p.CD_USUARIO
+        WHERE
+            pd.CD_USUARIO = '$usuario_id' AND pd.ST_AL_DISCIPLINA = 'A' AND d.ST_DISCIPLINA = 'A'";
+
+    $aluno_duvidas_exec = mysqli_query($mysqli, $aluno_duvidas_qry);
+
+    if (mysqli_num_rows($aluno_duvidas_exec) >= 1) {
+
+        $qtdDuvidas = 0;
+        while ($dados_disc = mysqli_fetch_array($aluno_duvidas_exec)) {
+            $cdCurso[$qtdDisciplina]        = $dados_disc['CD_CURSO'];
+            $dsCurso[$qtdDisciplina]        = $dados_disc['DS_CURSO'];
+            $cdTurno[$qtdDisciplina]        = $dados_disc['CD_TURNO'];
+            $cdDisciplina[$qtdDisciplina]   = $dados_disc['CD_DISCIPLINA'];
+            $nrPeriodo[$qtdDisciplina]      = $dados_disc['NR_PERIODO'];
+            $dsDisciplina[$qtdDisciplina]   = $dados_disc['DS_DISCIPLINA'];
+            $nmProfessor[$qtdDisciplina]    = $dados_disc['NM_PROFESSOR'];
+            $dvTotal[$qtdDisciplina]        = $dados_disc['DV_TOTAL'];
+            $dvPendente[$qtdDisciplina]     = $dados_disc['DV_PENDENTE'];
+            $qtdDuvidas++;
+        }
+    } else {
+        echo "Nenhuma disciplina ativa encontrada para este aluno.";
+    }
+} else {
+    echo "Usuário não está logado!";
+    header("Location: login");
+}
+
+?>
+
 <body>
 
     <div class="page_wrapper">
@@ -88,17 +160,18 @@
                             </section>
                             <div class="event_section">
                                 <div class="calltoaction_form mb-0">
-                                    <form action="#">
+                                    <form id="form_create_duvida">
+                                        <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>">
                                         <h3 class="form_title">Envie sua dúvida</h3>
                                         <div class="form_item">
-                                            <label for="input_name" class="input_title text-uppercase"><i class="far fa-pencil"></i> Título</label>
-                                            <input id="input_name" type="text" name="name" placeholder="Assunto da dúvida">
+                                            <label for="iTituloDuvida" class="input_title text-uppercase"><i class="far fa-pencil"></i> Título</label>
+                                            <input id="iTituloDuvida" name="nTituloDuvida" type="text" placeholder="Assunto da dúvida">
                                         </div>
                                         <div class="form_item">
-                                            <label for="input_question" class="input_title text-uppercase"><i class="far fa-edit"></i> Pergunta</label>
-                                            <textarea id="input_question" name="Message" placeholder="Detalhes da dúvida"></textarea>
+                                            <label for="iPerguntaDuvida" class="input_title text-uppercase"><i class="far fa-edit"></i> Pergunta</label>
+                                            <textarea id="iPerguntaDuvida" name="nPerguntaDuvida" placeholder="Detalhes da dúvida"></textarea>
                                         </div>
-                                        <button type="submit" class="btn btn_dark w-100"><span><small>Enviar</small> <small>Enviar</small></span></button>
+                                        <button id="botao_create_duvida" type="submit" class="btn btn_dark w-100"><span><small>Enviar</small> <small>Enviar</small></span></button>
                                     </form>
                                 </div>
                             </div>

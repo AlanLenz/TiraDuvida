@@ -55,7 +55,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
         WHERE
             pd.CD_USUARIO = '$usuario_id' 
             AND pd.ST_PF_DISCIPLINA = 'A' 
-            AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA 
+            AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA
             AND d.ST_DISCIPLINA = 'A'
         GROUP BY d.NR_PERIODO";
 
@@ -149,18 +149,18 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                 <div class="col-lg-6">
                                     <div class="course_card list_layout">
                                         <div class="item_image">
-                                            <a href="disciplinas-professor" data-cursor-text="View">
+                                            <a href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '" data-cursor-text="View">
                                                 <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform">
                                             </a>
                                         </div>
                                         <div class="item_content">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                                 <ul class="item_category_list unordered_list">
-                                                    <li><a href="disciplinas-professor">' . $nrPeriodo[$i] . 'º Período</a></li>
+                                                    <li><a href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '">' . $nrPeriodo[$i] . 'º Período</a></li>
                                                 </ul>
                                             </div>
                                             <h3 class="item_title">
-                                                <a href="disciplinas-professor">
+                                                <a href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '">
                                                     ' . $dsCurso[$i] . '
                                                 </a>
                                             </h3>

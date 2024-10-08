@@ -744,6 +744,11 @@ ol[type="1"]>li:not(:last-child) {
   background-color: #00bf63;
 }
 
+.tags_list .ocultas span {
+  color: #fff;
+  background-color: #700000;
+}
+
 .tags_list span:hover {
   -webkit-transform: translate(-1px, -1px);
   transform: translate(-1px, -1px);
@@ -1977,6 +1982,30 @@ blockquote p {
   line-height: 24px;
   position: absolute;
   color: #1F1D0D;
+  font-family: "Barlow", sans-serif;
+}
+
+.comment_item .highlight_btn {
+  top: 35px;
+  right: 100px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  position: absolute;
+  color: #d5bd08;
+  font-family: "Barlow", sans-serif;
+}
+
+.comment_item .hide_btn {
+  top: 35px;
+  right: 70px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  position: absolute;
+  color: #ff0000;
   font-family: "Barlow", sans-serif;
 }
 
@@ -4006,7 +4035,7 @@ header .header_btns_group>li:first-child {
   font-family: "Barlow", sans-serif;
 }
 
-.comment_item.respondida:before {
+.comment_item.respondida .btn-collapse:before {
   right: 0;
   left: 47%;
   bottom: 2px;
@@ -4017,7 +4046,7 @@ header .header_btns_group>li:first-child {
   font-family: "Font Awesome 5 Pro";
 }
 
-.comment_item.respondida[aria-expanded=false]:before {
+.comment_item.respondida .btn-collapse[aria-expanded=false]:before {
   content: "\f107";
 }
 
