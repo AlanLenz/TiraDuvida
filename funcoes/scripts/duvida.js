@@ -1,5 +1,38 @@
 vsUrl = $("#vsUrl").val();
 
+// Função para capturar valores de parâmetros da URL
+$(document).ready(function () {
+    function getParameterByName(name) {
+        var url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+});
+
+// Função para redirecionar a página com o status e preservar outros parâmetros
+$('input[type=checkbox]').on('change', function () {
+    var status = $(this).val();
+
+    // Obtém os valores de curso, período e disciplina
+    var curso = getParameterByName('curso');
+    var periodo = getParameterByName('periodo');
+    var disciplina = getParameterByName('disciplina');
+
+    // Monta a nova URL com os parâmetros existentes e o novo status
+    var newUrl = "?status=" + status;
+
+    if (curso) newUrl += "&curso=" + curso;
+    if (periodo) newUrl += "&periodo=" + periodo;
+    if (disciplina) newUrl += "&disciplina=" + disciplina;
+
+    // Redireciona para a nova URL
+    window.location.href = newUrl;
+});
+
 function oculta_duvida(viCD_DUVIDA) {
 
     $.ajax({
@@ -81,7 +114,7 @@ function Sucesso() {
         title: "Sucesso!",
         text: "Dúvida atualizada com sucesso!",
         type: "success"
-    }, function() {
+    }, function () {
         location.reload();
     });
 }

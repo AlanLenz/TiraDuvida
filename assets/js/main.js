@@ -7,7 +7,7 @@
 // * Developer      :  webrok (https://www.fiverr.com/webrok?up_rollout=true)
 // ==================================================
 
-(function($) {
+(function ($) {
   "use strict";
 
   // Vanilla Calendar - Start
@@ -21,16 +21,16 @@
 
   // Back To Top - Start
   // --------------------------------------------------
-  $(window).scroll(function() {
+  $(window).scroll(function () {
     if ($(this).scrollTop() > 200) {
       $('.backtotop:hidden').stop(true, true).fadeIn();
     } else {
       $('.backtotop').stop(true, true).fadeOut();
     }
   });
-  $(function() {
-    $(".scroll").on('click', function() {
-      $("html,body").animate({scrollTop: 0}, "slow");
+  $(function () {
+    $(".scroll").on('click', function () {
+      $("html,body").animate({ scrollTop: 0 }, "slow");
       return false
     });
   });
@@ -52,6 +52,9 @@
   // OffCanvas - Start
   // --------------------------------------------------
   $(document).ready(function () {
+
+    var vsUrl = $("#vsUrl").val();
+
     $('.offCanvas_close_btn, .offCanvas_overlay').on('click', function () {
       $('.filter_offcanvas.position-fixed').removeClass('active');
       $('.offCanvas_overlay').removeClass('active');
@@ -60,6 +63,19 @@
     $('.offCanvas_open_btn').on('click', function () {
       $('.filter_offcanvas.position-fixed').addClass('active');
       $('.offCanvas_overlay').addClass('active');
+    });
+
+    $('#abre_modal_logoff').click(function () {
+      swal({
+        title: "Deseja fazer logoff?",
+        type: "warning",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Sim",
+        showCancelButton: true,
+        closeOnConfirm: false
+      }, function () {
+        logoff();
+      });
     });
   });
   // OffCanvas - End
@@ -80,12 +96,12 @@
   // Tilt - Start
   // --------------------------------------------------
   $('.tilt').tilt({
-    maxTilt:        12,
-    perspective:    1000,
-    scale:          1,
-    speed:          1000,
-    glare:          false,
-    maxGlare:       1
+    maxTilt: 12,
+    perspective: 1000,
+    scale: 1,
+    speed: 1000,
+    glare: false,
+    maxGlare: 1
   });
   // Tilt - End
   // --------------------------------------------------
@@ -143,21 +159,21 @@
     zoom: {
       enabled: true,
       duration: 300,
-      opener: function(element) {
+      opener: function (element) {
         return element.find('img');
       }
     }
-    
+
   });
   // Videos & Images popup - End
   // --------------------------------------------------
 
   // Multy Countdown - Start
   // --------------------------------------------------
-  $('.countdown_timer').each(function(){
-    $('[data-countdown]').each(function() {
+  $('.countdown_timer').each(function () {
+    $('[data-countdown]').each(function () {
       var $this = $(this), finalDate = $(this).data('countdown');
-      $this.countdown(finalDate, function(event) {
+      $this.countdown(finalDate, function (event) {
         var $this = $(this).html(event.strftime(''
           + '<li class="days_count"><strong>%D</strong><span>Days</span></li>'
           + '<li class="hours_count"><strong>%H</strong><span>Hours</span></li>'
@@ -197,16 +213,36 @@
     prevArrow: ".cc2c_left_arrow",
     nextArrow: ".cc2c_right_arrow",
     responsive: [
-    {
-      breakpoint: 992,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
       }
-    }
     ]
   });
   // Common Carousels - End
   // --------------------------------------------------
 
 })(jQuery);
+
+/*FUNÇÃO FAZ LOGOFF DO USUARIO*/
+function logoff() {
+
+  $.ajax({
+    url: vsUrl + "funcoes/controllers/ExecutaLogoff.php",
+    type: "POST",
+    dataType: "json",
+    success: function (data) {
+      if (data == 1) {
+        $(location).attr('href', vsUrl + "login");
+      } else {
+        AvisoPersonalizado("Ocorreu um erro ao tentar fazer logoff");
+      }
+    },
+    error: function () {
+      Erro();
+    }
+  });
+}

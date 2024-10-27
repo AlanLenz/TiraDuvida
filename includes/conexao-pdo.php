@@ -2,11 +2,11 @@
 
 include_once "../config.php";
 
-abstract class Conexao {
+abstract class ConexaoPdo {
 
     private static $instance = null;
 
-    private static function conectar() {
+    private static function conectaPdo() {
 
         try {
             if (self::$instance == null):
@@ -21,9 +21,9 @@ abstract class Conexao {
     }
 
     protected static function getDB() {
-        return self::conectar();
+        return self::conectaPdo();
     }
 
 }
 
-?>
+

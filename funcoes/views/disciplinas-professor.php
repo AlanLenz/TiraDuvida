@@ -2,20 +2,11 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="assets/images/favicon.webp">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/cursor.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/slick.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/vanilla-calendar.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>disciplinas - TiraDúvida</title>
+    <?php
+    // HEAD
+    include 'includes/head.php';
+    ?>
+    <title><?php echo "Disciplinas - " . TITULO ?></title>
 </head>
 
 <?php
@@ -30,66 +21,37 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
     $curso_id = $_GET['curso'];
     $periodo = $_GET['periodo'];
 
-    require_once 'includes/conexao-mysqli.php';
+    $vsSqlCurso = "SELECT DS_CURSO FROM curso WHERE CD_CURSO = $curso_id";
+    $vrsExecutaCurso = mysqli_query($conexaoMysqli, $vsSqlCurso) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
 
-    $prof_disciplina_qry = "SELECT
-    	        c.CD_CURSO,
-                c.DS_CURSO,
-                d.CD_TURNO,
-                d.CD_DISCIPLINA,
-                d.NR_PERIODO,
-                d.DS_DISCIPLINA
-            FROM
-                curso c,
-                disciplina d,
-                professor_disciplina pd
-            WHERE
-                pd.CD_USUARIO = '$usuario_id'
-                AND c.CD_CURSO = '$curso_id'
-                AND d.NR_PERIODO = '$periodo' 
-                AND pd.ST_PF_DISCIPLINA = 'A' 
-                AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA
-                AND d.ST_DISCIPLINA = 'A'";
-
-    $prof_disciplina_exec = mysqli_query($mysqli, $prof_disciplina_qry);
-
-    if (mysqli_num_rows($prof_disciplina_exec) >= 1) {
-
-        $qtdDisciplina = 0;
-        while ($dados_disc = mysqli_fetch_array($prof_disciplina_exec)) {
-            $cdCurso[$qtdDisciplina]        = $dados_disc['CD_CURSO'];
-            $dsCurso[$qtdDisciplina]        = $dados_disc['DS_CURSO'];
-            $cdTurno[$qtdDisciplina]        = $dados_disc['CD_TURNO'];
-            $cdDisciplina[$qtdDisciplina]   = $dados_disc['CD_DISCIPLINA'];
-            $nrPeriodo[$qtdDisciplina]      = $dados_disc['NR_PERIODO'];
-            $dsDisciplina[$qtdDisciplina]   = $dados_disc['DS_DISCIPLINA'];
-            $dvTotal[$qtdDisciplina]        = $dados_disc['DV_TOTAL'];
-            $dvPendente[$qtdDisciplina]     = $dados_disc['DV_PENDENTE'];
-
-            switch ($dados_disc['CD_TURNO']) {
-                case 'N':
-                    $dsTurno[$qtdDisciplina] = 'NOTURNO';
-                    break;
-                case 'V':
-                    $dsTurno[$qtdDisciplina] = 'VESPERTINO';
-                    break;
-                case 'M':
-                    $dsTurno[$qtdDisciplina] = 'MATUTINO';
-                    break;
-                case 'I':
-                    $dsTurno[$qtdDisciplina] = 'INTEGRAL';
-                    break;
-                default:
-                case 'N':
-                    $dsTurno[$qtdDisciplina] = 'NAO IDENTIFICADO';
-                    break;
-            }
-
-            $qtdDisciplina++;
-        }
-    } else {
-        echo "Nenhuma disciplina ativa encontrada para este professor.";
-    }
+    $vsSqlDisciplinasProfessor = "
+        SELECT
+            c.CD_CURSO,
+            c.DS_CURSO,
+            d.CD_DISCIPLINA,
+            d.NR_PERIODO,
+            d.DS_DISCIPLINA,
+            CASE d.CD_TURNO
+                WHEN 'N' THEN 'Noturno'
+                WHEN 'V' THEN 'Verspertino'
+                WHEN 'M' THEN 'Matutino'
+                WHEN 'I' THEN 'Integral'
+                ELSE ''
+            END AS DS_TURNO
+        FROM
+            curso c,
+            disciplina d,
+            professor_disciplina pd
+        WHERE
+            pd.CD_USUARIO = '$usuario_id'
+            AND c.CD_CURSO = '$curso_id'
+            AND d.NR_PERIODO = '$periodo' 
+            AND pd.ST_PF_DISCIPLINA = 'A'
+            AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA
+            AND d.ST_DISCIPLINA = 'A'
+    ";
+    $vrsExecutaDisciplinasProfessor = mysqli_query($conexaoMysqli, $vsSqlDisciplinasProfessor) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
+    $viNumRowsDisciplinasProfessor = mysqli_num_rows($vrsExecutaDisciplinasProfessor);
 } else {
     echo "Usuário não está logado!";
     header("Location: login");
@@ -99,7 +61,10 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 
 <body>
 
-    <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>"></input>
+    <?php
+    // PRELOADER
+    include 'includes/preloader.php';
+    ?>
 
     <div class="page_wrapper">
 
@@ -114,12 +79,14 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                 <div class="row align-items-center">
                     <div class="col col-lg-3 col-5">
                         <div class="site_logo">
-                            <img src="assets/images/logo.png" alt="">
+                            <img src="<?php echo URL . "assets/images/logo.png" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
                         </div>
                     </div>
                     <div class="col col-lg-6 col-2">
                         <div class="title_page">
-                            <h2><?php echo $dsCurso[0] ?></h2>
+                            <?php while ($voResultadoCurso = mysqli_fetch_object($vrsExecutaCurso)) { ?>
+                                <h2><?php echo $voResultadoCurso->DS_CURSO ?></h2>
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="col col-lg-3 col-5">
@@ -129,13 +96,17 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                     <i class="far fa-bars"></i>
                                 </button>
                             </li>
-                            <li class="nome_aluno">Olá, Professor(a) <?php echo $professor_nm ?></li>
+                            <li class="nome_aluno"><?php echo "Olá, Professor(a)" . $professor_nm ?></li>
                             <li class="nome_aluno"> | </li>
-                            <li class="logout">
-                                <a href="login">
-                                    <i class="far fa-sign-out-alt" title="Sair"></i>
-                                </a>
-                            </li>
+                            <div class="dropdown">
+                                <li>
+                                    <button class="btn btn-dropdown-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                    <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="<?php echo URL . "periodos-professor" ?>">Períodos</a></li>
+                                        <li><button type="button" id="abre_modal_logoff" class="dropdown-item logoff-button"><i class="far fa-sign-out-alt" title="Sair"></i> Sair</button></li>
+                                    </ul>
+                                </li>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -150,127 +121,126 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                             <ul class="breadcrumb_nav unordered_list">
                                 <li><a href="periodos-professor"><i class="far fa-reply"></i> Voltar à página de períodos</a></li>
                             </ul>
-                            <h1 class="page_title">Disciplinas <?php echo $periodo ?>º período</h1>
+                            <h1 class="page_title"><?php echo "Disciplinas " . $periodo . "º período" ?></h1>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li> -->
-
             <section class="event_section section_space_lg">
                 <div class="container">
                     <div class="row">
                         <?php
-                        for ($i = 0; $i < $qtdDisciplina; $i++) {
-
-                            echo '
-                                <div class="col col-lg-4">
-                            <div class="event_card">
-                                    <a class="item_image" href="duvidas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '">                                    
-                                        <img src="assets/images/logo-curso-eng-software.webp" title="Engenharia de Software" alt="Logo Engenharia de Software">
+                        // LISTAGEM DE DISCIPLINAS
+                        while ($voResultadoDisciplinasProfessor = mysqli_fetch_object($vrsExecutaDisciplinasProfessor)) {
+                        ?>
+                            <div class="col col-lg-4">
+                                <div class="event_card">
+                                    <a class="item_image" href="<?php echo URL . "duvidas-professor?curso=" . $voResultadoDisciplinasProfessor->CD_CURSO . "&periodo=" . $voResultadoDisciplinasProfessor->NR_PERIODO . "&disciplina=" . $voResultadoDisciplinasProfessor->CD_DISCIPLINA ?>">
+                                        <img src="<?php echo URL . "assets/images/logo-curso-eng-software.webp" ?>" title="<?php echo $voResultadoDisciplinasProfessor->DS_DISCIPLINA ?>" alt="<?php echo "Logo " . $voResultadoDisciplinasProfessor->DS_DISCIPLINA ?>">
                                     </a>
-                                <div class="item_content">
-                                    <h3 class="item_title">
-                                        <a href="duvidas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '">
-                                            ' . $dsDisciplina[$i] . '
-                                        </a>
-                                    </h3>
-                                    <ul class="header_btns_group unordered_list">
-                                        <li><a href="duvidas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '&disciplina=' . $cdDisciplina[$i] . '" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
-                                        <li><button type="button" onclick="modalAluno(\'' . $cdDisciplina[$i] . '\', \'' . $dsDisciplina[$i] . '\', \'' . $professor_nm . '\')" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
-                                    </ul>
-                                    <ul class="meta_info_list unordered_list_block">
-                                        <li>
-                                            <div>
-                                                <i class="far fa-chalkboard-teacher"></i>
-                                                <span>Professor(a)</span>
-                                            </div>
-                                            <span class="text-end">' . $professor_nm . '</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-list-ol"></i>
-                                                <span>Código</span>
-                                            </div>
-                                            <span class="text-end">' . $cdDisciplina[$i] . '</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Período / Turno</span>
-                                            </div>
-                                            <span class="text-end">' . $nrPeriodo[$i] . ' / ' . $dsTurno[$i] . '</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-calendar-alt"></i>
-                                                <span>Dúvidas enviadas</span>
-                                            </div>
-                                            <span class="text-end">' . $dvTotal[$i] . '</span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <i class="far fa-question"></i>
-                                                <span>Dúvidas pendentes</span>
-                                            </div>
-                                            <span class="text-end">' . $dvPendente[$i] . '</span>
-                                        </li>
-                                    </ul>
+                                    <div class="item_content">
+                                        <h3 class="item_title">
+                                            <a href="<?php echo URL . "duvidas-professor?curso=" . $voResultadoDisciplinasProfessor->CD_CURSO . "&periodo=" . $voResultadoDisciplinasProfessor->NR_PERIODO . "&disciplina=" . $voResultadoDisciplinasProfessor->CD_DISCIPLINA ?>">
+                                                <?php echo $voResultadoDisciplinasProfessor->DS_DISCIPLINA ?>
+                                            </a>
+                                        </h3>
+                                        <ul class="header_btns_group unordered_list">
+                                            <li><a href="<?php echo URL . "duvidas-professor?curso=" . $voResultadoDisciplinasProfessor->CD_CURSO . "&periodo=" . $voResultadoDisciplinasProfessor->NR_PERIODO . "&disciplina=" . $voResultadoDisciplinasProfessor->CD_DISCIPLINA ?>" class="btn btn_dark"><span><small>Acessar disciplina</small> <small>Acessar disciplina</small></span></a></li>
+                                            <li><button type="button" onclick="abre_modal_alunos(<?php echo '\'' . $voResultadoDisciplinasProfessor->CD_DISCIPLINA . '\'' ?>)" class="btn border_dark"><span><small>Visualizar integrantes</small> <small>Visualizar integrantes</small></span></button></li>
+                                        </ul>
+                                        <ul class="meta_info_list unordered_list_block">
+                                            <li>
+                                                <div>
+                                                    <i class="far fa-chalkboard-teacher"></i>
+                                                    <span>Professor(a)</span>
+                                                </div>
+                                                <span class="text-end"><?php echo $professor_nm ?></span>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <i class="far fa-list-ol"></i>
+                                                    <span>Código</span>
+                                                </div>
+                                                <span class="text-end"><?php echo $voResultadoDisciplinasProfessor->CD_DISCIPLINA ?></span>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <i class="far fa-calendar-alt"></i>
+                                                    <span>Período / Turno</span>
+                                                </div>
+                                                <span class="text-end"><?php echo $voResultadoDisciplinasProfessor->NR_PERIODO . 'º / ' . $voResultadoDisciplinasProfessor->DS_TURNO ?></span>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <i class="far fa-calendar-alt"></i>
+                                                    <span>Dúvidas enviadas</span>
+                                                </div>
+                                                <?php
+                                                $vsSqlDuvidasEnviadas = "SELECT count(*) AS NUMERO_DUVIDAS_ENVIADAS FROM duvida WHERE CD_DISCIPLINA = '$voResultadoDisciplinasProfessor->CD_DISCIPLINA'";
+                                                $vrsExecutaDuvidasEnviadas = mysqli_query($conexaoMysqli, $vsSqlDuvidasEnviadas) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
+                                                while ($voResultadoDuvidasEnviadas = mysqli_fetch_object($vrsExecutaDuvidasEnviadas)) {
+                                                ?>
+                                                    <span class="text-end"><?php echo $voResultadoDuvidasEnviadas->NUMERO_DUVIDAS_ENVIADAS ?></span>
+                                                <?php } ?>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <i class="far fa-question"></i>
+                                                    <span>Dúvidas pendentes</span>
+                                                </div>
+                                                <?php
+                                                $vsSqlDuvidasPendentes = "SELECT count(*) AS NUMERO_DUVIDAS_PENDENTES FROM duvida WHERE ST_DUVIDA = 'P' AND CD_DISCIPLINA = '$voResultadoDisciplinasProfessor->CD_DISCIPLINA'";
+                                                $vrsExecutaDuvidasPendentes = mysqli_query($conexaoMysqli, $vsSqlDuvidasPendentes) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
+                                                while ($voResultadoDuvidasPendentes = mysqli_fetch_object($vrsExecutaDuvidasPendentes)) {
+                                                ?>
+                                                    <span class="text-end"><?php echo $voResultadoDuvidasPendentes->NUMERO_DUVIDAS_PENDENTES ?></span>
+                                                <?php } ?>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>    
-                            ';
+                        <?php
                         }
-
                         ?>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer class="site_footer">
-            <div class="footer_widget_area">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-lg-3 col-md-6 col-sm-6">
-                            <div class="footer_widget">
-                                <div class="site_logo">
-                                    <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
-                                    <p>Fale com seu professor agora!</p>
-                                </div>
-                            </div>
-                        </div>
+        <?php
+        // FOOTER
+        include 'includes/footer.php';
+        ?>
+
+        <div class="modal fade" id="modal_visualizar_alunos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="far fa-eye fa-fw"></i> <span id="dsDisciplina"></span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <p><span id="nmAluno"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
-            <div class="copyright_widget">
-                <div class="container">
-                    <p class="copyright_text text-center mb-0">Copyright 2024 © TiraDúvida. Todos direitos reservados | <a href="politica-privacidade">Política de privacidade</a>.</p>
-                </div>
-            </div>
-        </footer>
+        </div>
 
     </div>
 
-    <div id="iModalAlunos"></div>
+    <?php
+    // CSS
+    include 'includes/css.php';
 
-    <script src="funcoes/js/modalAluno.js"></script>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/bootstrap-dropdown-ml-hack.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/tilt.min.js"></script>
-    <script src="assets/js/parallax.min.js"></script>
-    <script src="assets/js/parallax-scroll.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/magnific-popup.min.js"></script>
-    <script src="assets/js/waypoint.js"></script>
-    <script src="assets/js/counterup.min.js"></script>
-    <script src="assets/js/countdown.js"></script>
-    <script src="assets/js/vanilla-calendar.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    // JS
+    include 'includes/js.php';
+    ?>
+
+    <script src="<?php echo URL . "funcoes/js/modalAluno.js" ?>"></script>
 
 </body>
 

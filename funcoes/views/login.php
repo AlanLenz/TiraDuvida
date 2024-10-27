@@ -2,18 +2,19 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="assets/images/favicon.webp">
     <?php
-    // CSS
-    include 'includes/css.php';
+    // HEAD
+    include 'includes/head.php';
     ?>
     <title><?php echo TITULO ?></title>
 </head>
 
 <body>
+
+    <?php
+    // PRELOADER
+    include 'includes/preloader.php';
+    ?>
 
     <div class="page_wrapper">
 
@@ -22,7 +23,7 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col col-lg-3 col-5">
                         <div class="site_logo">
-                            <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
+                            <img src="<?php echo URL . "assets/images/logo.png" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
                         </div>
                     </div>
                 </div>
@@ -39,7 +40,6 @@
                                 Insira abaixo seu usuário e senha
                             </p>
                             <form id="formLoginUser">
-                                <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>">
                                 <div class="register_form signup_login_form">
                                     <div class="form_item">
                                         <input type="text" id="iUser" name="nUser" placeholder="Usuário">
@@ -63,36 +63,29 @@
             </section>
         </main>
 
-        <footer class="site_footer">
-            <div class="footer_widget_area">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-lg-3 col-md-6 col-sm-6">
-                            <div class="footer_widget">
-                                <div class="site_logo">
-                                    <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
-                                </div>
-                                <p>Fale com seu professor agora!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright_widget">
-                <div class="container">
-                    <p class="copyright_text text-center mb-0"><?php echo "Copyright 2024 © " . TITULO . ". Todos direitos reservados | " ?><a href="politica-privacidade">Política de privacidade</a>.</p>
-                </div>
-            </div>
-        </footer>
+        <?php
+        // FOOTER
+        include 'includes/footer.php';
+        ?>
+
     </div>
 
     <?php
-    // SCRIPTS
-    include 'includes/scripts.php';
+    // CSS
+    include 'includes/css.php';
     ?>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="<?php echo URL . "assets/css/sweetalert.min.css" ?>" rel="stylesheet">
+
+    <?php
+    // SCRIPTS
+    include 'includes/js.php';
+    ?>
+
+    <script src="<?php echo URL . "assets/js/sweetalert.min.js" ?>"></script>
     <script src="<?php echo URL . "funcoes/js/login.js" ?>"></script>
     <script src="<?php echo URL . "funcoes/scripts/login.js" ?>"></script>
+
 </body>
 
 </html>

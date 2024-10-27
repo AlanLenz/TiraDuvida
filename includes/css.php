@@ -7,3 +7,4 @@
 <link rel="stylesheet" type="text/css" href="<?php echo URL . "assets/css/magnific-popup.css" ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo URL . "assets/css/vanilla-calendar.min.css" ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo URL . "assets/css/style.css" ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo URL . "assets/css/sweetalert.min.css" ?>">

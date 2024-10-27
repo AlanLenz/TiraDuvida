@@ -222,9 +222,10 @@ hr {
   margin: 0;
   border: none;
   line-height: 1;
-  content: "\f107";
+  content: "\f0c9";
   font-weight: 400;
-  color: #FFD32B;
+  font-size: 20px;
+  color: #fff;
   font-family: "Font Awesome 5 Pro";
 }
 
@@ -5705,7 +5706,7 @@ Responsive For Mobile & Tablet Devices
   color: #fff;
   display: block;
   padding: 16px 0;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 24px;
   -webkit-transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -5803,4 +5804,25 @@ Responsive For Mobile & Tablet Devices
   height: 100vh;
   display: flex;
   align-items: center;
+}
+
+.btn-dropdown-menu {
+  background: #000;
+  padding-top: 5px !important;
+}
+
+.dropdown-menu a:active {
+  color: #fff;
+  background-color: #00bf63;
+  border-radius: 5px;
+}
+
+.logoff-button {
+  color: red;
+}
+
+.logoff-button:active {
+  color: #fff;
+  background-color: red;
+  border-radius: 5px;
 }

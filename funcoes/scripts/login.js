@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     vsUrl = $("#vsUrl").val();
-    
+
     $("#aviso_erro").hide();
 
     /*FORM LOGIN*/
@@ -11,22 +11,22 @@ $(document).ready(function () {
 
         e.preventDefault();
         $.ajax({
-            url: vsUrl + "funcoes/controllers/login.php",
+            url: vsUrl + "funcoes/controllers/ExecutaLogin.php",
             type: "POST",
             async: true,
             data: new FormData(this),
             contentType: false,
             cache: false,
             processData: false,
-            success: function (data) {                
+            success: function (data) {
                 switch (data) {
                     case 'A':
-                        window.location.href = "disciplinas-aluno";                        
+                        window.location.href = "disciplinas-aluno";
                         break;
                     case 'P':
                     case 'C':
                         window.location.href = "periodos-professor";
-                        break;                   
+                        break;
                     default:
                         CloseLoading();
                         $("#aviso_erro").show();

@@ -1,8 +1,8 @@
 <?php
 
-require_once "../../includes/conexao.php";
+require_once "../../includes/conexao-pdo.php";
 
-class Duvida extends Conexao
+class Duvida extends ConexaoPdo
 {
     /* =============== VARIAVEIS =============== */
 

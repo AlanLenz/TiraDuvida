@@ -2,16 +2,19 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="assets/images/favicon.webp">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>Página não encontrada - TiraDúvida</title>
+    <?php
+    // HEAD
+    include 'includes/head.php';
+    ?>
+    <title><?php echo "Página não encontrada - " . TITULO ?></title>
 </head>
 
 <body>
+
+    <?php
+    // PRELOADER
+    include 'includes/preloader.php';
+    ?>
 
     <div class="page_wrapper">
         <main class="page_content">
@@ -35,6 +38,11 @@
             </section>
         </main>
     </div>
+
+    <?php
+    // CSS
+    include 'includes/css.php';
+    ?>
 
 </body>
 

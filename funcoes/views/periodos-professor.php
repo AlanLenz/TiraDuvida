@@ -2,20 +2,11 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="assets/images/favicon.webp">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/cursor.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/slick.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/vanilla-calendar.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>Períodos - TiraDúvida</title>
+    <?php
+    // HEAD
+    include 'includes/head.php';
+    ?>
+    <title><?php echo "Períodos - " . TITULO ?></title>
 </head>
 
 <?php
@@ -26,25 +17,28 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
     $usuario_login = $_SESSION['usuario_login'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
 
-    require_once 'includes/conexao-mysqli.php';
+    $vsSqlCurso = "SELECT DS_CURSO FROM curso";
+    $vrsExecutaCurso = mysqli_query($conexaoMysqli, $vsSqlCurso) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
 
-    $professor_qry = "SELECT
+    $vsSqlProfessor = "
+        SELECT
             p.CD_PROFESSOR,
-            p.NM_PROFESSOR                       
+            p.NM_PROFESSOR
         FROM
             professor p
         WHERE
-            p.CD_USUARIO = '$usuario_id'";
-    $professor_exec = mysqli_query($mysqli, $professor_qry);
-
-    if (mysqli_num_rows($professor_exec) == 1) {
-        while ($result = mysqli_fetch_object($professor_exec)) {
-            $_SESSION['professor_id'] = $result->CD_PROFESSOR;
-            $_SESSION['professor_nm'] = $result->NM_PROFESSOR;
+            p.CD_USUARIO = '$usuario_id'
+    ";
+    $vrsExecutaProfessor = mysqli_query($conexaoMysqli, $vsSqlProfessor);
+    if (mysqli_num_rows($vrsExecutaProfessor) == 1) {
+        while ($voResultadoProfessor = mysqli_fetch_object($vrsExecutaProfessor)) {
+            $_SESSION['professor_id'] = $voResultadoProfessor->CD_PROFESSOR;
+            $_SESSION['professor_nm'] = $voResultadoProfessor->NM_PROFESSOR;
         }
     }
 
-    $prof_periodo_qry = "SELECT
+    $vsSqlProfessorPeriodos = "
+        SELECT
 	        c.CD_CURSO,
             c.DS_CURSO,            
             d.NR_PERIODO            
@@ -57,22 +51,10 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
             AND pd.ST_PF_DISCIPLINA = 'A' 
             AND pd.CD_DISCIPLINA = d.CD_DISCIPLINA
             AND d.ST_DISCIPLINA = 'A'
-        GROUP BY d.NR_PERIODO";
-
-    $prof_periodo_exec = mysqli_query($mysqli, $prof_periodo_qry);
-
-    if (mysqli_num_rows($prof_periodo_exec) >= 1) {
-
-        $qtdPeriodo = 0;
-        while ($dados_periodo = mysqli_fetch_array($prof_periodo_exec)) {
-            $cdCurso[$qtdPeriodo]        = $dados_periodo['CD_CURSO'];
-            $dsCurso[$qtdPeriodo]        = $dados_periodo['DS_CURSO'];
-            $nrPeriodo[$qtdPeriodo]      = $dados_periodo['NR_PERIODO'];
-            $qtdPeriodo++;
-        }
-    } else {
-        echo "Nenhum período com disciplina ativa encontrado para este professor.";
-    }
+        GROUP BY
+            d.NR_PERIODO
+    ";
+    $vrsExecutaProfessorPeriodos = mysqli_query($conexaoMysqli, $vsSqlProfessorPeriodos);
 } else {
     echo "Usuário não está logado!";
     header("Location: login");
@@ -82,25 +64,26 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 
 <body>
 
-    <div class="page_wrapper">
+    <?php
+    // PRELOADER
+    include 'includes/preloader.php';
+    ?>
 
-        <div class="backtotop">
-            <a href="#" class="scroll">
-                <i class="far fa-arrow-up"></i>
-            </a>
-        </div>
+    <div class="page_wrapper">
 
         <header class="site_header site_header_1">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col col-lg-3 col-5">
                         <div class="site_logo">
-                            <img src="assets/images/logo.png" alt="">
+                            <img src="<?php echo URL . "assets/images/logo.png" ?>" alt="">
                         </div>
                     </div>
                     <div class="col col-lg-6 col-2">
                         <div class="title_page">
-                            <h2>Períodos</h2>
+                            <?php while ($voResultadoCurso = mysqli_fetch_object($vrsExecutaCurso)) { ?>
+                                <h2><?php echo $voResultadoCurso->DS_CURSO ?></h2>
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="col col-lg-3 col-5">
@@ -113,9 +96,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                             <li class="nome_aluno"><?php echo "Olá, Professor(a) " .  $_SESSION['professor_nm'] ?></li>
                             <li class="nome_aluno"> | </li>
                             <li class="logout">
-                                <a href="login">
+                                <button class="logoff-button" type="button" id="abre_modal_logoff">
                                     <i class="far fa-sign-out-alt" title="Sair"></i>
-                                </a>
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -129,7 +112,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                     <div class="content_wrapper">
                         <div class="row align-items-center">
                             <ul class="breadcrumb_nav unordered_list">
-                                <li><a href="login"><i class="far fa-reply"></i> Voltar à página inicial</a></li>
+                                <li><button id="abre_modal_logoff" type="button"><i class="far fa-reply"></i> Voltar à página inicial</a></li>
                             </ul>
                             <h1 class="page_title">Períodos</h1>
                         </div>
@@ -141,85 +124,58 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                 <div class="container">
                     <div class="row">
                         <?php
-
-                        // <img src="assets/images/logo-curso-ia.jpg" -> img curso ia
-                        for ($i = 0; $i < $qtdPeriodo; $i++) {
-
-                            echo '
-                                <div class="col-lg-6">
-                                    <div class="course_card list_layout">
-                                        <div class="item_image">
-                                            <a href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '" data-cursor-text="View">
-                                                <img src="assets/images/logo-curso-eng-software.jpg" alt="Collab – Online Learning Platform">
-                                            </a>
+                        while ($voResultadoProfessorPeriodos = mysqli_fetch_object($vrsExecutaProfessorPeriodos)) {
+                        ?>
+                            <div class="col-lg-6">
+                                <div class="course_card list_layout">
+                                    <div class="item_image">
+                                        <a href="<?php echo URL . "disciplinas-professor?curso=" . $voResultadoProfessorPeriodos->CD_CURSO . "&periodo=" . $voResultadoProfessorPeriodos->NR_PERIODO ?>" data-cursor-text="View">
+                                            <img src="<?php echo URL . "assets/images/logo-curso-eng-software.jpg" ?>" title="<?php echo $voResultadoProfessorPeriodos->DS_CURSO . " - " . $voResultadoProfessorPeriodos->NR_PERIODO . "º Período" ?>" alt="<?php echo "Logo " . $voResultadoProfessorPeriodos->DS_CURSO ?>">
+                                        </a>
+                                    </div>
+                                    <div class="item_content">
+                                        <div class="d-flex align-items-center justify-content-between mb-1">
+                                            <ul class="item_category_list unordered_list">
+                                                <li><a href="<?php echo URL . "disciplinas-professor?curso=" . $voResultadoProfessorPeriodos->CD_CURSO . "&periodo=" . $voResultadoProfessorPeriodos->NR_PERIODO ?>"><?php echo $voResultadoProfessorPeriodos->NR_PERIODO . "º Período" ?></a></li>
+                                            </ul>
                                         </div>
-                                        <div class="item_content">
-                                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <ul class="item_category_list unordered_list">
-                                                    <li><a href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '">' . $nrPeriodo[$i] . 'º Período</a></li>
-                                                </ul>
-                                            </div>
-                                            <h3 class="item_title">
-                                                <a href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '">
-                                                    ' . $dsCurso[$i] . '
-                                                </a>
-                                            </h3>
-                                            <a class="btn_unfill" href="disciplinas-professor?curso=' . $cdCurso[$i] . '&periodo=' . $nrPeriodo[$i] . '">
-                                                <span class="btn_text">Acessar disciplinas</span>
-                                                <span class="btn_icon">
-                                                    <i class="fas fa-long-arrow-right"></i>
-                                                    <i class="fas fa-long-arrow-right"></i>
-                                                </span>
+                                        <h3 class="item_title">
+                                            <a href="<?php echo URL . "disciplinas-professor?curso=" . $voResultadoProfessorPeriodos->CD_CURSO . "&periodo=" . $voResultadoProfessorPeriodos->NR_PERIODO ?>">
+                                                <?php echo $voResultadoProfessorPeriodos->DS_CURSO ?>
                                             </a>
-                                        </div>
+                                        </h3>
+                                        <a class="btn_unfill" href="<?php echo URL . "disciplinas-professor?curso=" . $voResultadoProfessorPeriodos->CD_CURSO . "&periodo=" . $voResultadoProfessorPeriodos->NR_PERIODO ?>">
+                                            <span class="btn_text">Acessar disciplinas</span>
+                                            <span class="btn_icon">
+                                                <i class="fas fa-long-arrow-right"></i>
+                                                <i class="fas fa-long-arrow-right"></i>
+                                            </span>
+                                        </a>
                                     </div>
                                 </div>
-                            ';
-                        } ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer class="site_footer">
-            <div class="footer_widget_area">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-lg-3 col-md-6 col-sm-6">
-                            <div class="footer_widget">
-                                <div class="site_logo">
-                                    <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
-                                    <p>Fale com seu professor agora!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright_widget">
-                <div class="container">
-                    <p class="copyright_text text-center mb-0">Copyright 2024 © TiraDúvida. Todos direitos reservados | <a href="politica-privacidade">Política de privacidade</a>.</p>
-                </div>
-            </div>
-        </footer>
+        <?php
+        // FOOTER
+        include 'includes/footer.php';
+        ?>
 
     </div>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/bootstrap-dropdown-ml-hack.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/tilt.min.js"></script>
-    <script src="assets/js/parallax.min.js"></script>
-    <script src="assets/js/parallax-scroll.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/magnific-popup.min.js"></script>
-    <script src="assets/js/waypoint.js"></script>
-    <script src="assets/js/counterup.min.js"></script>
-    <script src="assets/js/countdown.js"></script>
-    <script src="assets/js/vanilla-calendar.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <?php
+    // CSS
+    include 'includes/css.php';
+
+    // JS
+    include 'includes/js.php';
+    ?>
 
 </body>
 

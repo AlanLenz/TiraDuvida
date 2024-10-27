@@ -2,20 +2,11 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="assets/images/favicon.webp">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/cursor.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/slick.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/vanilla-calendar.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>Dúvidas - TiraDúvida</title>
+    <?php
+    // HEAD
+    include 'includes/head.php';
+    ?>
+    <title><?php echo "Dúvidas - " . TITULO ?></title>
 </head>
 
 <?php
@@ -28,26 +19,11 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
     $usuario_id = $_SESSION['usuario_id'];
     $usuario_login = $_SESSION['usuario_login'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
+    $professor_id = $_SESSION['professor_id'];
+    $professor_nm = $_SESSION['professor_nm'];
 
-    require_once 'includes/conexao-mysqli.php';
-
-    $professor_qry = "SELECT
-            p.CD_PROFESSOR,
-            p.NM_PROFESSOR
-        FROM
-            professor p
-        WHERE
-            p.CD_USUARIO = '$usuario_id'";
-    $professor_exec = mysqli_query($mysqli, $professor_qry);
-
-    if (mysqli_num_rows(result: $professor_exec) == 1) {
-        while ($result = mysqli_fetch_object(result: $professor_exec)) {
-            $_SESSION['professor_id'] = $result->CD_PROFESSOR;
-            $_SESSION['professor_nm'] = $result->NM_PROFESSOR;
-        }
-    }
-
-    $disciplina_qry = "SELECT
+    $vsSqlDisciplinaCurso = "
+        SELECT
             d.DS_DISCIPLINA,
             c.DS_CURSO
         FROM
@@ -57,33 +33,13 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
         WHERE
             d.CD_DISCIPLINA = '" . $_GET['disciplina'] . "' AND
             c.CD_CURSO = " . $_GET['curso'];
+    $vrsExecutaDisciplinaCurso = mysqli_query($conexaoMysqli, $vsSqlDisciplinaCurso) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
 
-    $disciplina_exec = mysqli_query(mysql: $mysqli, query: $disciplina_qry);
-
-    // Verifica se a consulta foi bem-sucedida
-    if (!$disciplina_exec) {
-        // Exibe o erro SQL
-        echo "Erro na consulta: " . mysqli_error(mysql: $mysqli);
-    } else {
-        // Verifica se a consulta retornou alguma linha
-        if (mysqli_num_rows(result: $disciplina_exec) == 1) {
-            while ($result = mysqli_fetch_object(result: $disciplina_exec)) {
-                $disciplina = $result->DS_DISCIPLINA;
-                $curso = $result->DS_CURSO;
-            }
-        } else {
-            echo "Nenhum registro encontrado.";
-        }
-    }
-
-    $itens_por_pagina = 12;
-
+    $itens_por_pagina = 10;
     $numero_pagina = isset($_GET["pagina"]) ? $_GET["pagina"] : "1";
-
-    // pegar a pagina atual
     $pagina = ($numero_pagina - 1) * $itens_por_pagina;
 
-    // pega a quantidade total de objetos no banco de dados
+    // retorna a quantidade total de objetos no banco de dados
     $vsSqlTotal = "
         SELECT
             dv.CD_DUVIDA,
@@ -105,22 +61,48 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
             d.CD_DISCIPLINA = '" . $_GET['disciplina'] . "'
             $checa_filtros
         ";
-    $vrsExecutaTotal = mysqli_query($mysqli, $vsSqlTotal) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
+    $vrsExecutaTotal = mysqli_query($conexaoMysqli, $vsSqlTotal) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
     $viNumRowsTotal = mysqli_num_rows($vrsExecutaTotal);
     $voResultadoTotal = mysqli_fetch_object($vrsExecutaTotal);
+
+    $vsSqlDuvidasDestacadas = "
+        SELECT
+            dv.CD_DUVIDA,
+            dv.DS_TITULO,
+            dv.CD_DESTAQUE,
+            dv.NR_CURTIDAS,
+            dv.TP_RESPOSTA,
+            DATE_FORMAT(dv.DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_DUVIDA,
+            dv.ST_DUVIDA
+        FROM
+            duvida dv
+        JOIN
+            disciplina d ON dv.CD_DISCIPLINA = d.CD_DISCIPLINA
+        JOIN
+            professor_disciplina pdp ON pdp.CD_DISCIPLINA = d.CD_DISCIPLINA
+        JOIN
+            professor p ON pdp.CD_USUARIO = p.CD_USUARIO
+        WHERE
+            dv.CD_DESTAQUE = 'S' AND
+            dv.ST_DUVIDA = 'S' AND
+            d.CD_DISCIPLINA = '" . $_GET['disciplina'] . "'";
+    $vrsExecutaDuvidasDestacadas = mysqli_query($conexaoMysqli, $vsSqlDuvidasDestacadas) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
+    $viNumRowsDuvidasDestacadas = mysqli_num_rows($vrsExecutaDuvidasDestacadas);
 
     // puxar produtos do banco
     $vsSqlDuvidas = "
         $vsSqlTotal
         LIMIT $pagina, $itens_por_pagina
     ";
-    $vrsExecutaDuvidas = mysqli_query($mysqli, $vsSqlDuvidas) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
+    $vrsExecutaDuvidas = mysqli_query($conexaoMysqli, $vsSqlDuvidas) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
     $viNumRowsDuvidas = mysqli_num_rows($vrsExecutaDuvidas);
 
     // definir numero de páginas
     $num_paginas = ceil($viNumRowsTotal / $itens_por_pagina);
 
-    $vsSqlPergunta = "
+    if ($viNumRowsTotal > 0) {
+
+        $vsSqlPergunta = "
         SELECT
             CD_PERGUNTA,
             DS_PERGUNTA
@@ -132,7 +114,8 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
             CD_PERGUNTA
         LIMIT 1
     ";
-    $vrsExecutaPergunta = mysqli_query($mysqli, $vsSqlPergunta) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
+        $vrsExecutaPergunta = mysqli_query($conexaoMysqli, $vsSqlPergunta) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
+    }
 } else {
     echo "Usuário não está logado!";
     header(header: "Location: login");
@@ -141,6 +124,11 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 ?>
 
 <body>
+
+    <?php
+    // PRELOADER
+    include 'includes/preloader.php';
+    ?>
 
     <div class="page_wrapper">
 
@@ -160,7 +148,11 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                     </div>
                     <div class="col col-lg-6 col-2">
                         <div class="title_page">
-                            <h2><?php echo $curso ?></h2>
+                            <?php
+                            while ($voResultadoDisciplinaCurso = mysqli_fetch_object($vrsExecutaDisciplinaCurso)) {
+                            ?>
+                                <h2><?php echo $voResultadoDisciplinaCurso->DS_CURSO ?></h2>
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="col col-lg-3 col-5">
@@ -172,11 +164,16 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                             </li>
                             <li class="nome_aluno"><?php echo "Olá, Professor(a) " .  $_SESSION['professor_nm'] ?></li>
                             <li class="nome_aluno"> | </li>
-                            <li class="logout">
-                                <a href="login">
-                                    <i class="far fa-sign-out-alt" title="Sair"></i>
-                                </a>
-                            </li>
+                            <div class="dropdown">
+                                <li>
+                                    <button class="btn btn-dropdown-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                    <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="<?php echo URL . "periodos-professor" ?>">Períodos</a></li>
+                                        <li><a class="dropdown-item" href="<?php echo URL . "disciplinas-professor?curso=" . $_GET['curso'] . "&periodo=" . $_GET['periodo'] ?>">Disciplinas</a></li>
+                                        <li><button type="button" id="abre_modal_logoff" class="dropdown-item logoff-button"><i class="far fa-sign-out-alt" title="Sair"></i> Sair</button></li>
+                                    </ul>
+                                </li>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -190,14 +187,19 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                         <div class="row align-items-center">
                             <ul class="breadcrumb_nav unordered_list2">
                                 <li><a href="<?php echo URL . "disciplinas-professor?curso=" . $_GET['curso'] . "&periodo=" . $_GET['periodo'] ?>"><i class="far fa-reply"></i> Voltar à página de disciplinas</a></li>
-                                <li><button type="button" data-bs-toggle="modal" data-bs-target=".exampleModal"><i class="far fa-users"></i> Visualizar integrantes da disciplina</button></li>
+                                <li><button onclick="abre_modal_alunos(<?php echo '\'' . $_GET['disciplina'] . '\'' ?>)" type="button" data-bs-toggle="modal" data-bs-target=".exampleModal"><i class="far fa-users"></i> Visualizar integrantes da disciplina</button></li>
                             </ul>
-                            <h1 class="page_title"><?php echo $disciplina ?></h1>
+                            <?php
+                            mysqli_data_seek($vrsExecutaDisciplinaCurso, 0);
+                            while ($voResultadoDisciplinaCurso = mysqli_fetch_object($vrsExecutaDisciplinaCurso)) {
+                            ?>
+                                <h1 class="page_title"><?php echo $voResultadoDisciplinaCurso->DS_DISCIPLINA ?></h1>
+                            <?php } ?>
                             <div class="filtros">
                                 <ul class="tags_list style_2 unordered_list">
                                     <li class="todas"><label for="filtro_todos"><span class="checkbox_item"><input <?php echo $_GET["status"] == "" ? "checked" : ""; ?> value="" id="filtro_todos" type="checkbox"> Todas</span></label></li>
                                     <li class="pendentes"><label for="filtro_pendentes"><span class="checkbox_item"><input <?php echo $_GET["status"] == "P" ? "checked" : ""; ?> value="P" id="filtro_pendentes" type="checkbox"> Dúvidas pendentes</span></label></li>
-                                    <li class="respondidas"><label for="filtro_respondidas"><span class="checkbox_item"><input <?php echo $_GET["status"] == "" ? "checked" : "R"; ?> value="R" id="filtro_respondidas" type="checkbox"> Dúvidas Respondidas</span></label></li>
+                                    <li class="respondidas"><label for="filtro_respondidas"><span class="checkbox_item"><input <?php echo $_GET["status"] == "R" ? "checked" : ""; ?> value="R" id="filtro_respondidas" type="checkbox"> Dúvidas Respondidas</span></label></li>
                                     <li class="ocultas"><label for="filtro_ocultas"><span class="checkbox_item"><input <?php echo $_GET["status"] == "OC" ? "checked" : ""; ?> value="OC" id="filtro_ocultas" type="checkbox"> Dúvidas Ocultas</span></label></li>
                                 </ul>
                             </div>
@@ -220,7 +222,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                 </h3>
                                 <?php
                                 // VERÍFICA SE EXISTEM DÚVIDAS
-                                if ($viNumRowsDuvidas > 0) {
+                                if ($viNumRowsTotal > 0) {
                                 ?>
                                     <ul class="comments_list unordered_list_block">
                                         <?php
@@ -263,12 +265,11 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                                                 CD_RESPOSTA
                                                             LIMIT 1
                                                         ";
-                                                        $vrsExecutaResposta = mysqli_query($mysqli, $vsSqlResposta) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
+                                                        $vrsExecutaResposta = mysqli_query($conexaoMysqli, $vsSqlResposta) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
                                                         $viNumRowsResposta = mysqli_num_rows($vrsExecutaResposta);
                                                         if ($viNumRowsResposta == 0) {
                                                         ?>
                                                             <form id="form_create_resposta">
-                                                                <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>">
                                                                 <input type="hidden" id="iPergunta" name="nPergunta" value="<?php echo $voResultadoPergunta->CD_PERGUNTA ?>">
                                                                 <h3 class="form_title">Envie sua resposta</h3>
                                                                 <div class="form_item">
@@ -308,7 +309,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                                                 ORDER BY
                                                                     CD_PERGUNTA
                                                             ";
-                                                            $vrsExecutaComentarios = mysqli_query($mysqli, $vsSqlComentarios) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
+                                                            $vrsExecutaComentarios = mysqli_query($conexaoMysqli, $vsSqlComentarios) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
                                                             while ($voResultadoComentarios = mysqli_fetch_object($vrsExecutaComentarios)) {
                                                             ?>
                                                                 <li>
@@ -392,70 +393,52 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                     </div>
                                 </div>
                             </section>
-                            <ul class="comments_list unordered_list_block">
-                                <?php
-                                // LISTAGEM DE DESTACADAS
-                                $vsSqlDuvidasDestacadas = "
-                                    SELECT
-                                        dv.CD_DUVIDA,
-                                        dv.DS_TITULO,
-                                        dv.CD_DESTAQUE,
-                                        dv.NR_CURTIDAS,
-                                        dv.TP_RESPOSTA,
-                                        DATE_FORMAT(dv.DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_DUVIDA,
-                                        dv.ST_DUVIDA
-                                    FROM
-                                        duvida dv
-                                    JOIN
-                                        disciplina d ON dv.CD_DISCIPLINA = d.CD_DISCIPLINA
-                                    JOIN
-                                        professor_disciplina pdp ON pdp.CD_DISCIPLINA = d.CD_DISCIPLINA
-                                    JOIN
-                                        professor p ON pdp.CD_USUARIO = p.CD_USUARIO
-                                    WHERE
-                                        dv.CD_DESTAQUE = 'S' AND
-                                        d.CD_DISCIPLINA = '" . $_GET['disciplina'] . "'";
-                                $vrsExecutaDuvidasDestacadas = mysqli_query($mysqli, $vsSqlDuvidasDestacadas) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
-                                while ($voResultadoDuvidasDestacadas = mysqli_fetch_object($vrsExecutaDuvidasDestacadas)) {
-                                ?>
-                                    <li>
-                                        <?php
-                                        // PERGUNTA DESTACADA
-                                        $vsSqlPerguntaDestacada = "
+                            <?php
+                            if ($viNumRowsDuvidasDestacadas > 0) {
+                            ?>
+                                <ul class="comments_list unordered_list_block">
+                                    <?php
+                                    // LISTAGEM DE DÚVIDAS DESTACADAS
+                                    while ($voResultadoDuvidasDestacadas = mysqli_fetch_object($vrsExecutaDuvidasDestacadas)) {
+                                    ?>
+                                        <li>
+                                            <?php
+                                            // PERGUNTA DESTACADA
+                                            $vsSqlPerguntaDestacada = "
                                             SELECT
                                                 CD_PERGUNTA,
                                                 DS_PERGUNTA
                                             FROM
                                                 pergunta
                                             WHERE
-                                                CD_DUVIDA = $voResultadoTotal->CD_DUVIDA
+                                                CD_DUVIDA = $voResultadoDuvidasDestacadas->CD_DUVIDA
                                             ORDER BY
                                                 CD_PERGUNTA
                                             LIMIT 1
                                         ";
-                                        $vrsExecutaPerguntaDestacada = mysqli_query($mysqli, $vsSqlPerguntaDestacada) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
-                                        while ($voResultadoPerguntaDestacada = mysqli_fetch_object($vrsExecutaPerguntaDestacada)) {
-                                        ?>
-                                            <div class="comment_item respondida collapsed">
-                                                <div class="comment_author">
-                                                    <div class="author_content">
-                                                        <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
-                                                        <h4 class="comment_date"><i class="far fa-calendar-alt"></i> <?php echo $voResultadoDuvidasDestacadas->DATA_HORA_DUVIDA ?></h4>
+                                            $vrsExecutaPerguntaDestacada = mysqli_query($conexaoMysqli, $vsSqlPerguntaDestacada) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
+                                            while ($voResultadoPerguntaDestacada = mysqli_fetch_object($vrsExecutaPerguntaDestacada)) {
+                                            ?>
+                                                <div class="comment_item respondida collapsed">
+                                                    <div class="comment_author">
+                                                        <div class="author_content">
+                                                            <h4 class="author_name"><i class="far fa-user"></i> Aluno</h4>
+                                                            <h4 class="comment_date"><i class="far fa-calendar-alt"></i> <?php echo $voResultadoDuvidasDestacadas->DATA_HORA_DUVIDA ?></h4>
+                                                        </div>
                                                     </div>
+                                                    <h3><?php echo $voResultadoDuvidasDestacadas->DS_TITULO ?></h3>
+                                                    <p><?php echo $voResultadoPerguntaDestacada->DS_PERGUNTA ?></p>
+                                                    <div class="highlight_btn" data-duvida="<?php echo $voResultadoDuvidasDestacadas->CD_DUVIDA ?>">
+                                                        <?php echo $voResultadoDuvidasDestacadas->CD_DESTAQUE  == "S" ? "<i class='fas fa-star'></i>" : "<i class='far fa-star'></i>" ?>
+                                                    </div>
+                                                    <div class="hide_btn" data-duvida="<?php echo $voResultadoDuvidasDestacadas->CD_DUVIDA ?>"><i class="far fa-ban"></i></div>
+                                                    <div class="reply_btn"><i class="far fa-thumbs-up"></i> <?php echo $voResultadoDuvidasDestacadas->NR_CURTIDAS ?></div>
+                                                    <div class="btn-collapse" role="button" data-bs-toggle="collapse" data-bs-target="<?php echo "#duvidaDestaque-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>" aria-expanded="false" aria-controls="<?php echo "duvida-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>"></div>
                                                 </div>
-                                                <h3><?php echo $voResultadoDuvidasDestacadas->DS_TITULO ?></h3>
-                                                <p><?php echo $voResultadoPerguntaDestacada->DS_PERGUNTA ?></p>
-                                                <div class="highlight_btn" data-duvida="<?php echo $voResultadoDuvidasDestacadas->CD_DUVIDA ?>">
-                                                    <?php echo $voResultadoDuvidasDestacadas->CD_DESTAQUE  == "S" ? "<i class='fas fa-star'></i>" : "<i class='far fa-star'></i>" ?>
-                                                </div>
-                                                <div class="hide_btn" data-duvida="<?php echo $voResultadoDuvidasDestacadas->CD_DUVIDA ?>"><i class="far fa-ban"></i></div>
-                                                <div class="reply_btn"><i class="far fa-thumbs-up"></i> <?php echo $voResultadoDuvidasDestacadas->NR_CURTIDAS ?></div>
-                                                <div class="btn-collapse" role="button" data-bs-toggle="collapse" data-bs-target="<?php echo "#duvidaDestaque-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>" aria-expanded="false" aria-controls="<?php echo "duvida-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>"></div>
-                                            </div>
-                                            <ul class="comments_list unordered_list_block collapse" id="<?php echo "duvidaDestaque-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>">
-                                                <?php
-                                                // VERÍFICA SE EXISTE RESPOSTA DO PROFESSOR
-                                                $vsSqlRespostaDestacada = "
+                                                <ul class="comments_list unordered_list_block collapse" id="<?php echo "duvidaDestaque-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>">
+                                                    <?php
+                                                    // VERÍFICA SE EXISTE RESPOSTA DO PROFESSOR
+                                                    $vsSqlRespostaDestacada = "
                                                     SELECT
                                                         DS_RESPOSTA,
                                                         DATE_FORMAT(DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_RESPOSTA
@@ -467,22 +450,8 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                                         CD_RESPOSTA
                                                     LIMIT 1
                                                 ";
-                                                $vrsExecutaRespostaDestacada = mysqli_query($mysqli, $vsSqlRespostaDestacada) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
-                                                $viNumRowsRespostaDestacada = mysqli_num_rows($vrsExecutaRespostaDestacada);
-                                                if ($viNumRowsRespostaDestacada == 0) {
-                                                ?>
-                                                    <form id="form_create_resposta">
-                                                        <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>">
-                                                        <input type="hidden" id="iPergunta" name="nPergunta" value="<?php echo $voResultadoPerguntaDestacada->CD_PERGUNTA ?>">
-                                                        <h3 class="form_title">Envie sua resposta</h3>
-                                                        <div class="form_item">
-                                                            <label for="iResposta" class="input_title text-uppercase"><i class="far fa-edit"></i> Resposta</label>
-                                                            <textarea id="iResposta" name="nResposta" placeholder="Texto de resposta"></textarea>
-                                                        </div>
-                                                        <button id="botao_create_resposta" type="submit" class="btn btn_dark w-100"><span><small>Enviar</small> <small>Enviar</small></span></button>
-                                                    </form>
-                                                    <?php
-                                                } else {
+                                                    $vrsExecutaRespostaDestacada = mysqli_query($conexaoMysqli, $vsSqlRespostaDestacada) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
+                                                    $viNumRowsRespostaDestacada = mysqli_num_rows($vrsExecutaRespostaDestacada);
                                                     // RESPOSTA
                                                     while ($voResultadoRespostaDestacada = mysqli_fetch_object($vrsExecutaRespostaDestacada)) {
                                                     ?>
@@ -502,17 +471,17 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                                     }
                                                     // COMENTÁRIO(S)        
                                                     $vsSqlComentariosDestacados = "
-                                                        SELECT
-                                                            DS_PERGUNTA,
-                                                            DATE_FORMAT(DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_COMENTARIO
-                                                        FROM
-                                                            pergunta
-                                                        WHERE
-                                                            CD_DUVIDA =! $voResultadoDuvidasDestacadas->CD_DUVIDA
-                                                        ORDER BY
-                                                            CD_PERGUNTA
-                                                    ";
-                                                    $vrsExecutaComentariosDestacados = mysqli_query($mysqli, $vsSqlComentariosDestacados) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($mysqli));
+                                                    SELECT
+                                                        DS_PERGUNTA,
+                                                        DATE_FORMAT(DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_COMENTARIO
+                                                    FROM
+                                                        pergunta
+                                                    WHERE
+                                                        CD_DUVIDA =! $voResultadoDuvidasDestacadas->CD_DUVIDA
+                                                    ORDER BY
+                                                        CD_PERGUNTA
+                                                ";
+                                                    $vrsExecutaComentariosDestacados = mysqli_query($conexaoMysqli, $vsSqlComentariosDestacados) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
                                                     while ($voResultadoComentariosDestacados = mysqli_fetch_object($vrsExecutaComentariosDestacados)) {
                                                     ?>
                                                         <li>
@@ -527,75 +496,62 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                                                 <div class="reply_btn">COMENTÁRIO</div>
                                                             </div>
                                                         </li>
-                                                <?php
+                                                    <?php
                                                     }
-                                                }
-                                                ?>
-                                            </ul>
-                                        <?php
-                                        }
-                                        ?>
-                                    </li>
-                                <?php
-                                }
-                                ?>
-                            </ul>
+                                                    ?>
+                                                </ul>
+                                            <?php
+                                            }
+                                            ?>
+                                        </li>
+                                    <?php
+                                    }
+                                    ?>
+                                </ul>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer class="site_footer">
-            <div class="footer_widget_area">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-lg-3 col-md-6 col-sm-6">
-                            <div class="footer_widget">
-                                <div class="site_logo">
-                                    <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
-                                    <p>Fale com seu professor agora!</p>
-                                </div>
-                            </div>
-                        </div>
+        <?php
+        // FOOTER
+        include 'includes/footer.php';
+        ?>
+
+        <div class="modal fade" id="modal_visualizar_alunos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="far fa-eye fa-fw"></i> <span id="dsDisciplina"></span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <p><span id="nmAluno"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
-            <div class="copyright_widget">
-                <div class="container">
-                    <p class="copyright_text text-center mb-0">Copyright 2024 © TiraDúvida. Todos direitos reservados | <a href="politica-privacidade">Política de privacidade</a>.</p>
-                </div>
-            </div>
-        </footer>
+        </div>
 
     </div>
 
-    <div id="iModalAlunos"></div>
+    <?php
+    // CSS
+    include 'includes/css.php';
 
-    <link href="<?php echo URL . "assets/css/sweetalert.min.css" ?>" rel="stylesheet">
-    <script src="<?php echo URL . "assets/js/sweetalert.min.js" ?>"></script>
+    // SCRIPTS
+    include 'includes/js.php';
+    ?>
 
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/bootstrap-dropdown-ml-hack.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/tilt.min.js"></script>
-    <script src="assets/js/parallax.min.js"></script>
-    <script src="assets/js/parallax-scroll.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/magnific-popup.min.js"></script>
-    <script src="assets/js/waypoint.js"></script>
-    <script src="assets/js/counterup.min.js"></script>
-    <script src="assets/js/countdown.js"></script>
-    <script src="assets/js/vanilla-calendar.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="funcoes/scripts/duvida.js"></script>
-    <script src="funcoes/scripts/resposta.js"></script>
-    <script src="funcoes/js/modalAluno.js"></script>
-
+    <script src="<?php echo URL . "funcoes/scripts/duvida.js" ?>"></script>
+    <script src="<?php echo URL . "funcoes/scripts/resposta.js" ?>"></script>
+    <script src="<?php echo URL . "funcoes/js/modalAluno.js" ?>"></script>
     <script>
-        // Função para capturar valores de parâmetros da URL
         function getParameterByName(name) {
             var url = window.location.href;
             name = name.replace(/[\[\]]/g, "\\$&");
@@ -605,26 +561,6 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
-
-        // Função para redirecionar a página com o status e preservar outros parâmetros
-        $('input[type=checkbox]').on('change', function() {
-            var status = $(this).val();
-
-            // Obtém os valores de curso, período e disciplina
-            var curso = getParameterByName('curso');
-            var periodo = getParameterByName('periodo');
-            var disciplina = getParameterByName('disciplina');
-
-            // Monta a nova URL com os parâmetros existentes e o novo status
-            var newUrl = "?status=" + status;
-
-            if (curso) newUrl += "&curso=" + curso;
-            if (periodo) newUrl += "&periodo=" + periodo;
-            if (disciplina) newUrl += "&disciplina=" + disciplina;
-
-            // Redireciona para a nova URL
-            window.location.href = newUrl;
-        });
     </script>
 
 </body>

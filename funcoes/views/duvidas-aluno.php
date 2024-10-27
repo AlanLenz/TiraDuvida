@@ -92,6 +92,11 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 
 <body>
 
+    <?php
+    // PRELOADER
+    include 'includes/preloader.php';
+    ?>
+
     <div class="page_wrapper">
 
         <div class="backtotop">
@@ -161,7 +166,6 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                             <div class="event_section">
                                 <div class="calltoaction_form mb-0">
                                     <form id="form_create_duvida">
-                                        <input type="hidden" id="vsUrl" name="vsUrl" value="<?php echo URL ?>">
                                         <h3 class="form_title">Envie sua dúvida</h3>
                                         <div class="form_item">
                                             <label for="iTituloDuvida" class="input_title text-uppercase"><i class="far fa-pencil"></i> Título</label>

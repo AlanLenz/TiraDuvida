@@ -2,17 +2,19 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="assets/images/favicon.webp">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
-    <title>Política de privacidade - TiraDúvida</title>
+    <?php
+    // HEAD
+    include 'includes/head.php';
+    ?>
+    <title><?php echo "Política de privacidade - " . TITULO ?></title>
 </head>
 
 <body>
+
+    <?php
+    // PRELOADER
+    include 'includes/preloader.php';
+    ?>
 
     <div class="page_wrapper">
         <div class="backtotop">
@@ -61,7 +63,7 @@
                         <p>
                             Política de Privacidade da TiraDúvida
                             <br />
-                            Última atualização: [data de atualização]
+                            Última atualização: 15/10/2024
                             <br />
                             A TiraDúvida valoriza a privacidade dos seus usuários e está comprometida em proteger as informações pessoais que coletamos. Esta Política de Privacidade descreve como coletamos, usamos, compartilhamos e protegemos as suas informações pessoais quando você utiliza nossos serviços.
                         </p>
@@ -149,28 +151,17 @@
             </section>
         </main>
 
-        <footer class="site_footer">
-            <div class="footer_widget_area">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-lg-3 col-md-6 col-sm-6">
-                            <div class="footer_widget">
-                                <div class="site_logo">
-                                    <img src="assets/images/logo.png" title="TiraDúvida" alt="TiraDúvida">
-                                </div>
-                                <p>Fale com seu professor agora!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright_widget">
-                <div class="container">
-                    <p class="copyright_text text-center mb-0">Copyright 2024 © TiraDúvida. Todos direitos reservados | <a href="politica-privacidade">Política de privacidade</a>.</p>
-                </div>
-            </div>
-        </footer>
+        <?php
+        // FOOTER
+        include 'includes/footer.php';
+        ?>
+
     </div>
+
+    <?php
+    // CSS
+    include 'includes/css.php';
+    ?>
 
 </body>
 

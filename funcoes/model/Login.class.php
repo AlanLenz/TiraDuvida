@@ -1,9 +1,11 @@
 <?php
 
-require_once "../../includes/conexao.php";
+require_once "../../includes/conexao-pdo.php";
 
-class Login extends Conexao
+class Login extends ConexaoPdo
+
 {
+
     /* =============== VARIAVEIS =============== */
 
     private $usuario;
@@ -14,7 +16,7 @@ class Login extends Conexao
 
     public function login()
     {
-        if (!isset($_SESSION)) {
+        if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
 
@@ -63,32 +65,7 @@ class Login extends Conexao
         endif;
     }
 
-    /* =============== FUNÇÃO LOGOFF =============== */
-
-    // public static function logoff() {
-    //     if (!isset($_SESSION)) {
-    //         session_start();
-    //     }
-
-    //     if ($_COOKIE['wd_logado']):
-    //         setcookie('wd_id_usuario', '', time() + 86400, '/');
-    //         setcookie('wd_nome', '', time() + 86400, '/');
-    //         setcookie('wd_login', '', time() + 86400, '/');
-    //         setcookie('wd_imagem_perfil', '', time() + 86400, '/');
-    //         setcookie('wd_status', '', time() + 86400, '/');
-    //         setcookie('wd_logo_principal', '', time() + 86400, '/');
-    //         setcookie('wd_whatsapp', '', time() + 86400, '/');
-    //         setcookie('wd_email', '', time() + 86400, '/');
-    //         setcookie('id_conteudo_personalizado', '', time() + 86400, '/');
-    //         setcookie('titulo_conteudo_personalizado', '', time() + 86400, '/');
-    //         setcookie('largura_conteudo_personalizado', '', time() + 86400, '/');
-    //         setcookie('altura_conteudo_personalizado', '', time() + 86400, '/');
-    //         setcookie('wd_logado', '', time() + 86400, '/');
-    //         return true;
-    //     else:
-    //         return false;
-    //     endif;
-    // }
+    /* =============== FUNÇÃO QUE BUSCA O TIPO DE USUÁRIO =============== */
 
     public function getCodigoUsuario()
     {
@@ -102,6 +79,28 @@ class Login extends Conexao
             default:
                 return '0'; // Valor padrão para tipos desconhecidos
         }
+    }
+
+    /* =============== FUNÇÃO LOGOFF =============== */
+
+    public function logoff()
+    {
+        // Inicia a sessão, se ainda não estiver iniciada
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Remove todas as variáveis de sessão
+        $_SESSION = [];
+
+        // Destrói a sessão
+        session_destroy();
+
+        if (!isset($_SESSION['usuario_id'])):
+            return true;
+        else:
+            return false;
+        endif;
     }
 
     /* =============== GETTERS E SETTERS =============== */

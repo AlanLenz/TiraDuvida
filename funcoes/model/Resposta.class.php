@@ -1,8 +1,8 @@
 <?php
 
-require_once "../../includes/conexao.php";
+require_once "../../includes/conexao-pdo.php";
 
-class Resposta extends Conexao
+class Resposta extends ConexaoPdo
 {
     /* =============== VARIAVEIS =============== */
 
