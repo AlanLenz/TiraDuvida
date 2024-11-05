@@ -2,8 +2,6 @@ $(document).ready(function () {
 
     vsUrl = $("#vsUrl").val();
 
-    $("#aviso_erro").hide();
-
     /*FORM LOGIN*/
     $("#formLoginUser").on('submit', (function (e) {
 
@@ -11,7 +9,7 @@ $(document).ready(function () {
 
         e.preventDefault();
         $.ajax({
-            url: vsUrl + "funcoes/controllers/ExecutaLogin.php",
+            url: vsUrl + "funcoes/controllars/ExecutaLogin.php",
             type: "POST",
             async: true,
             data: new FormData(this),
@@ -27,14 +25,18 @@ $(document).ready(function () {
                     case 'C':
                         window.location.href = "periodos-professor";
                         break;
+                    case 0:
+                        CloseLoading();
+                        AvisoPersonalizado("Usuário ou senha incorretos");
+                        break;
                     default:
                         CloseLoading();
-                        $("#aviso_erro").show();
+                        AvisoPersonalizado("Usuário ou senha incorretos");
                         break;
                 }
             },
             error: function () {
-                fecha_loader();
+                CloseLoading();
                 Erro();
             }
         });
@@ -42,9 +44,15 @@ $(document).ready(function () {
     }));
 });
 
+function AvisoPersonalizado(mensagem) {
+    swal("Aviso!", mensagem, "warning");
+}
 function Loading() {
     $(".preloader").fadeIn();
 }
 function CloseLoading() {
     $(".preloader").fadeOut();
+}
+function Erro() {
+    swal("Erro!", "Se o problema persistir contate o T.I.", "error");
 }

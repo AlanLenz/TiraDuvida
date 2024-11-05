@@ -23,7 +23,7 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col col-lg-3 col-5">
                         <div class="site_logo">
-                            <img src="<?php echo URL . "assets/images/logo.png" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
+                            <img src="<?php echo URL . "assets/images/logo-header.webp" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
                         </div>
                     </div>
                 </div>
@@ -42,14 +42,13 @@
                             <form id="formLoginUser">
                                 <div class="register_form signup_login_form">
                                     <div class="form_item">
-                                        <input type="text" id="iUser" name="nUser" placeholder="Usuário">
+                                        <input type="text" id="iUser" name="nUser" placeholder="Usuário" required>
                                     </div>
                                     <div class="form_item">
-                                        <input id="iPass" name="nPass" type="password" class="form-control" placeholder="Senha">
-                                        <span toggle="#iPass" class="far fa-fw fa-eye field-icon toggle-password"></span>
+                                        <input id="iPass" name="nPass" type="password" class="form-control" placeholder="Senha" required>
+                                        <span toggle="#iPass" class="far fa-fw fa-eye-slash field-icon toggle-password"></span>
                                     </div>
-                                    <div id="aviso_erro">Usuário ou senha incorretos</div>
-                                    <button id="buttonLoginUser" type="submit" class="btn btn_dark mb-5">
+                                    <button id="buttonLoginUser" type="submit" class="btn btn_dark mb-2">
                                         <span>
                                             <small>Entrar</small>
                                             <small>Entrar</small>

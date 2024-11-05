@@ -17,26 +17,21 @@
     ?>
 
     <div class="page_wrapper">
-        <div class="backtotop">
-            <a href="#" class="scroll">
-                <i class="far fa-arrow-up"></i>
-            </a>
-        </div>
 
         <header class="site_header site_header_1">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col col-lg-3 col-5">
+                    <div class="col-12 col-lg-3 col-md-5">
                         <div class="site_logo">
-                            <img src="assets/images/logo.png" alt="">
+                            <img src="<?php echo URL . "assets/images/logo-header.webp" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
                         </div>
                     </div>
-                    <div class="col col-lg-6 col-2">
+                    <div class="col-12 col-lg-6 col-md-2">
                         <div class="title_page">
                             <h2>Política de privacidade</h2>
                         </div>
                     </div>
-                    <div class="col col-lg-3 col-5">
+                    <div class="col-12 col-lg-3 col-md-5">
                         <ul class="header_btns_group unordered_list_end">
                             <li>
                                 <button class="mobile_menu_btn" type="button" data-bs-toggle="collapse" data-bs-target="#main_menu_dropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,11 +56,11 @@
                 <div class="container">
                     <div class="register_heading_description text-justify">
                         <p>
-                            Política de Privacidade da TiraDúvida
+                            Política de Privacidade da <?php echo TITULO ?>
                             <br />
                             Última atualização: 15/10/2024
                             <br />
-                            A TiraDúvida valoriza a privacidade dos seus usuários e está comprometida em proteger as informações pessoais que coletamos. Esta Política de Privacidade descreve como coletamos, usamos, compartilhamos e protegemos as suas informações pessoais quando você utiliza nossos serviços.
+                            A <?php echo TITULO ?> valoriza a privacidade dos seus usuários e está comprometida em proteger as informações pessoais que coletamos. Esta Política de Privacidade descreve como coletamos, usamos, compartilhamos e protegemos as suas informações pessoais quando você utiliza nossos serviços.
                         </p>
                         <p>
                             1. Coleta de Informações
@@ -97,12 +92,12 @@
                             3. Compartilhamento de Informações
                         </p>
                         <p>
-                            A TiraDúvida não vende, aluga ou compartilha suas informações pessoais com terceiros, exceto nas seguintes circunstâncias:
+                            A <?php echo TITULO ?> não vende, aluga ou compartilha suas informações pessoais com terceiros, exceto nas seguintes circunstâncias:
                         </p>
                         <ul>
                             <li>Quando temos o seu consentimento explícito</li>
                             <li>Para cumprir obrigações legais ou regulatórias</li>
-                            <li>Para proteger os direitos, propriedade ou segurança da TiraDúvida, nossos usuários ou o público</li>
+                            <li>Para proteger os direitos, propriedade ou segurança da <?php echo TITULO ?>, nossos usuários ou o público</li>
                             <li>Com prestadores de serviços que nos ajudam a operar e melhorar nossos serviços, desde que esses prestadores estejam sujeitos a obrigações de confidencialidade</li>
                         </ul>
                         <p>
@@ -142,9 +137,9 @@
                             Se você tiver dúvidas ou preocupações sobre esta Política de Privacidade ou sobre nossas práticas de privacidade, entre em contato conosco:
                         </p>
                         <ul>
-                            <li>E-mail: [seu e-mail de contato]</li>
-                            <li>Endereço: [seu endereço físico]</li>
-                            <li>Agradecemos por confiar na TiraDúvida para suas necessidades de aprendizado e esclarecimento de dúvidas. Estamos comprometidos em proteger a sua privacidade e em fornecer um serviço seguro e confiável.</li>
+                            <li>E-mail: contato@tiraduvida.net.br</li>
+                            <li>Endereço: Av. Brasil, 1000, Cascavel - PR</li>
+                            <li>Agradecemos por confiar na <?php echo TITULO ?> para suas necessidades de aprendizado e esclarecimento de dúvidas. Estamos comprometidos em proteger a sua privacidade e em fornecer um serviço seguro e confiável.</li>
                         </ul>
                     </div>
                 </div>
@@ -161,6 +156,9 @@
     <?php
     // CSS
     include 'includes/css.php';
+
+    // JS
+    include 'includes/js.php';
     ?>
 
 </body>

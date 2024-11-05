@@ -1,11 +1,13 @@
 <?php
 
-// error_reporting(0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 date_default_timezone_set('America/Sao_Paulo');
 // $data_hora_atual = date("Y-m-d H:i:s");
 
 include 'funcoes/config.php';
-include_once($_SERVER['DOCUMENT_ROOT']. URL . 'includes/conexao-mysqli.php');
+include 'includes/conexao-mysqli.php';
 
 $conexaoMysqli = conectaMysqli();
 

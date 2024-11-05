@@ -2,15 +2,15 @@
 
 require_once "../../includes/conexao-pdo.php";
 
-class Resposta extends ConexaoPdo
+class Pergunta extends ConexaoPdo
 {
     /* =============== VARIAVEIS =============== */
 
-    private $CD_RESPOSTA;
-    private $DS_RESPOSTA;
+    private $CD_PERGUNTA;
+    private $DS_PERGUNTA;
     private $IMAGEM;
     private $DT_HR;
-    private $CD_PERGUNTA;
+    private $CD_DUVIDA;
     private $retorno_dados;
 
     /* =============== FUNÇÃO INSERE DADOS =============== */
@@ -22,11 +22,11 @@ class Resposta extends ConexaoPdo
             $pdo = parent::getDB();
 
             $insere_dados = $pdo->prepare('
-                    INSERT INTO resposta (
-                        DS_RESPOSTA,
+                    INSERT INTO pergunta (
+                        DS_PERGUNTA,
                         IMAGEM,
                         DT_HR,
-                        CD_PERGUNTA
+                        CD_DUVIDA
                     ) VALUES (
                         ?,
                         ?,
@@ -35,10 +35,10 @@ class Resposta extends ConexaoPdo
                     );
                 ');
             $insere_dados->execute(array(
-                "$this->DS_RESPOSTA",
+                "$this->DS_PERGUNTA",
                 "$this->IMAGEM",
                 "$this->DT_HR",
-                "$this->CD_PERGUNTA"
+                "$this->CD_DUVIDA"
             ));
             $this->setRetorno_dados($pdo->lastInsertId());
             return true;
@@ -50,14 +50,14 @@ class Resposta extends ConexaoPdo
 
     /* =============== GETTERS E SETTERS =============== */
 
-    function getCD_RESPOSTA()
+    function getCD_PERGUNTA()
     {
-        return $this->CD_RESPOSTA;
+        return $this->CD_PERGUNTA;
     }
 
-    function getDS_RESPOSTA()
+    function getDS_PERGUNTA()
     {
-        return $this->DS_RESPOSTA;
+        return $this->DS_PERGUNTA;
     }
 
     function getIMAGEM()
@@ -70,9 +70,9 @@ class Resposta extends ConexaoPdo
         return $this->DT_HR;
     }
 
-    function getCD_PERGUNTA()
+    function getCD_DUVIDA()
     {
-        return $this->CD_PERGUNTA;
+        return $this->CD_DUVIDA;
     }
 
     function getRetorno_dados()
@@ -80,14 +80,14 @@ class Resposta extends ConexaoPdo
         return $this->retorno_dados;
     }
 
-    function setCD_RESPOSTA($CD_RESPOSTA)
+    function setCD_PERGUNTA($CD_PERGUNTA)
     {
-        $this->CD_RESPOSTA = $CD_RESPOSTA;
+        $this->CD_PERGUNTA = $CD_PERGUNTA;
     }
 
-    function setDS_RESPOSTA($DS_RESPOSTA)
+    function setDS_PERGUNTA($DS_PERGUNTA)
     {
-        $this->DS_RESPOSTA = $DS_RESPOSTA;
+        $this->DS_PERGUNTA = $DS_PERGUNTA;
     }
 
     function setIMAGEM($IMAGEM)
@@ -100,9 +100,9 @@ class Resposta extends ConexaoPdo
         $this->DT_HR = $DT_HR;
     }
 
-    function setCD_PERGUNTA($CD_PERGUNTA)
+    function setCD_DUVIDA($CD_DUVIDA)
     {
-        $this->CD_PERGUNTA = $CD_PERGUNTA;
+        $this->CD_DUVIDA = $CD_DUVIDA;
     }
 
     function setRetorno_dados($retorno_dados)

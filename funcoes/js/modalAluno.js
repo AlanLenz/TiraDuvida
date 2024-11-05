@@ -3,7 +3,7 @@ vsUrl = $("#vsUrl").val();
 function abre_modal_alunos(viCdDisciplina) {
 
     $.ajax({
-        url: vsUrl + "funcoes/controllers/RetornaModalAlunos.php",
+        url: vsUrl + "funcoes/controllars/RetornaModalAlunos.php",
         type: "POST",
         dataType: "json",
         async: false,
@@ -13,8 +13,9 @@ function abre_modal_alunos(viCdDisciplina) {
         success: function (data) {
             if (data !== 0) {
                 $("#dsDisciplina").html(data[0].DS_DISCIPLINA);
+                $("#nmProfessor").html(data[0].NM_PROFESSOR);
                 data.forEach(function (aluno) {
-                    $("#nmAluno").append("<p>" + aluno.NM_ALUNO + "</p>");
+                    $("#nmAluno").append("<li>" + aluno.NM_ALUNO + "</li>");
                 });
                 $("#modal_visualizar_alunos").modal("show");
             } else {
@@ -30,4 +31,5 @@ function abre_modal_alunos(viCdDisciplina) {
 $('#modal_visualizar_alunos').on('hidden.bs.modal', function () {
     $("#dsDisciplina").html('');
     $("#nmAluno").html('');
+    $("#nmProfessor").html('');
 });

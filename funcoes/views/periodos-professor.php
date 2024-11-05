@@ -1,18 +1,7 @@
-<!doctype html>
-<html lang="pt-br">
-
-<head>
-    <?php
-    // HEAD
-    include 'includes/head.php';
-    ?>
-    <title><?php echo "Períodos - " . TITULO ?></title>
-</head>
-
 <?php
 session_start();
 
-if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset($_SESSION['tipo_usuario'])) {
+if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SESSION['tipo_usuario'] == "P")) {
     $usuario_id = $_SESSION['usuario_id'];
     $usuario_login = $_SESSION['usuario_login'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
@@ -62,6 +51,17 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 
 ?>
 
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <?php
+    // HEAD
+    include 'includes/head.php';
+    ?>
+    <title><?php echo "Períodos - " . TITULO ?></title>
+</head>
+
 <body>
 
     <?php
@@ -74,19 +74,19 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
         <header class="site_header site_header_1">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col col-lg-3 col-5">
+                    <div class="col-12 col-lg-3 col-md-5">
                         <div class="site_logo">
-                            <img src="<?php echo URL . "assets/images/logo.png" ?>" alt="">
+                            <img src="<?php echo URL . "assets/images/logo-header.webp" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
                         </div>
                     </div>
-                    <div class="col col-lg-6 col-2">
+                    <div class="col-12 col-lg-6 col-md-2">
                         <div class="title_page">
                             <?php while ($voResultadoCurso = mysqli_fetch_object($vrsExecutaCurso)) { ?>
                                 <h2><?php echo $voResultadoCurso->DS_CURSO ?></h2>
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="col col-lg-3 col-5">
+                    <div class="col-12 col-lg-3 col-md-5">
                         <ul class="header_btns_group unordered_list_end">
                             <li>
                                 <button class="mobile_menu_btn" type="button" data-bs-toggle="collapse" data-bs-target="#main_menu_dropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,7 +96,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                             <li class="nome_aluno"><?php echo "Olá, Professor(a) " .  $_SESSION['professor_nm'] ?></li>
                             <li class="nome_aluno"> | </li>
                             <li class="logout">
-                                <button class="logoff-button" type="button" id="abre_modal_logoff">
+                                <button class="abre_modal_logoff logoff-button" type="button">
                                     <i class="far fa-sign-out-alt" title="Sair"></i>
                                 </button>
                             </li>
@@ -112,7 +112,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                     <div class="content_wrapper">
                         <div class="row align-items-center">
                             <ul class="breadcrumb_nav unordered_list">
-                                <li><button id="abre_modal_logoff" type="button"><i class="far fa-reply"></i> Voltar à página inicial</a></li>
+                                <li><button class="abre_modal_logoff" type="button"><i class="far fa-reply"></i> Voltar à página de login</a></li>
                             </ul>
                             <h1 class="page_title">Períodos</h1>
                         </div>

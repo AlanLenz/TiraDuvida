@@ -1,19 +1,8 @@
-<!doctype html>
-<html lang="pt-br">
-
-<head>
-    <?php
-    // HEAD
-    include 'includes/head.php';
-    ?>
-    <title><?php echo "Disciplinas - " . TITULO ?></title>
-</head>
-
 <?php
 
 session_start();
 
-if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset($_SESSION['tipo_usuario'])) {
+if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SESSION['tipo_usuario'] == "P")) {
     $usuario_id = $_SESSION['usuario_id'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
     $professor_id = $_SESSION['professor_id'];
@@ -58,6 +47,16 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 }
 
 ?>
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <?php
+    // HEAD
+    include 'includes/head.php';
+    ?>
+    <title><?php echo "Disciplinas - " . TITULO ?></title>
+</head>
 
 <body>
 
@@ -68,28 +67,22 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
 
     <div class="page_wrapper">
 
-        <div class="backtotop">
-            <a href="#" class="scroll">
-                <i class="far fa-arrow-up"></i>
-            </a>
-        </div>
-
         <header class="site_header site_header_1">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col col-lg-3 col-5">
+                    <div class="col-12 col-lg-3 col-md-5">
                         <div class="site_logo">
-                            <img src="<?php echo URL . "assets/images/logo.png" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
+                            <img src="<?php echo URL . "assets/images/logo-header.webp" ?>" title="<?php echo TITULO ?>" alt="<?php echo "Logo " . TITULO ?>">
                         </div>
                     </div>
-                    <div class="col col-lg-6 col-2">
+                    <div class="col-12 col-lg-6 col-md-2">
                         <div class="title_page">
                             <?php while ($voResultadoCurso = mysqli_fetch_object($vrsExecutaCurso)) { ?>
                                 <h2><?php echo $voResultadoCurso->DS_CURSO ?></h2>
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="col col-lg-3 col-5">
+                    <div class="col-12 col-lg-3 col-md-5">
                         <ul class="header_btns_group unordered_list_end">
                             <li>
                                 <button class="mobile_menu_btn" type="button" data-bs-toggle="collapse" data-bs-target="#main_menu_dropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +96,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                                     <button class="btn btn-dropdown-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
                                     <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
                                         <li><a class="dropdown-item" href="<?php echo URL . "periodos-professor" ?>">Períodos</a></li>
-                                        <li><button type="button" id="abre_modal_logoff" class="dropdown-item logoff-button"><i class="far fa-sign-out-alt" title="Sair"></i> Sair</button></li>
+                                        <li><button type="button" class="abre_modal_logoff dropdown-item logoff-button"><i class="far fa-sign-out-alt" title="Sair"></i> Sair</button></li>
                                     </ul>
                                 </li>
                             </div>
@@ -119,9 +112,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
                     <div class="content_wrapper">
                         <div class="row align-items-center">
                             <ul class="breadcrumb_nav unordered_list">
-                                <li><a href="periodos-professor"><i class="far fa-reply"></i> Voltar à página de períodos</a></li>
+                                <li><a href="<?php echo URL . "periodos-professor" ?>"><i class="far fa-reply"></i> Voltar à página de períodos</a></li>
                             </ul>
-                            <h1 class="page_title"><?php echo "Disciplinas " . $periodo . "º período" ?></h1>
+                            <h1 class="page_title"><?php echo "Disciplinas " . $periodo . "º Período" ?></h1>
                         </div>
                     </div>
                 </div>
@@ -212,23 +205,10 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset
         <?php
         // FOOTER
         include 'includes/footer.php';
-        ?>
 
-        <div class="modal fade" id="modal_visualizar_alunos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="far fa-eye fa-fw"></i> <span id="dsDisciplina"></span></h5>
-                    </div>
-                    <div class="modal-body">
-                        <p><span id="nmAluno"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        // MODAL ALUNOS
+        include 'includes/modal-alunos.php';
+        ?>
 
     </div>
 

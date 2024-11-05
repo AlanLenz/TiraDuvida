@@ -33,10 +33,55 @@ $('input[type=checkbox]').on('change', function () {
     window.location.href = newUrl;
 });
 
+function atualizarNumeroCurtidas(novoNumeroCurtidas, viCD_DUVIDA) {
+    const elementoCurtidas = document.querySelector(`.like_btn[data-duvida="${viCD_DUVIDA}"]`);
+    
+    if (elementoCurtidas) {
+        elementoCurtidas.innerHTML = `<i class="far fa-thumbs-up"></i> ${novoNumeroCurtidas}`;
+    }
+}
+
+function atualiza_curtidas(viCD_DUVIDA) {
+
+    $.ajax({
+        url: vsUrl + "funcoes/controllars/AtualizaCurtidasDuvida.php",
+        type: "POST",
+        dataType: "json",
+        async: false,
+        data: ({
+            viCD_DUVIDA: viCD_DUVIDA
+        }),
+        success: function (data) {
+            if (data.status == 1) {
+                mostrarMensagemSucesso();
+                atualizarNumeroCurtidas(data.novoNumeroCurtidas, viCD_DUVIDA);
+            } else {
+                Aviso(); // Exibir aviso em caso de falha na atualização
+            }
+        },
+        error: function () {
+            Aviso();
+        }
+    });
+}
+
+function mostrarMensagemSucesso() {
+    const mensagem = document.createElement("div");
+    mensagem.className = "mensagem-sucesso";
+    mensagem.innerText = "Curtida atualizada com sucesso!";
+    document.body.appendChild(mensagem);
+
+    // Remove a mensagem após 3 segundos
+    setTimeout(() => {
+        mensagem.remove();
+    }, 3000);
+}
+
+
 function oculta_duvida(viCD_DUVIDA) {
 
     $.ajax({
-        url: vsUrl + "funcoes/controllers/OcultaDuvida.php",
+        url: vsUrl + "funcoes/controllars/OcultaDuvida.php",
         type: "POST",
         dataType: "json",
         async: false,
@@ -59,7 +104,7 @@ function oculta_duvida(viCD_DUVIDA) {
 function destaca_duvida(viCD_DUVIDA) {
 
     $.ajax({
-        url: vsUrl + "funcoes/controllers/DestacaDuvida.php",
+        url: vsUrl + "funcoes/controllars/DestacaDuvida.php",
         type: "POST",
         dataType: "json",
         async: false,
@@ -78,6 +123,11 @@ function destaca_duvida(viCD_DUVIDA) {
         }
     });
 }
+
+$('.like_btn').click(function () {
+    var duvidaId = $(this).data('duvida');
+    atualiza_curtidas(duvidaId);
+});
 
 $('.hide_btn').click(function () {
     var duvidaId = $(this).data('duvida');

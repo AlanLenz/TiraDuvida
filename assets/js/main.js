@@ -53,8 +53,6 @@
   // --------------------------------------------------
   $(document).ready(function () {
 
-    var vsUrl = $("#vsUrl").val();
-
     $('.offCanvas_close_btn, .offCanvas_overlay').on('click', function () {
       $('.filter_offcanvas.position-fixed').removeClass('active');
       $('.offCanvas_overlay').removeClass('active');
@@ -65,7 +63,7 @@
       $('.offCanvas_overlay').addClass('active');
     });
 
-    $('#abre_modal_logoff').click(function () {
+    $('.abre_modal_logoff').click(function () {
       swal({
         title: "Deseja fazer logoff?",
         type: "warning",
@@ -230,8 +228,10 @@
 /*FUNÇÃO FAZ LOGOFF DO USUARIO*/
 function logoff() {
 
+  var vsUrl = $("#vsUrl").val();
+
   $.ajax({
-    url: vsUrl + "funcoes/controllers/ExecutaLogoff.php",
+    url: vsUrl + "funcoes/controllars/ExecutaLogoff.php",
     type: "POST",
     dataType: "json",
     success: function (data) {

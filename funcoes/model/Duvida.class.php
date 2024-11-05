@@ -29,6 +29,8 @@ class Duvida extends ConexaoPdo
             $insere_dados = $pdo->prepare('
                     INSERT INTO duvida (
                         DS_TITULO,
+                        CD_DESTAQUE,
+                        NR_CURTIDAS,
                         DT_HR,
                         ST_DUVIDA,
                         CD_ALUNO,
@@ -40,11 +42,15 @@ class Duvida extends ConexaoPdo
                         ?,
                         ?,
                         ?,
+                        ?,
+                        ?,
                         ?
                     );
                 ');
             $insere_dados->execute(array(
                 "$this->DS_TITULO",
+                "$this->CD_DESTAQUE",
+                "$this->NR_CURTIDAS",
                 "$this->DT_HR",
                 "$this->ST_DUVIDA",
                 "$this->CD_ALUNO",
@@ -61,18 +67,57 @@ class Duvida extends ConexaoPdo
 
     public function oculta_duvida() {
         try {
-
             $pdo = parent::getDB();
-
+    
+            // Primeiro, obtenha o valor atual de CD_DESTAQUE para a dúvida especificada
+            $consulta_duvida = $pdo->prepare('
+                SELECT
+                    ST_DUVIDA
+                FROM
+                    duvida
+                WHERE
+                    CD_DUVIDA = ?
+            ');
+            $consulta_duvida->execute([$this->CD_DUVIDA]);
+            $resultado_duvida = $consulta_duvida->fetch(PDO::FETCH_ASSOC);
+    
+            // Verifique o valor atual de CD_DESTAQUE e alterne entre 'S' e 'N'
+            $this->ST_DUVIDA = ($resultado_duvida['ST_DUVIDA'] === 'OC') ? 'P' : 'OC';
+    
+            // Atualize o campo CD_DESTAQUE com o novo valor
             $oculta_duvida = $pdo->prepare('
                 UPDATE duvida SET 
                     ST_DUVIDA = ?
                 WHERE 
+                    CD_DUVIDA = ?
+            ');
+    
+            $oculta_duvida->execute([
+                $this->ST_DUVIDA,
+                $this->CD_DUVIDA
+            ]);
+    
+            $this->setRetorno_dados($this->CD_DUVIDA);
+            return true;
+        } catch (PDOException $e) {
+            echo 'Erro: ' . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function responde_duvida() {
+        try {
+
+            $pdo = parent::getDB();
+
+            $responde_duvida = $pdo->prepare('
+                UPDATE duvida SET 
+                    ST_DUVIDA = \'R\'
+                WHERE
                     CD_DUVIDA = ?;
             ');
 
-            $oculta_duvida->execute(array(
-                "$this->ST_DUVIDA",
+            $responde_duvida->execute(array(
                 "$this->CD_DUVIDA"
             ));
             $this->setRetorno_dados($this->CD_DUVIDA);
@@ -85,20 +130,36 @@ class Duvida extends ConexaoPdo
 
     public function destaca_duvida() {
         try {
-
             $pdo = parent::getDB();
-
-            $oculta_duvida = $pdo->prepare('
+    
+            // Primeiro, obtenha o valor atual de CD_DESTAQUE para a dúvida especificada
+            $consulta_destaque = $pdo->prepare('
+                SELECT
+                    CD_DESTAQUE
+                FROM
+                    duvida
+                WHERE
+                    CD_DUVIDA = ?
+            ');
+            $consulta_destaque->execute([$this->CD_DUVIDA]);
+            $resultado_destaque = $consulta_destaque->fetch(PDO::FETCH_ASSOC);
+    
+            // Verifique o valor atual de CD_DESTAQUE e alterne entre 'S' e 'N'
+            $this->CD_DESTAQUE = ($resultado_destaque['CD_DESTAQUE'] === 'S') ? 'N' : 'S';
+    
+            // Atualize o campo CD_DESTAQUE com o novo valor
+            $destaca_duvida = $pdo->prepare('
                 UPDATE duvida SET 
                     CD_DESTAQUE = ?
                 WHERE 
-                    CD_DUVIDA = ?;
+                    CD_DUVIDA = ?
             ');
-
-            $oculta_duvida->execute(array(
-                "$this->CD_DESTAQUE",
-                "$this->CD_DUVIDA"
-            ));
+    
+            $destaca_duvida->execute([
+                $this->CD_DESTAQUE,
+                $this->CD_DUVIDA
+            ]);
+    
             $this->setRetorno_dados($this->CD_DUVIDA);
             return true;
         } catch (PDOException $e) {
@@ -106,6 +167,117 @@ class Duvida extends ConexaoPdo
             return false;
         }
     }
+
+    public function obter_numero_curtidas() {
+        try {
+            $pdo = parent::getDB();
+
+            $consulta = $pdo->prepare('
+                SELECT
+                    NR_CURTIDAS
+                FROM
+                    duvida
+                WHERE
+                    CD_DUVIDA = ?
+            ');
+            $consulta->execute([$this->CD_DUVIDA]);
+            $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+            
+            // Retorna o número de curtidas, ou 0 se não houver um valor definido
+            return $resultado ? (int)$resultado['NR_CURTIDAS'] : 0;
+        } catch (PDOException $e) {
+            echo 'Erro: ' . $e->getMessage();
+            return 0;
+        }
+    }
+
+    public function atualiza_numero_curtidas() {
+        try {
+            $pdo = parent::getDB();
+    
+            // Conta o número de curtidas (CURTIDA = 1) para a dúvida especificada
+            $consulta = $pdo->prepare('
+                SELECT
+                    COUNT(*) as totalCurtidas 
+                FROM
+                    curtida_duvida_aluno 
+                WHERE
+                    CD_DUVIDA = ? AND
+                    CURTIDA = 1
+            ');
+            $consulta->execute([$this->CD_DUVIDA]);
+            $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+    
+            // Atualiza o campo NR_CURTIDAS na tabela duvida
+            $atualiza = $pdo->prepare('
+                UPDATE
+                    duvida
+                SET
+                    NR_CURTIDAS = ? 
+                WHERE
+                    CD_DUVIDA = ?
+            ');
+            $atualiza->execute([$resultado['totalCurtidas'], $this->CD_DUVIDA]);
+    
+            return true;
+        } catch (PDOException $e) {
+            echo 'Erro: ' . $e->getMessage();
+            return false;
+        }
+    }
+    
+
+    public function atualiza_curtidas($CD_ALUNO) {
+        try {
+            $pdo = parent::getDB();
+    
+            // Verifica se já existe uma entrada para o aluno e dúvida específicos
+            $consulta = $pdo->prepare('
+                SELECT
+                    CURTIDA
+                FROM
+                    curtida_duvida_aluno 
+                WHERE
+                    CD_ALUNO = ? AND
+                    CD_DUVIDA = ?
+            ');
+            $consulta->execute([$CD_ALUNO, $this->CD_DUVIDA]);
+            $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+    
+            if ($resultado) {
+                // Se existe uma entrada, alterna o valor de CURTIDA entre 1 e 0
+                $novo_valor = ($resultado['CURTIDA'] == 1) ? 0 : 1;
+    
+                $atualiza = $pdo->prepare('
+                    UPDATE
+                        curtida_duvida_aluno 
+                    SET
+                        CURTIDA = ? 
+                    WHERE
+                        CD_ALUNO = ? AND
+                        CD_DUVIDA = ?
+                ');
+                $atualiza->execute([$novo_valor, $CD_ALUNO, $this->CD_DUVIDA]);
+    
+            } else {
+                // Se não existe uma entrada, insere uma nova com CURTIDA = 1
+                $insere = $pdo->prepare('
+                    INSERT INTO curtida_duvida_aluno (CD_ALUNO, CD_DUVIDA, CURTIDA) 
+                    VALUES (?, ?, 1)
+                ');
+                $insere->execute([$CD_ALUNO, $this->CD_DUVIDA]);
+            }
+    
+            // Atualiza o total de curtidas na tabela duvida
+            $this->atualiza_numero_curtidas();
+    
+            return true;
+        } catch (PDOException $e) {
+            echo 'Erro: ' . $e->getMessage();
+            return false;
+        }
+    }
+    
 
     /* =============== GETTERS E SETTERS =============== */
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2024 at 03:18 AM
+-- Generation Time: Nov 05, 2024 at 10:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -164,6 +164,27 @@ INSERT INTO `curso` (`CD_CURSO`, `DS_CURSO`, `TOT_PERIODO`, `ST_CURSO`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `curtida_duvida_aluno`
+--
+
+CREATE TABLE `curtida_duvida_aluno` (
+  `CD_DUVIDA` int(11) NOT NULL,
+  `CURTIDA` int(11) NOT NULL,
+  `CD_ALUNO` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `curtida_duvida_aluno`
+--
+
+INSERT INTO `curtida_duvida_aluno` (`CD_DUVIDA`, `CURTIDA`, `CD_ALUNO`) VALUES
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `disciplina`
 --
 
@@ -239,7 +260,7 @@ CREATE TABLE `duvida` (
   `CD_DESTAQUE` varchar(1) DEFAULT NULL,
   `NR_CURTIDAS` int(11) DEFAULT NULL,
   `TP_RESPOSTA` varchar(4) DEFAULT NULL,
-  `DT_HR` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `DT_HR` timestamp NULL DEFAULT NULL,
   `ST_DUVIDA` varchar(2) NOT NULL,
   `CD_ALUNO` int(11) DEFAULT NULL,
   `CD_PROFESSOR` int(11) DEFAULT NULL,
@@ -251,7 +272,11 @@ CREATE TABLE `duvida` (
 --
 
 INSERT INTO `duvida` (`CD_DUVIDA`, `DS_TITULO`, `CD_DESTAQUE`, `NR_CURTIDAS`, `TP_RESPOSTA`, `DT_HR`, `ST_DUVIDA`, `CD_ALUNO`, `CD_PROFESSOR`, `CD_DISCIPLINA`) VALUES
-(1, 'Blandit libero volutpat sed cras ornare arcu?', 'S', 2, 'A', '2024-10-08 00:41:20', 'OC', 30, 1, 'EGS19101');
+(1, 'Blandit libero volutpat sed cras ornare arcu?', 'N', 2, 'A', '2024-11-04 23:44:15', 'OC', 15, 1, 'EGS19101'),
+(4, 'pergunta teste', 'N', 1, NULL, '2024-11-05 00:39:17', 'P', 15, 1, 'EGS19101'),
+(5, 'hfuqwuofbiu', 'S', 1, NULL, '2024-11-05 00:31:52', 'R', 15, 2, 'EGS19101'),
+(6, 'guqebegqbuibuibuibui', 'N', 1, NULL, '2024-10-27 23:23:37', 'R', 15, 2, 'EGS19101'),
+(7, 'pergunta com imagem', 'N', 0, NULL, '2024-11-05 03:00:08', 'P', 15, 2, 'EGS19101');
 
 -- --------------------------------------------------------
 
@@ -262,6 +287,7 @@ INSERT INTO `duvida` (`CD_DUVIDA`, `DS_TITULO`, `CD_DESTAQUE`, `NR_CURTIDAS`, `T
 CREATE TABLE `pergunta` (
   `CD_PERGUNTA` int(11) NOT NULL,
   `DS_PERGUNTA` varchar(3600) DEFAULT NULL,
+  `IMAGEM` longtext DEFAULT NULL,
   `DT_HR` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `CD_DUVIDA` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -270,8 +296,12 @@ CREATE TABLE `pergunta` (
 -- Dumping data for table `pergunta`
 --
 
-INSERT INTO `pergunta` (`CD_PERGUNTA`, `DS_PERGUNTA`, `DT_HR`, `CD_DUVIDA`) VALUES
-(1, 'Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras. Vitae ultricies leo integer malesuada nunc vel. Nibh cras pulvinar mattis nunc sed. Convallis a cras semper auctor neque vitae tempus. Mattis molestie a iaculis at erat pellentesque adipiscing.\r\n\r\n', '2024-10-06 19:57:30', 1);
+INSERT INTO `pergunta` (`CD_PERGUNTA`, `DS_PERGUNTA`, `IMAGEM`, `DT_HR`, `CD_DUVIDA`) VALUES
+(1, 'Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras. Vitae ultricies leo integer malesuada nunc vel. Nibh cras pulvinar mattis nunc sed. Convallis a cras semper auctor neque vitae tempus. Mattis molestie a iaculis at erat pellentesque adipiscing.\r\n\r\n', NULL, '2024-10-06 19:57:30', 1),
+(2, 'gqqgeqg', NULL, '2024-10-27 22:20:06', 4),
+(3, 'buifbebeuibui', NULL, '2024-10-27 22:59:24', 5),
+(4, 'buibyuibyibyibyi', NULL, '2024-10-27 23:23:37', 6),
+(5, 'gqgqg', 'imagem-pergunta-com-imagem-202411050000.webp', '2024-11-05 03:00:08', 7);
 
 -- --------------------------------------------------------
 
@@ -381,9 +411,46 @@ INSERT INTO `professor_disciplina` (`CD_PF_DISCIPLINA`, `ST_PF_DISCIPLINA`, `CD_
 CREATE TABLE `resposta` (
   `CD_RESPOSTA` int(11) NOT NULL,
   `DS_RESPOSTA` varchar(3600) DEFAULT NULL,
+  `IMAGEM` longtext DEFAULT NULL,
   `DT_HR` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `CD_PERGUNTA` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `resposta`
+--
+
+INSERT INTO `resposta` (`CD_RESPOSTA`, `DS_RESPOSTA`, `IMAGEM`, `DT_HR`, `CD_PERGUNTA`) VALUES
+(2, 'gageegge', NULL, '2024-10-27 23:15:50', 1),
+(3, 'Resposta teste', NULL, '2024-11-04 23:45:06', 2),
+(4, 'qgegqe', NULL, '2024-11-05 00:15:26', 3),
+(5, 'qgegqe', NULL, '2024-11-05 00:15:35', 3),
+(6, 'qgegqe', NULL, '2024-11-05 00:30:31', 3),
+(7, 'gqggwqqge', 'imagem-resposta4-202411051249.webp', '2024-11-05 15:49:14', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tamanho_imagens`
+--
+
+CREATE TABLE `tamanho_imagens` (
+  `id_tamanho_imagens` int(11) NOT NULL,
+  `tabela` varchar(100) DEFAULT NULL,
+  `campo` varchar(100) DEFAULT NULL,
+  `largura` varchar(45) DEFAULT NULL,
+  `altura` varchar(45) DEFAULT NULL,
+  `largura_thumb` varchar(45) DEFAULT NULL,
+  `altura_thumb` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `tamanho_imagens`
+--
+
+INSERT INTO `tamanho_imagens` (`id_tamanho_imagens`, `tabela`, `campo`, `largura`, `altura`, `largura_thumb`, `altura_thumb`) VALUES
+(1, 'pergunta', 'iImagem', '500', '500', '200', '200'),
+(1, 'resposta', 'iImagem', '500', '500', '200', '200');
 
 -- --------------------------------------------------------
 
@@ -561,13 +628,13 @@ ALTER TABLE `curso`
 -- AUTO_INCREMENT for table `duvida`
 --
 ALTER TABLE `duvida`
-  MODIFY `CD_DUVIDA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CD_DUVIDA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `pergunta`
 --
 ALTER TABLE `pergunta`
-  MODIFY `CD_PERGUNTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CD_PERGUNTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `professor`
@@ -585,7 +652,7 @@ ALTER TABLE `professor_disciplina`
 -- AUTO_INCREMENT for table `resposta`
 --
 ALTER TABLE `resposta`
-  MODIFY `CD_RESPOSTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CD_RESPOSTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `usuario`

@@ -5,7 +5,7 @@
                 <div class="col col-lg-3 col-md-6 col-sm-6">
                     <div class="footer_widget">
                         <div class="site_logo">
-                            <img src="<?php echo URL . "assets/images/logo.png" ?>" title="<?php echo TITULO ?>" alt="<?php echo TITULO ?>">
+                            <img src="<?php echo URL . "assets/images/logo-header.webp" ?>" title="<?php echo TITULO ?>" alt="<?php echo TITULO ?>">
                             <p>Fale com seu professor agora!</p>
                         </div>
                     </div>

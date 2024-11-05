@@ -31,15 +31,20 @@ class Disciplina extends ConexaoPdo
             $consulta_dados = $pdo->prepare("
                 SELECT DISTINCT
                     a.NM_ALUNO,
+                    p.NM_PROFESSOR,
                     d.DS_DISCIPLINA
                 FROM
                     aluno_disciplina ad
                     INNER JOIN aluno a ON a.CD_USUARIO = ad.CD_USUARIO
                     INNER JOIN usuario u ON a.CD_USUARIO = u.CD_USUARIO
                     INNER JOIN disciplina d ON d.CD_DISCIPLINA = ad.CD_DISCIPLINA
+                    INNER JOIN professor_disciplina pd ON d.CD_DISCIPLINA = pd.CD_DISCIPLINA
+                    INNER JOIN professor p ON pd.CD_USUARIO = pd.CD_USUARIO
                 WHERE
                     u.ST_USUARIO = 'A'
                     $vsDisciplina
+                GROUP BY 
+                    a.NM_ALUNO
             ");
             $consulta_dados->execute();
             if ($consulta_dados->rowCount() > 0) :

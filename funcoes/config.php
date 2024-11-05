@@ -11,8 +11,8 @@ define("SENHA", "");
 
 /* CONSTANTES DE AMBIENTE SERVIDOR */
 // define("URL", "/");
-// define("SERVIDOR", "127.0.0.1");
-// define("BANCO", "");
-// define("USUARIO", "");
-// define("SENHA", "");
+// define("SERVIDOR", "mysql.tiraduvida.net.br");
+// define("USUARIO", "tiraduvida");
+// define("SENHA", "A2f0l02");
+// define("BANCO", "tiraduvida");
 ?>
