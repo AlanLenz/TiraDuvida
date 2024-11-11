@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2024 at 10:32 PM
+-- Generation Time: Nov 12, 2024 at 12:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,29 +40,40 @@ CREATE TABLE `aluno` (
 --
 
 INSERT INTO `aluno` (`CD_ALUNO`, `RA_ALUNO`, `NM_ALUNO`, `NR_PERIODO`, `CD_USUARIO`) VALUES
-(1, 'RA123456', 'Lucas Almeida', 1, 5),
-(2, 'RA123457', 'Isabela Rocha', 2, 6),
-(3, 'RA123458', 'Rafael Pereira', 3, 7),
-(4, 'RA0001', 'Ana Silva', 1, 15),
-(5, 'RA0002', 'Bruno Oliveira', 1, 16),
-(6, 'RA0003', 'Carla Santos', 1, 17),
-(7, 'RA0004', 'Daniel Costa', 1, 18),
-(8, 'RA0005', 'Eduarda Lima', 1, 19),
-(9, 'RA0006', 'Felipe Almeida', 1, 20),
-(10, 'RA0007', 'Gabriela Pereira', 1, 21),
-(11, 'RA0008', 'Henrique Martins', 1, 22),
-(12, 'RA0009', 'Isabella Lima', 1, 23),
-(13, 'RA0010', 'João Ferreira', 1, 24),
-(14, 'RA0011', 'Karla Oliveira', 2, 25),
-(15, 'RA0012', 'Lucas Fernandes', 2, 26),
-(16, 'RA0013', 'Mariana Souza', 2, 27),
-(17, 'RA0014', 'Nathalia Costa', 2, 28),
-(18, 'RA0015', 'Otavio Lima', 2, 29),
-(19, 'RA0016', 'Paula Almeida', 2, 30),
-(20, 'RA0017', 'Quinn Santos', 2, 31),
-(21, 'RA0018', 'Roberta Martins', 2, 32),
-(22, 'RA0019', 'Samuel Ferreira', 2, 33),
-(23, 'RA0020', 'Tatiane Silva', 2, 34);
+(1, 'RA000001', 'Barbara Nycolli', 4, 3),
+(2, 'RA000002', 'Christian Luan', 4, 4),
+(3, 'RA000003', 'Cleiton Aparecido', 4, 5),
+(4, 'RA000004', 'Eduardo José', 4, 6),
+(5, 'RA000005', 'Erika Sartorelli', 4, 7),
+(6, 'RA000006', 'Gabriel Fávero Heller', 4, 8),
+(7, 'RA000007', 'Gabriel Felipe', 4, 9),
+(8, 'RA000008', 'Guilherme Maidana', 4, 10),
+(9, 'RA000009', 'Gustavo Muller', 4, 11),
+(10, 'RA000010', 'Hébernald Théopile', 4, 12),
+(11, 'RA000011', 'Heitor Miguel', 4, 13),
+(12, 'RA000012', 'Ian Marco', 4, 14),
+(13, 'RA000013', 'Jean Luca', 4, 15),
+(14, 'RA000014', 'Jefferson Teles', 4, 16),
+(15, 'RA000015', 'João Otávio', 4, 17),
+(16, 'RA000016', 'João Vitor', 4, 18),
+(17, 'RA000017', 'Jorge Henrique', 4, 19),
+(18, 'RA000018', 'Juan Gabriel', 4, 20),
+(19, 'RA000019', 'Kauã Matheus', 4, 21),
+(20, 'RA000020', 'Kiury Woyciechowski', 4, 22),
+(21, 'RA000021', 'Leonaedo Liogi', 4, 23),
+(22, 'RA000022', 'Leonardo Paes', 4, 24),
+(23, 'RA000023', 'Luiza dos Santos', 4, 25),
+(24, 'RA000024', 'Mateus Massucatto', 4, 26),
+(25, 'RA000025', 'Matheus Eduardo', 4, 27),
+(26, 'RA000026', 'Matheus Henrique', 4, 28),
+(27, 'RA000027', 'Pedro Henrique', 4, 29),
+(28, 'RA000028', 'Phelipe Cartaxo', 4, 30),
+(29, 'RA000029', 'Rafael Kaito', 4, 31),
+(30, 'RA000030', 'Raul Torres', 4, 32),
+(31, 'RA000031', 'Tiago Mendonça', 4, 33),
+(32, 'RA000032', 'Wallace Pereira', 4, 34),
+(33, 'RA000033', 'Willyam Gabriel', 4, 35),
+(34, 'RA000034', 'Wyllian Ribiski', 4, 36);
 
 -- --------------------------------------------------------
 
@@ -83,41 +94,40 @@ CREATE TABLE `aluno_disciplina` (
 --
 
 INSERT INTO `aluno_disciplina` (`CD_AL_DISCIPLINA`, `ST_AL_DISCIPLINA`, `CD_USUARIO`, `CD_CURSO`, `CD_DISCIPLINA`) VALUES
-(1, 'A', 5, 1, 'EGS19101'),
-(2, 'A', 5, 1, 'EGS19102'),
-(3, 'A', 5, 1, 'EGS19103'),
-(4, 'A', 5, 1, 'EGS19104'),
-(5, 'A', 5, 1, 'EGS19105'),
-(6, 'A', 6, 1, 'EGS19201'),
-(7, 'A', 6, 1, 'EGS19202'),
-(8, 'A', 6, 1, 'EGS19203'),
-(9, 'A', 6, 1, 'EGS19204'),
-(10, 'A', 6, 1, 'EGS19205'),
-(11, 'A', 7, 1, 'EGS19301'),
-(12, 'A', 7, 1, 'EGS19302'),
-(13, 'A', 7, 1, 'EGS19303'),
-(14, 'A', 7, 1, 'EGS19304'),
-(15, 'A', 7, 1, 'EGS19305'),
-(16, 'A', 15, 1, 'EGS19101'),
-(17, 'A', 16, 1, 'EGS19102'),
-(18, 'A', 17, 1, 'EGS19103'),
-(19, 'A', 18, 1, 'EGS19104'),
-(20, 'A', 19, 1, 'EGS19105'),
-(21, 'A', 20, 1, 'EGS19201'),
-(22, 'A', 21, 1, 'EGS19202'),
-(23, 'A', 22, 1, 'EGS19203'),
-(24, 'A', 23, 1, 'EGS19204'),
-(25, 'A', 24, 1, 'EGS19205'),
-(26, 'A', 25, 1, 'EGS19301'),
-(27, 'A', 26, 1, 'EGS19302'),
-(28, 'A', 27, 1, 'EGS19303'),
-(29, 'A', 28, 1, 'EGS19304'),
-(30, 'A', 29, 1, 'EGS19305'),
-(31, 'A', 30, 1, 'EGS19401'),
-(32, 'A', 31, 1, 'EGS19402'),
-(33, 'A', 32, 1, 'EGS19403'),
-(34, 'A', 33, 1, 'EGS19404'),
-(35, 'A', 34, 1, 'EGS19405');
+(1, 'A', 3, 1, 'EGS19503'),
+(2, 'A', 4, 1, 'EGS19503'),
+(3, 'A', 5, 1, 'EGS19503'),
+(4, 'A', 6, 1, 'EGS19503'),
+(5, 'A', 7, 1, 'EGS19503'),
+(6, 'A', 8, 1, 'EGS19503'),
+(7, 'A', 9, 1, 'EGS19503'),
+(8, 'A', 10, 1, 'EGS19503'),
+(9, 'A', 11, 1, 'EGS19503'),
+(10, 'A', 12, 1, 'EGS19503'),
+(11, 'A', 13, 1, 'EGS19503'),
+(12, 'A', 14, 1, 'EGS19503'),
+(13, 'A', 15, 1, 'EGS19503'),
+(14, 'A', 16, 1, 'EGS19503'),
+(15, 'A', 17, 1, 'EGS19503'),
+(16, 'A', 18, 1, 'EGS19503'),
+(17, 'A', 19, 1, 'EGS19503'),
+(18, 'A', 20, 1, 'EGS19503'),
+(19, 'A', 21, 1, 'EGS19503'),
+(20, 'A', 22, 1, 'EGS19503'),
+(21, 'A', 23, 1, 'EGS19503'),
+(22, 'A', 24, 1, 'EGS19503'),
+(23, 'A', 25, 1, 'EGS19503'),
+(24, 'A', 26, 1, 'EGS19503'),
+(25, 'A', 27, 1, 'EGS19503'),
+(26, 'A', 28, 1, 'EGS19503'),
+(27, 'A', 29, 1, 'EGS19503'),
+(28, 'A', 30, 1, 'EGS19503'),
+(29, 'A', 31, 1, 'EGS19503'),
+(30, 'A', 32, 1, 'EGS19503'),
+(31, 'A', 33, 1, 'EGS19503'),
+(32, 'A', 34, 1, 'EGS19503'),
+(33, 'A', 35, 1, 'EGS19503'),
+(34, 'A', 36, 1, 'EGS19503');
 
 -- --------------------------------------------------------
 
@@ -139,7 +149,7 @@ CREATE TABLE `coordenador` (
 --
 
 INSERT INTO `coordenador` (`CD_COORDENADOR`, `NR_CPF`, `NM_COORDENADOR`, `US_PROFESSOR`, `CD_CURSO`, `CD_USUARIO`) VALUES
-(1, '12345678901', 'Carlos Silva', 'N', 1, 1);
+(1, '12345678901', 'Fernando Incerti', 'N', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -170,7 +180,7 @@ INSERT INTO `curso` (`CD_CURSO`, `DS_CURSO`, `TOT_PERIODO`, `ST_CURSO`) VALUES
 CREATE TABLE `curtida_duvida_aluno` (
   `CD_DUVIDA` int(11) NOT NULL,
   `CURTIDA` int(11) NOT NULL,
-  `CD_ALUNO` int(11) DEFAULT NULL
+  `CD_ALUNO` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -178,9 +188,7 @@ CREATE TABLE `curtida_duvida_aluno` (
 --
 
 INSERT INTO `curtida_duvida_aluno` (`CD_DUVIDA`, `CURTIDA`, `CD_ALUNO`) VALUES
-(4, 1, 4),
-(5, 1, 5),
-(6, 1, 6);
+(8, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -226,7 +234,7 @@ INSERT INTO `disciplina` (`CD_DISCIPLINA`, `CD_TURNO`, `NR_PERIODO`, `DS_DISCIPL
 ('EGS19406', 'N', 4, 'Projeto de Design de Software', 'A', 1),
 ('EGS19501', 'N', 5, 'Sustentabilidade - EAD', 'A', 1),
 ('EGS19502', 'N', 5, 'Projeto de Software', 'A', 1),
-('EGS19503', 'N', 5, 'Banco de Dados', 'A', 1),
+('EGS19503', 'N', 4, 'Banco de Dados', 'A', 1),
 ('EGS19504', 'N', 5, 'Probabilidade e Estatística', 'A', 1),
 ('EGS19505', 'N', 5, 'Proj. Programação BD', 'A', 1),
 ('EGS19506', 'N', 5, 'Estágio Supervisionado I', 'A', 1),
@@ -267,17 +275,6 @@ CREATE TABLE `duvida` (
   `CD_DISCIPLINA` varchar(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Dumping data for table `duvida`
---
-
-INSERT INTO `duvida` (`CD_DUVIDA`, `DS_TITULO`, `CD_DESTAQUE`, `NR_CURTIDAS`, `TP_RESPOSTA`, `DT_HR`, `ST_DUVIDA`, `CD_ALUNO`, `CD_PROFESSOR`, `CD_DISCIPLINA`) VALUES
-(1, 'Blandit libero volutpat sed cras ornare arcu?', 'N', 2, 'A', '2024-11-04 23:44:15', 'OC', 15, 1, 'EGS19101'),
-(4, 'pergunta teste', 'N', 1, NULL, '2024-11-05 00:39:17', 'P', 15, 1, 'EGS19101'),
-(5, 'hfuqwuofbiu', 'S', 1, NULL, '2024-11-05 00:31:52', 'R', 15, 2, 'EGS19101'),
-(6, 'guqebegqbuibuibuibui', 'N', 1, NULL, '2024-10-27 23:23:37', 'R', 15, 2, 'EGS19101'),
-(7, 'pergunta com imagem', 'N', 0, NULL, '2024-11-05 03:00:08', 'P', 15, 2, 'EGS19101');
-
 -- --------------------------------------------------------
 
 --
@@ -291,17 +288,6 @@ CREATE TABLE `pergunta` (
   `DT_HR` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `CD_DUVIDA` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `pergunta`
---
-
-INSERT INTO `pergunta` (`CD_PERGUNTA`, `DS_PERGUNTA`, `IMAGEM`, `DT_HR`, `CD_DUVIDA`) VALUES
-(1, 'Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras. Vitae ultricies leo integer malesuada nunc vel. Nibh cras pulvinar mattis nunc sed. Convallis a cras semper auctor neque vitae tempus. Mattis molestie a iaculis at erat pellentesque adipiscing.\r\n\r\n', NULL, '2024-10-06 19:57:30', 1),
-(2, 'gqqgeqg', NULL, '2024-10-27 22:20:06', 4),
-(3, 'buifbebeuibui', NULL, '2024-10-27 22:59:24', 5),
-(4, 'buibyuibyibyibyi', NULL, '2024-10-27 23:23:37', 6),
-(5, 'gqgqg', 'imagem-pergunta-com-imagem-202411050000.webp', '2024-11-05 03:00:08', 7);
 
 -- --------------------------------------------------------
 
@@ -321,16 +307,7 @@ CREATE TABLE `professor` (
 --
 
 INSERT INTO `professor` (`CD_PROFESSOR`, `NR_CPF`, `NM_PROFESSOR`, `CD_USUARIO`) VALUES
-(1, '11122233344', 'Ana Costa', 2),
-(2, '55566677788', 'Pedro Oliveira', 3),
-(3, '99900011122', 'Mariana Santos', 4),
-(4, '22233344455', 'Gabriel Martins', 8),
-(5, '33344455566', 'Fernanda Lima', 9),
-(6, '44455566677', 'Roberto Souza', 10),
-(7, '12345678901', 'Lucas Pereira', 11),
-(8, '23456789012', 'Juliana Costa', 12),
-(9, '34567890123', 'Mateus Lima', 13),
-(10, '45678901234', 'Beatriz Almeida', 14);
+(1, '11122233344', 'André Helena', 2);
 
 -- --------------------------------------------------------
 
@@ -351,56 +328,7 @@ CREATE TABLE `professor_disciplina` (
 --
 
 INSERT INTO `professor_disciplina` (`CD_PF_DISCIPLINA`, `ST_PF_DISCIPLINA`, `CD_USUARIO`, `CD_CURSO`, `CD_DISCIPLINA`) VALUES
-(1, 'A', 2, 1, 'EGS19101'),
-(2, 'A', 2, 1, 'EGS19102'),
-(3, 'A', 2, 1, 'EGS19201'),
-(4, 'A', 2, 1, 'EGS19202'),
-(5, 'A', 2, 1, 'EGS19301'),
-(6, 'A', 3, 1, 'EGS19103'),
-(7, 'A', 3, 1, 'EGS19104'),
-(8, 'A', 3, 1, 'EGS19203'),
-(9, 'A', 3, 1, 'EGS19204'),
-(10, 'A', 3, 1, 'EGS19302'),
-(11, 'A', 4, 1, 'EGS19105'),
-(12, 'A', 4, 1, 'EGS19205'),
-(13, 'A', 4, 1, 'EGS19206'),
-(14, 'A', 4, 1, 'EGS19303'),
-(15, 'A', 4, 1, 'EGS19304'),
-(21, 'A', 8, 1, 'EGS19305'),
-(22, 'A', 8, 1, 'EGS19401'),
-(23, 'A', 8, 1, 'EGS19502'),
-(24, 'A', 8, 1, 'EGS19601'),
-(25, 'A', 8, 1, 'EGS19701'),
-(26, 'A', 9, 1, 'EGS19402'),
-(27, 'A', 9, 1, 'EGS19503'),
-(28, 'A', 9, 1, 'EGS19602'),
-(29, 'A', 9, 1, 'EGS19702'),
-(30, 'A', 9, 1, 'EGS19801'),
-(31, 'A', 10, 1, 'EGS19403'),
-(32, 'A', 10, 1, 'EGS19504'),
-(33, 'A', 10, 1, 'EGS19603'),
-(34, 'A', 10, 1, 'EGS19703'),
-(35, 'A', 10, 1, 'EGS19705'),
-(36, 'A', 11, 1, 'EGS19404'),
-(37, 'A', 11, 1, 'EGS19501'),
-(38, 'A', 11, 1, 'EGS19604'),
-(39, 'A', 11, 1, 'EGS19802'),
-(40, 'A', 11, 1, 'EGS19803'),
-(41, 'A', 12, 1, 'EGS19405'),
-(42, 'A', 12, 1, 'EGS19505'),
-(43, 'A', 12, 1, 'EGS19605'),
-(44, 'A', 12, 1, 'EGS19704'),
-(45, 'A', 12, 1, 'EGS19804'),
-(46, 'A', 13, 1, 'EGS19406'),
-(47, 'A', 13, 1, 'EGS19506'),
-(48, 'A', 13, 1, 'EGS19606'),
-(49, 'A', 13, 1, 'EGS19805'),
-(50, 'A', 13, 1, 'EGS19806'),
-(51, 'A', 14, 1, 'EGS19402'),
-(52, 'A', 14, 1, 'EGS19503'),
-(53, 'A', 14, 1, 'EGS19504'),
-(54, 'A', 14, 1, 'EGS19603'),
-(55, 'A', 14, 1, 'EGS19702');
+(1, 'A', 2, 1, 'EGS19503');
 
 -- --------------------------------------------------------
 
@@ -415,18 +343,6 @@ CREATE TABLE `resposta` (
   `DT_HR` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `CD_PERGUNTA` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `resposta`
---
-
-INSERT INTO `resposta` (`CD_RESPOSTA`, `DS_RESPOSTA`, `IMAGEM`, `DT_HR`, `CD_PERGUNTA`) VALUES
-(2, 'gageegge', NULL, '2024-10-27 23:15:50', 1),
-(3, 'Resposta teste', NULL, '2024-11-04 23:45:06', 2),
-(4, 'qgegqe', NULL, '2024-11-05 00:15:26', 3),
-(5, 'qgegqe', NULL, '2024-11-05 00:15:35', 3),
-(6, 'qgegqe', NULL, '2024-11-05 00:30:31', 3),
-(7, 'gqggwqqge', 'imagem-resposta4-202411051249.webp', '2024-11-05 15:49:14', 4);
 
 -- --------------------------------------------------------
 
@@ -471,40 +387,42 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`CD_USUARIO`, `TP_USUARIO`, `NM_USUARIO`, `SN_USUARIO`, `ST_USUARIO`) VALUES
-(1, 'C', 'carlossilva', 'coordenador123', 'A'),
-(2, 'P', 'anacosta', 'professor123', 'A'),
-(3, 'P', 'pedrooliveira', 'professor456', 'A'),
-(4, 'P', 'marianasantos', 'professor789', 'A'),
-(5, 'A', 'lucasalmeida', 'aluno123', 'A'),
-(6, 'A', 'isabelarocha', 'aluno456', 'A'),
-(7, 'A', 'rafaelpereira', 'aluno789', 'A'),
-(8, 'P', 'gabrielmartins', 'professor987', 'A'),
-(9, 'P', 'fernandalima', 'professor654', 'A'),
-(10, 'P', 'robertosouza', 'professor321', 'A'),
-(11, 'P', 'lucaspereira', 'senha_lucas', 'A'),
-(12, 'P', 'julianacosta', 'senha_juliana', 'A'),
-(13, 'P', 'mateuslima', 'senha_mateus', 'A'),
-(14, 'P', 'beatrizalmeida', 'senha_beatriz', 'A'),
-(15, 'A', 'ana_silva', 'senha_ana', 'A'),
-(16, 'A', 'bruno_oliveira', 'senha_bruno', 'A'),
-(17, 'A', 'carla_santos', 'senha_carla', 'A'),
-(18, 'A', 'daniel_costa', 'senha_daniel', 'A'),
-(19, 'A', 'eduarda_lima', 'senha_eduarda', 'A'),
-(20, 'A', 'felipe_almeida', 'senha_felipe', 'A'),
-(21, 'A', 'gabriela_pereira', 'senha_gabriela', 'A'),
-(22, 'A', 'henrique_martins', 'senha_henrique', 'A'),
-(23, 'A', 'isabella_lima', 'senha_isabella', 'A'),
-(24, 'A', 'joao_ferreira', 'senha_joao', 'A'),
-(25, 'A', 'karla_oliveira', 'senha_karla', 'A'),
-(26, 'A', 'lucas_fernandes', 'senha_lucas', 'A'),
-(27, 'A', 'mariana_souza', 'senha_mariana', 'A'),
-(28, 'A', 'nathalia_costa', 'senha_nathalia', 'A'),
-(29, 'A', 'otavio_lima', 'senha_otavio', 'A'),
-(30, 'A', 'paula_almeida', 'senha_paula', 'A'),
-(31, 'A', 'quinn_santos', 'senha_quinn', 'A'),
-(32, 'A', 'roberta_martins', 'senha_roberta', 'A'),
-(33, 'A', 'samuel_ferreira', 'senha_samuel', 'A'),
-(34, 'A', 'tatiane_silva', 'senha_tatiane', 'A');
+(1, 'C', 'fernandoincerti', 'incertifernando', 'A'),
+(2, 'P', 'andrehelena', 'helenaandre', 'A'),
+(3, 'A', 'barbaranycolli', 'nycollibarbara', 'A'),
+(4, 'A', 'christianluan', 'luanchristian', 'A'),
+(5, 'A', 'cleitonaparecido', 'aparecidocleiton', 'A'),
+(6, 'A', 'eduardojose', 'joseeduardo', 'A'),
+(7, 'A', 'erikasartorelli', 'sartorellierika', 'A'),
+(8, 'A', 'gabrielfavero', 'faverogabriel', 'A'),
+(9, 'A', 'gabrielfelipe', 'felipegabriel', 'A'),
+(10, 'A', 'guilhermemaidana', 'maidanaguilherme', 'A'),
+(11, 'A', 'gustavomuller', 'mullergustavo', 'A'),
+(12, 'A', 'hebernaldtheopile', 'theopilehebernald', 'A'),
+(13, 'A', 'heitormiguel', 'miguelheitor', 'A'),
+(14, 'A', 'ianmarco', 'marcoian', 'A'),
+(15, 'A', 'jeanluca', 'lucajean', 'A'),
+(16, 'A', 'jeffersontales', 'talesjefferson', 'A'),
+(17, 'A', 'joaootavio', 'otaviojoao', 'A'),
+(18, 'A', 'joaovitor', 'vitorjoao', 'A'),
+(19, 'A', 'jorgehenrique', 'henriquejorge', 'A'),
+(20, 'A', 'juangabriel', 'gabrieljuan', 'A'),
+(21, 'A', 'kauamatheus', 'matheuskaua', 'A'),
+(22, 'A', 'kiurywoyciechowski', 'woyciechowskikiury', 'A'),
+(23, 'A', 'leonardoliogi', 'liogileonardo', 'A'),
+(24, 'A', 'leonardopaes', 'paesleonardo', 'A'),
+(25, 'A', 'luizadossantos', 'dossantosluiza', 'A'),
+(26, 'A', 'mateusmassucatto', 'massucattomateus', 'A'),
+(27, 'A', 'matheuseduardo', 'eduardomatheus', 'A'),
+(28, 'A', 'matheushenrique', 'henriquematheus', 'A'),
+(29, 'A', 'pedrohenrique', 'henriquepedro', 'A'),
+(30, 'A', 'phelipecartaxo', 'cartaxophelipe', 'A'),
+(31, 'A', 'rafaelkaito', 'kaitorafael', 'A'),
+(32, 'A', 'raultorres', 'torresraul', 'A'),
+(33, 'A', 'tiagomendonca', 'mendoncatiago', 'A'),
+(34, 'A', 'walacepereira', 'pereirawalace', 'A'),
+(35, 'A', 'willyamgabriel', 'gabrielwillyam', 'A'),
+(36, 'A', 'wyllyanribiski', 'ribiskiwyllyan', 'A');
 
 --
 -- Indexes for dumped tables
@@ -604,7 +522,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `CD_ALUNO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `CD_ALUNO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `aluno_disciplina`
@@ -628,13 +546,13 @@ ALTER TABLE `curso`
 -- AUTO_INCREMENT for table `duvida`
 --
 ALTER TABLE `duvida`
-  MODIFY `CD_DUVIDA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `CD_DUVIDA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `pergunta`
 --
 ALTER TABLE `pergunta`
-  MODIFY `CD_PERGUNTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `CD_PERGUNTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `professor`
@@ -652,13 +570,13 @@ ALTER TABLE `professor_disciplina`
 -- AUTO_INCREMENT for table `resposta`
 --
 ALTER TABLE `resposta`
-  MODIFY `CD_RESPOSTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `CD_RESPOSTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `CD_USUARIO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `CD_USUARIO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Constraints for dumped tables
@@ -696,7 +614,7 @@ ALTER TABLE `disciplina`
 --
 ALTER TABLE `duvida`
   ADD CONSTRAINT `duvida_ibfk_1` FOREIGN KEY (`CD_ALUNO`) REFERENCES `aluno_disciplina` (`CD_AL_DISCIPLINA`),
-  ADD CONSTRAINT `duvida_ibfk_2` FOREIGN KEY (`CD_PROFESSOR`) REFERENCES `professor_disciplina` (`CD_PF_DISCIPLINA`),
+  ADD CONSTRAINT `duvida_ibfk_2` FOREIGN KEY (`CD_PROFESSOR`) REFERENCES `professor_disciplina` (`CD_USUARIO`),
   ADD CONSTRAINT `duvida_ibfk_3` FOREIGN KEY (`CD_DISCIPLINA`) REFERENCES `disciplina` (`CD_DISCIPLINA`);
 
 --

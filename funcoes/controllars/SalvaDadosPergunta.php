@@ -35,12 +35,15 @@ $Pergunta->setIMAGEM($Arquivos->getRetorno_arquivo());
 
 if ($Duvida->insere_dados()) {
 
-    $cd_duvida_inserido = $Duvida->getRetorno_dados();
-
     // ALIMENTA OS DADOS DA PERGUNTA
+    if (!empty($_POST['nTextoPergunta'])) {
+        $Pergunta->setCD_DUVIDA($_POST['nCdDuvida']);
+    } else {
+        $cd_duvida_inserido = $Duvida->getRetorno_dados();
+        $Pergunta->setCD_DUVIDA($cd_duvida_inserido);
+    }
     $Pergunta->setDS_PERGUNTA($_POST['nTextoPergunta']);
     $Pergunta->setDT_HR(date("Y/m/d H:i:s", time()));
-    $Pergunta->setCD_DUVIDA($cd_duvida_inserido);
 
     if ($Pergunta->insere_dados()) {
         print 1;

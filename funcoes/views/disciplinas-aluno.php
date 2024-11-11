@@ -18,6 +18,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
             aluno_disciplina ad ON ad.CD_CURSO = c.CD_CURSO
         WHERE
             ad.CD_USUARIO = '$usuario_id'
+        LIMIT 1
     ";
     $vrsExecutaCurso = mysqli_query($conexaoMysqli, $vsSqlCurso);
 

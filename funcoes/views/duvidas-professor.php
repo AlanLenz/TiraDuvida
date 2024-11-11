@@ -70,7 +70,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
         JOIN
             professor p ON pdp.CD_USUARIO = p.CD_USUARIO
         JOIN
-            aluno a ON dv.CD_ALUNO = a.CD_ALUNO
+            aluno a ON dv.CD_ALUNO = a.CD_USUARIO
         WHERE
             d.CD_DISCIPLINA = '" . $_GET['disciplina'] . "'
             $checa_filtros
@@ -106,7 +106,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
         JOIN
             professor p ON pdp.CD_USUARIO = p.CD_USUARIO
         JOIN
-            aluno a ON dv.CD_ALUNO = a.CD_ALUNO
+            aluno a ON dv.CD_ALUNO = a.CD_USUARIO
         WHERE
             dv.CD_DESTAQUE = 'S' AND
             dv.ST_DUVIDA = 'R' AND
@@ -209,7 +209,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                 <h1 class="page_title"><?php echo $voResultadoDisciplinaCurso->DS_DISCIPLINA . " " . $voResultadoDisciplinaCurso->NR_PERIODO . "º Período" ?></h1>
                             <?php } ?>
                             <div class="filtros">
-                                <ul class="tags_list style_2 unordered_list <?php echo $viNumRowsDuvidasDestacadas == 0 ? "justify-content-center" : ""; ?>">
+                                <ul class="tags_list style_2 unordered_list_center">
                                     <li class="todas"><label for="filtro_todos"><span class="checkbox_item"><input <?php echo $_GET["status"] == "" ? "checked" : ""; ?> value="" id="filtro_todos" type="checkbox"> Todas</span></label></li>
                                     <li class="pendentes"><label for="filtro_pendentes"><span class="checkbox_item"><input <?php echo $_GET["status"] == "P" ? "checked" : ""; ?> value="P" id="filtro_pendentes" type="checkbox"> Dúvidas pendentes</span></label></li>
                                     <li class="respondidas"><label for="filtro_respondidas"><span class="checkbox_item"><input <?php echo $_GET["status"] == "R" ? "checked" : ""; ?> value="R" id="filtro_respondidas" type="checkbox"> Dúvidas Respondidas</span></label></li>
@@ -226,14 +226,19 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                     <div class="row">
                         <div class="<?php echo $viNumRowsDuvidasDestacadas == 0 ? "col-12" : "col-lg-7"; ?>">
                             <div class="comments_list_wrap">
-                                <h3 class="details_info_title">
-                                    <i class="far fa-comments"></i>
-                                    <?php
-                                    echo " " . $viNumRowsTotal;
-                                    echo $viNumRowsTotal == "1" ? " Dúvida" : " Dúvidas";
-                                    ?>
-                                </h3>
                                 <?php
+                                // VERÍFICA SE EXISTEM DÚVIDAS
+                                if ($viNumRowsTotal > 0) {
+                                ?>
+                                    <h3 class="details_info_title">
+                                        <i class="far fa-comments"></i>
+                                        <?php
+                                        echo " " . $viNumRowsTotal;
+                                        echo $viNumRowsTotal == "1" ? " Dúvida" : " Dúvidas";
+                                        ?>
+                                    </h3>
+                                <?php
+                                }
                                 // VERÍFICA SE EXISTEM DÚVIDAS
                                 if ($viNumRowsTotal > 0) {
                                 ?>
@@ -270,14 +275,22 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                         </div>
                                                         <h3><?php echo $voResultadoDuvidas->DS_TITULO ?></h3>
                                                         <p><?php echo $voResultadoPergunta->DS_PERGUNTA ?></p>
-                                                        <?php if ($voResultadoPergunta->IMAGEM !== NULL) { ?>
+                                                        <?php if (!empty($voResultadoPergunta->IMAGEM)) { ?>
                                                             <img src="<?php echo URL . "funcoes/uploads/perguntas/" . $voResultadoPergunta->IMAGEM ?>" title="<?php echo $voResultadoDuvidas->DS_TITULO ?>" alt="<?php echo "Imagem " . $voResultadoDuvidas->DS_TITULO ?>">
+                                                        <?php }
+                                                        if ($voResultadoDuvidas->CD_DESTAQUE  == "S") { ?>
+                                                            <div tooltip="Remover destaque da dúvida" class="highlight_btn" data-duvida="<?php echo $voResultadoDuvidas->CD_DUVIDA ?>">
+                                                                <i class="fas fa-star"></i>
+                                                            </div>
+                                                        <?php } else { ?>
+                                                            <div tooltip="Destacar dúvida" class="highlight_btn" data-duvida="<?php echo $voResultadoDuvidas->CD_DUVIDA ?>">
+                                                                <i class="far fa-star"></i>
+                                                            </div>
+                                                        <?php }
+                                                        if ($voResultadoDuvidas->ST_DUVIDA == "P") { ?>
+                                                            <div class="hide_btn" tooltip="Bloquear dúvida" data-duvida="<?php echo $voResultadoDuvidas->CD_DUVIDA ?>"><i class="far fa-ban"></i></div>
                                                         <?php } ?>
-                                                        <div class="highlight_btn" data-duvida="<?php echo $voResultadoDuvidas->CD_DUVIDA ?>">
-                                                            <?php echo $voResultadoDuvidas->CD_DESTAQUE  == "S" ? "<i class='fas fa-star'></i>" : "<i class='far fa-star'></i>" ?>
-                                                        </div>
-                                                        <div class="hide_btn" data-duvida="<?php echo $voResultadoDuvidas->CD_DUVIDA ?>"><i class="far fa-ban"></i></div>
-                                                        <div class="reply_btn"><i class="far fa-thumbs-up"></i> <?php echo $voResultadoDuvidas->NR_CURTIDAS ?></div>
+                                                        <div tooltip="Número de curtidas da dúvida" class="reply_btn"><i class="far fa-thumbs-up"></i> <?php echo $voResultadoDuvidas->NR_CURTIDAS ?></div>
                                                         <div class="btn-collapse" role="button" data-bs-toggle="collapse" data-bs-target="<?php echo "#duvida-" . $voResultadoDuvidas->CD_DUVIDA ?>" aria-expanded="false" aria-controls="<?php echo "duvida-" . $voResultadoDuvidas->CD_DUVIDA ?>"></div>
                                                     </div>
                                                     <ul class="comments_list unordered_list_block collapse" id="<?php echo "duvida-" . $voResultadoDuvidas->CD_DUVIDA ?>">
@@ -337,7 +350,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                                             </div>
                                                                         </div>
                                                                         <p><?php echo $voResultadoResposta->DS_RESPOSTA ?></p>
-                                                                        <?php if ($voResultadoResposta->IMAGEM !== NULL) { ?>
+                                                                        <?php if (!empty($voResultadoResposta->IMAGEM)) { ?>
                                                                             <img src="<?php echo URL . "funcoes/uploads/respostas/" . $voResultadoResposta->IMAGEM ?>" title="<?php echo $voResultadoDuvidas->DS_TITULO ?>" alt="<?php echo "Imagem " . $voResultadoDuvidas->DS_TITULO ?>">
                                                                         <?php } ?>
                                                                     </div>
@@ -348,13 +361,18 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                             $vsSqlComentarios = "
                                                                 SELECT
                                                                     DS_PERGUNTA,
+                                                                    IMAGEM,
                                                                     DATE_FORMAT(DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_COMENTARIO
                                                                 FROM
                                                                     pergunta
                                                                 WHERE
-                                                                    CD_DUVIDA =! $voResultadoDuvidas->CD_DUVIDA
+                                                                    CD_DUVIDA = $voResultadoDuvidas->CD_DUVIDA
                                                                 ORDER BY
                                                                     CD_PERGUNTA
+                                                                LIMIT
+                                                                    100
+                                                                OFFSET
+                                                                    1
                                                             ";
                                                             $vrsExecutaComentarios = mysqli_query($conexaoMysqli, $vsSqlComentarios) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
                                                             while ($voResultadoComentarios = mysqli_fetch_object($vrsExecutaComentarios)) {
@@ -368,6 +386,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                                             </div>
                                                                         </div>
                                                                         <p><?php echo $voResultadoComentarios->DS_PERGUNTA ?></p>
+                                                                        <?php if (!empty($voResultadoComentarios->IMAGEM)) { ?>
+                                                                            <img src="<?php echo URL . "funcoes/uploads/perguntas/" . $voResultadoComentarios->IMAGEM ?>" title="<?php echo $voResultadoDuvidas->DS_TITULO ?>" alt="<?php echo "Imagem " . $voResultadoDuvidas->DS_TITULO ?>">
+                                                                        <?php } ?>
                                                                         <div class="reply_btn">COMENTÁRIO</div>
                                                                     </div>
                                                                 </li>
@@ -384,6 +405,17 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                         }
                                         ?>
                                     </ul>
+                                <?php
+                                } else {
+                                ?>
+                                    <div class="no-results">
+                                        <?php if (!empty($_GET["status"])) { ?>
+                                            <h1 class="page_title">Nenhuma dúvida encontrada</h1>
+                                            <p>Tente remover os filtros selecionados</p>
+                                        <?php } else { ?>
+                                            <h1 class="page_title">Nenhuma dúvida encontrada</h1>
+                                        <?php } ?>
+                                    </div>
                                 <?php
                                 }
                                 ?>
@@ -446,7 +478,8 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                             $vsSqlPerguntaDestacada = "
                                                 SELECT
                                                     CD_PERGUNTA,
-                                                    DS_PERGUNTA
+                                                    DS_PERGUNTA,
+                                                    IMAGEM
                                                 FROM
                                                     pergunta
                                                 WHERE
@@ -467,10 +500,12 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                     </div>
                                                     <h3><?php echo $voResultadoDuvidasDestacadas->DS_TITULO ?></h3>
                                                     <p><?php echo $voResultadoPerguntaDestacada->DS_PERGUNTA ?></p>
-                                                    <div class="highlight_btn" data-duvida="<?php echo $voResultadoDuvidasDestacadas->CD_DUVIDA ?>">
+                                                    <?php if (!empty($voResultadoPerguntaDestacada->IMAGEM)) { ?>
+                                                        <img src="<?php echo URL . "funcoes/uploads/perguntas/" . $voResultadoPerguntaDestacada->IMAGEM ?>" title="<?php echo $voResultadoDuvidasDestacadas->DS_TITULO ?>" alt="<?php echo "Imagem " . $voResultadoDuvidasDestacadas->DS_TITULO ?>">
+                                                    <?php } ?>
+                                                    <div class="highlight_btn" tooltip="Remover destaque da dúvida" data-duvida="<?php echo $voResultadoDuvidasDestacadas->CD_DUVIDA ?>">
                                                         <?php echo $voResultadoDuvidasDestacadas->CD_DESTAQUE  == "S" ? "<i class='fas fa-star'></i>" : "<i class='far fa-star'></i>" ?>
                                                     </div>
-                                                    <div class="hide_btn" data-duvida="<?php echo $voResultadoDuvidasDestacadas->CD_DUVIDA ?>"><i class="far fa-ban"></i></div>
                                                     <div class="reply_btn"><i class="far fa-thumbs-up"></i> <?php echo $voResultadoDuvidasDestacadas->NR_CURTIDAS ?></div>
                                                     <div class="btn-collapse" role="button" data-bs-toggle="collapse" data-bs-target="<?php echo "#duvidaDestaque-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>" aria-expanded="false" aria-controls="<?php echo "duvida-" . $voResultadoDuvidasDestacadas->CD_DUVIDA ?>"></div>
                                                 </div>
@@ -480,6 +515,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                     $vsSqlRespostaDestacada = "
                                                         SELECT
                                                             DS_RESPOSTA,
+                                                            IMAGEM,
                                                             DATE_FORMAT(DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_RESPOSTA
                                                         FROM
                                                             resposta
@@ -503,6 +539,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                                     </div>
                                                                 </div>
                                                                 <p><?php echo $voResultadoRespostaDestacada->DS_RESPOSTA ?></p>
+                                                                <?php if (!empty($voResultadoRespostaDestacada->IMAGEM)) { ?>
+                                                                    <img src="<?php echo URL . "funcoes/uploads/respostas/" . $voResultadoRespostaDestacada->IMAGEM ?>" title="<?php echo $voResultadoDuvidasDestacadas->DS_TITULO ?>" alt="<?php echo "Imagem " . $voResultadoDuvidasDestacadas->DS_TITULO ?>">
+                                                                <?php } ?>
                                                                 <div class="reply_btn">RESPOSTA</div>
                                                             </div>
                                                         </li>
@@ -512,6 +551,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                     $vsSqlComentariosDestacados = "
                                                         SELECT
                                                             DS_PERGUNTA,
+                                                            IMAGEM,
                                                             DATE_FORMAT(DT_HR, '%d/%m/%Y às %H:%i') AS DATA_HORA_COMENTARIO
                                                         FROM
                                                             pergunta
@@ -519,6 +559,10 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                             CD_DUVIDA =! $voResultadoDuvidasDestacadas->CD_DUVIDA
                                                         ORDER BY
                                                             CD_PERGUNTA
+                                                        LIMIT
+                                                            100
+                                                        OFFSET
+                                                            1
                                                     ";
                                                     $vrsExecutaComentariosDestacados = mysqli_query($conexaoMysqli, $vsSqlComentariosDestacados) or die("Erro ao efetuar a operação no banco de dados! <br> Arquivo:" . __FILE__ . "<br>Linha:" . __LINE__ . "<br>Erro:" . mysqli_error($conexaoMysqli));
                                                     while ($voResultadoComentariosDestacados = mysqli_fetch_object($vrsExecutaComentariosDestacados)) {
@@ -532,6 +576,9 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && ($_SE
                                                                     </div>
                                                                 </div>
                                                                 <p><?php echo $voResultadoComentariosDestacados->DS_PERGUNTA ?></p>
+                                                                <?php if (!empty($voResultadoComentariosDestacados->IMAGEM)) { ?>
+                                                                    <img src="<?php echo URL . "funcoes/uploads/perguntas/" . $voResultadoComentariosDestacados->IMAGEM ?>" title="<?php echo $voResultadoDuvidasDestacadas->DS_TITULO ?>" alt="<?php echo "Imagem " . $voResultadoDuvidasDestacadas->DS_TITULO ?>">
+                                                                <?php } ?>
                                                                 <div class="reply_btn">COMENTÁRIO</div>
                                                             </div>
                                                         </li>

@@ -1,3 +1,24 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset($_SESSION['tipo_usuario'])) {
+    $usuario_id = $_SESSION['usuario_id'];
+    $tipo_usuario = $_SESSION['tipo_usuario'];
+
+    if ($tipo_usuario == "A") {
+        $vsSqlUsuario = "SELECT a.NM_ALUNO AS NM_USUARIO FROM aluno a WHERE a.CD_USUARIO = '$usuario_id'";
+        $vrsExecutaUsuario = mysqli_query($conexaoMysqli, $vsSqlUsuario);
+    } else if ($tipo_usuario == "P" || $tipo_usuario == "C") {
+        $vsSqlUsuario = "SELECT p.NM_PROFESSOR AS NM_USUARIO FROM professor p WHERE p.CD_USUARIO = '$usuario_id'";
+        $vrsExecutaUsuario = mysqli_query($conexaoMysqli, $vsSqlUsuario);
+    } else {
+        header("Location: login");
+    }
+} else {
+    header("Location: login");
+}
+?>
 <!doctype html>
 <html lang="pt-br">
 
@@ -38,13 +59,25 @@
                                     <i class="far fa-bars"></i>
                                 </button>
                             </li>
-                            <li class="nome_aluno">Olá, John Doe</li>
+                            <?php while ($voResultadoUsuario = mysqli_fetch_object($vrsExecutaUsuario)) { ?>
+                                <li class="nome_aluno">
+                                    <?php echo $tipo_usuario == "A" ? "Olá, " : "Olá, Professor(a)"; echo $voResultadoUsuario->NM_USUARIO ?>
+                                </li>
+                            <?php } ?>
                             <li class="nome_aluno"> | </li>
-                            <li class="logout">
-                                <a href="login">
-                                    <i class="far fa-sign-out-alt" title="Sair"></i>
-                                </a>
-                            </li>
+                            <div class="dropdown">
+                                <li>
+                                    <button class="btn btn-dropdown-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                    <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                                        <?php if ($tipo_usuario == "A") { ?>
+                                            <li><a class="dropdown-item" href="<?php echo URL . "disciplinas-aluno" ?>">Disciplinas</a></li>
+                                        <?php } else if ($tipo_usuario == "P" || $tipo_usuario == "C") { ?>
+                                            <li><a class="dropdown-item" href="<?php echo URL . "periodos-professor" ?>">Períodos</a></li>
+                                        <?php } ?>
+                                        <li><button type="button" class="abre_modal_logoff dropdown-item logoff-button"><i class="far fa-sign-out-alt" title="Sair"></i> Sair</button></li>
+                                    </ul>
+                                </li>
+                            </div>
                         </ul>
                     </div>
                 </div>

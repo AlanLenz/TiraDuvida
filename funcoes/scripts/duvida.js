@@ -41,22 +41,21 @@ function atualizarNumeroCurtidas(novoNumeroCurtidas, viCD_DUVIDA) {
     }
 }
 
-function atualiza_curtidas(viCD_DUVIDA) {
-
+function atualiza_curtidas(viCD_DUVIDA, viCD_ALUNO) {
     $.ajax({
         url: vsUrl + "funcoes/controllars/AtualizaCurtidasDuvida.php",
         type: "POST",
         dataType: "json",
-        async: false,
-        data: ({
-            viCD_DUVIDA: viCD_DUVIDA
-        }),
+        data: {
+            viCD_DUVIDA: viCD_DUVIDA,
+            viCD_ALUNO: viCD_ALUNO
+        },
         success: function (data) {
-            if (data.status == 1) {
+            if (data.status === 1) {
                 mostrarMensagemSucesso();
                 atualizarNumeroCurtidas(data.novoNumeroCurtidas, viCD_DUVIDA);
             } else {
-                Aviso(); // Exibir aviso em caso de falha na atualização
+                Aviso();
             }
         },
         error: function () {
@@ -65,16 +64,17 @@ function atualiza_curtidas(viCD_DUVIDA) {
     });
 }
 
+
 function mostrarMensagemSucesso() {
     const mensagem = document.createElement("div");
     mensagem.className = "mensagem-sucesso";
     mensagem.innerText = "Curtida atualizada com sucesso!";
     document.body.appendChild(mensagem);
 
-    // Remove a mensagem após 3 segundos
+    // Remove a mensagem após 1 segundo e meio
     setTimeout(() => {
         mensagem.remove();
-    }, 3000);
+    }, 1500);
 }
 
 
@@ -126,13 +126,14 @@ function destaca_duvida(viCD_DUVIDA) {
 
 $('.like_btn').click(function () {
     var duvidaId = $(this).data('duvida');
-    atualiza_curtidas(duvidaId);
+    var alunoId = $("#iCdAluno").val();
+    atualiza_curtidas(duvidaId, alunoId);
 });
 
 $('.hide_btn').click(function () {
     var duvidaId = $(this).data('duvida');
     swal({
-        title: "Você deseja ocultar a dúvida selecionada?",
+        title: "Você deseja atualizar a dúvida selecionada?",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
@@ -147,7 +148,7 @@ $('.hide_btn').click(function () {
 $('.highlight_btn').click(function () {
     var duvidaId = $(this).data('duvida');
     swal({
-        title: "Você deseja destacar a dúvida selecionada?",
+        title: "Você deseja atualizar a dúvida selecionada?",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#57f9ab",

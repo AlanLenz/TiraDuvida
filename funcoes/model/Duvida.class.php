@@ -168,7 +168,7 @@ class Duvida extends ConexaoPdo
         }
     }
 
-    public function obter_numero_curtidas() {
+    public function obter_numero_curtidas($CD_DUVIDA) {
         try {
             $pdo = parent::getDB();
 
@@ -180,7 +180,7 @@ class Duvida extends ConexaoPdo
                 WHERE
                     CD_DUVIDA = ?
             ');
-            $consulta->execute([$this->CD_DUVIDA]);
+            $consulta->execute([$CD_DUVIDA]);
             $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
             
             // Retorna o número de curtidas, ou 0 se não houver um valor definido
@@ -191,64 +191,37 @@ class Duvida extends ConexaoPdo
         }
     }
 
-    public function atualiza_numero_curtidas() {
-        try {
-            $pdo = parent::getDB();
-    
-            // Conta o número de curtidas (CURTIDA = 1) para a dúvida especificada
-            $consulta = $pdo->prepare('
-                SELECT
-                    COUNT(*) as totalCurtidas 
-                FROM
-                    curtida_duvida_aluno 
-                WHERE
-                    CD_DUVIDA = ? AND
-                    CURTIDA = 1
-            ');
-            $consulta->execute([$this->CD_DUVIDA]);
-            $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
-    
-            // Atualiza o campo NR_CURTIDAS na tabela duvida
-            $atualiza = $pdo->prepare('
-                UPDATE
-                    duvida
-                SET
-                    NR_CURTIDAS = ? 
-                WHERE
-                    CD_DUVIDA = ?
-            ');
-            $atualiza->execute([$resultado['totalCurtidas'], $this->CD_DUVIDA]);
-    
-            return true;
-        } catch (PDOException $e) {
-            echo 'Erro: ' . $e->getMessage();
-            return false;
-        }
-    }
-    
-
-    public function atualiza_curtidas($CD_ALUNO) {
+    public function atualiza_curtidas($CD_DUVIDA, $CD_ALUNO) {
         try {
             $pdo = parent::getDB();
     
             // Verifica se já existe uma entrada para o aluno e dúvida específicos
             $consulta = $pdo->prepare('
                 SELECT
-                    CURTIDA
+                    cdc.CD_DUVIDA,
+                    cdc.CURTIDA,
+                    cdc.CD_ALUNO,
+                    d.NR_CURTIDAS
                 FROM
-                    curtida_duvida_aluno 
+                    curtida_duvida_aluno cdc
+                    LEFT JOIN duvida d ON d.CD_DUVIDA = cdc.CD_DUVIDA
                 WHERE
-                    CD_ALUNO = ? AND
-                    CD_DUVIDA = ?
+                    cdc.CD_DUVIDA = ? AND
+                    cdc.CD_ALUNO = ?
             ');
-            $consulta->execute([$CD_ALUNO, $this->CD_DUVIDA]);
+            $consulta->execute([$CD_DUVIDA, $CD_ALUNO]);
             $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
     
             if ($resultado) {
                 // Se existe uma entrada, alterna o valor de CURTIDA entre 1 e 0
-                $novo_valor = ($resultado['CURTIDA'] == 1) ? 0 : 1;
-    
-                $atualiza = $pdo->prepare('
+                $novo_valor_aux = $resultado['CURTIDA'];
+                $num_curtidas_aux = $resultado['NR_CURTIDAS'];
+                $cd_aluno_aux = $resultado['CD_ALUNO'];
+                $cd_duvida_aux = $resultado['CD_DUVIDA'];
+                $novo_valor_curtida = ($novo_valor_aux == 1) ? 0 : 1;
+                $novo_valor_final = ($novo_valor_aux == 1) ? $num_curtidas_aux -1 : $num_curtidas_aux +1;
+                
+                $atualiza_tab_curtidas = $pdo->prepare('
                     UPDATE
                         curtida_duvida_aluno 
                     SET
@@ -257,20 +230,26 @@ class Duvida extends ConexaoPdo
                         CD_ALUNO = ? AND
                         CD_DUVIDA = ?
                 ');
-                $atualiza->execute([$novo_valor, $CD_ALUNO, $this->CD_DUVIDA]);
+                $atualiza_tab_curtidas->execute([$novo_valor_curtida, $cd_aluno_aux, $cd_duvida_aux]);
+
+                $atualiza_tab_duvidas = $pdo->prepare('
+                    UPDATE
+                        duvida
+                    SET
+                        NR_CURTIDAS = ?
+                    WHERE
+                        CD_DUVIDA = ?
+                ');
+                $atualiza_tab_duvidas->execute([$novo_valor_final, $cd_duvida_aux]);
     
             } else {
-                // Se não existe uma entrada, insere uma nova com CURTIDA = 1
-                $insere = $pdo->prepare('
+                $insere_tab_curtidas = $pdo->prepare('
                     INSERT INTO curtida_duvida_aluno (CD_ALUNO, CD_DUVIDA, CURTIDA) 
                     VALUES (?, ?, 1)
                 ');
-                $insere->execute([$CD_ALUNO, $this->CD_DUVIDA]);
+                $insere_tab_curtidas->execute([$CD_ALUNO, $CD_DUVIDA]);
             }
-    
-            // Atualiza o total de curtidas na tabela duvida
-            $this->atualiza_numero_curtidas();
-    
+
             return true;
         } catch (PDOException $e) {
             echo 'Erro: ' . $e->getMessage();

@@ -1,12 +1,16 @@
 <?php
 session_start();
 
-if ($_SESSION['tipo_usuario'] == "A") {
-    $linkPaginaInicial = "disciplinas-aluno";
-} else if ($_SESSION['tipo_usuario'] == "P" || $_SESSION['tipo_usuario'] == "C") {
-    $linkPaginaInicial = "periodos-professor";
+if (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_login']) && isset($_SESSION['tipo_usuario'])) {
+    if ($_SESSION['tipo_usuario'] == "A") {
+        $linkPaginaInicial = "disciplinas-aluno";
+    } else if ($_SESSION['tipo_usuario'] == "P" || $_SESSION['tipo_usuario'] == "C") {
+        $linkPaginaInicial = "periodos-professor";
+    } else {
+        $linkPaginaInicial = "login";
+    }
 } else {
-    $linkPaginaInicial = "login";
+    header("Location: login");
 }
 ?>
 

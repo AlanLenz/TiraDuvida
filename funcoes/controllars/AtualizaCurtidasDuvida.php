@@ -7,12 +7,18 @@ require_once "../model/Duvida.class.php";
 $Duvida = new Duvida();
 
 //ALIMENTA VARIAVEIS PARA CADASTRO NO BANCO
-$Duvida->setCD_DUVIDA($_POST['viCD_DUVIDA']);
+$viCD_DUVIDA = $_POST['viCD_DUVIDA'];
+$viCD_ALUNO = $_POST['viCD_ALUNO'];
 
-//VERIFICA SE CADASTROU NO BANCO
-if ($Duvida->atualiza_curtidas($_POST['viCD_DUVIDA'])) {
-    $novoNumeroCurtidas = $Duvida->obter_numero_curtidas($_POST['viCD_DUVIDA']);
-    echo json_encode(["status" => 1, "novoNumeroCurtidas" => $novoNumeroCurtidas]);
+// Verifica se as variáveis estão definidas
+if (isset($viCD_DUVIDA) && isset($viCD_ALUNO)) {
+    // Atualiza curtidas e obtem o número atualizado de curtidas
+    if ($Duvida->atualiza_curtidas($viCD_DUVIDA, $viCD_ALUNO)) {
+        $novoNumeroCurtidas = $Duvida->obter_numero_curtidas($viCD_DUVIDA);
+        echo json_encode(["status" => 1, "novoNumeroCurtidas" => $novoNumeroCurtidas]);
+    } else {
+        echo json_encode(["status" => 0]);
+    }
 } else {
-    print 0;
+    echo json_encode(["status" => 0, "error" => "Dados incompletos."]);
 }
