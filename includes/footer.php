@@ -15,7 +15,7 @@
     </div>
     <div class="copyright_widget">
         <div class="container">
-            <p class="copyright_text text-center mb-0"><?php echo "Copyright " . date("Y") . " © " . TITULO . ". Todos direitos reservados | " ?><a href="<?php echo URL . "politica-privacidade" ?>">Política de privacidade</a>.</p>
+            <p class="copyright_text text-center mb-0"><?php echo "Copyright " . date("Y") . " © " . TITULO . ". Todos direitos reservados | " ?><a href="<?php echo URL . "politicaPrivacidade" ?>">Política de privacidade</a>.</p>
         </div>
     </div>
 </footer>

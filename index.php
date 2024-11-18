@@ -1,13 +1,10 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(0);
 date_default_timezone_set('America/Sao_Paulo');
-// $data_hora_atual = date("Y-m-d H:i:s");
 
-include 'funcoes/config.php';
-include 'includes/conexao-mysqli.php';
+include 'src/config.php';
+include 'includes/conexaoMysqli.php';
 
 $conexaoMysqli = conectaMysqli();
 
@@ -19,31 +16,31 @@ switch ($Url[0]) {
     case "login":
         $pagina = "login";
         break;
-    case "periodos-professor":
-        $pagina = "periodos-professor";
+    case "periodosProfessor":
+        $pagina = "periodosProfessor";
         break;
-    case "disciplinas-professor":
-        $pagina = "disciplinas-professor";
+    case "disciplinasProfessor":
+        $pagina = "disciplinasProfessor";
         break;
-    case "duvidas-professor":
-        $pagina = "duvidas-professor";
+    case "duvidasProfessor":
+        $pagina = "duvidasProfessor";
         break;
-    case "disciplinas-aluno":
-        $pagina = "disciplinas-aluno";
+    case "disciplinasAluno":
+        $pagina = "disciplinasAluno";
         break;
-    case "duvidas-aluno":
-        $pagina = "duvidas-aluno";
+    case "duvidasAluno":
+        $pagina = "duvidasAluno";
         break;
-    case "politica-privacidade":
-        $pagina = "politica-privacidade";
+    case "politicaPrivacidade":
+        $pagina = "politicaPrivacidade";
         break;
     default:
         $pagina = "404";
         break;
 }
 
-if (file_exists("funcoes/views/$pagina.php")) {
-    include "funcoes/views/$pagina.php";
+if (file_exists("src/views/$pagina.php")) {
+    include "src/views/$pagina.php";
 } else {
-    include "funcoes/views/404.php";
+    include "src/views/404.php";
 }

@@ -1,42 +1,41 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
+-- version 4.3.7
+-- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 12, 2024 at 12:54 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: mysql26-farm1.kinghost.net
+-- Tempo de geração: 17/11/2024 às 23:49
+-- Versão do servidor: 10.2.36-MariaDB-log
+-- Versão do PHP: 5.3.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `tiraduvida`
+-- Banco de dados: `tiraduvida`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `aluno`
+-- Estrutura para tabela `aluno`
 --
 
-CREATE TABLE `aluno` (
+CREATE TABLE IF NOT EXISTS `aluno` (
   `CD_ALUNO` int(11) NOT NULL,
   `RA_ALUNO` varchar(32) DEFAULT NULL,
   `NM_ALUNO` varchar(128) DEFAULT NULL,
   `NR_PERIODO` int(11) DEFAULT NULL,
   `CD_USUARIO` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `aluno`
+-- Fazendo dump de dados para tabela `aluno`
 --
 
 INSERT INTO `aluno` (`CD_ALUNO`, `RA_ALUNO`, `NM_ALUNO`, `NR_PERIODO`, `CD_USUARIO`) VALUES
@@ -78,19 +77,19 @@ INSERT INTO `aluno` (`CD_ALUNO`, `RA_ALUNO`, `NM_ALUNO`, `NR_PERIODO`, `CD_USUAR
 -- --------------------------------------------------------
 
 --
--- Table structure for table `aluno_disciplina`
+-- Estrutura para tabela `aluno_disciplina`
 --
 
-CREATE TABLE `aluno_disciplina` (
+CREATE TABLE IF NOT EXISTS `aluno_disciplina` (
   `CD_AL_DISCIPLINA` int(11) NOT NULL,
   `ST_AL_DISCIPLINA` varchar(1) DEFAULT NULL,
   `CD_USUARIO` int(11) DEFAULT NULL,
   `CD_CURSO` int(11) DEFAULT NULL,
   `CD_DISCIPLINA` varchar(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `aluno_disciplina`
+-- Fazendo dump de dados para tabela `aluno_disciplina`
 --
 
 INSERT INTO `aluno_disciplina` (`CD_AL_DISCIPLINA`, `ST_AL_DISCIPLINA`, `CD_USUARIO`, `CD_CURSO`, `CD_DISCIPLINA`) VALUES
@@ -132,20 +131,20 @@ INSERT INTO `aluno_disciplina` (`CD_AL_DISCIPLINA`, `ST_AL_DISCIPLINA`, `CD_USUA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `coordenador`
+-- Estrutura para tabela `coordenador`
 --
 
-CREATE TABLE `coordenador` (
+CREATE TABLE IF NOT EXISTS `coordenador` (
   `CD_COORDENADOR` int(11) NOT NULL,
   `NR_CPF` varchar(11) DEFAULT NULL,
   `NM_COORDENADOR` varchar(128) DEFAULT NULL,
   `US_PROFESSOR` varchar(1) DEFAULT NULL,
   `CD_CURSO` int(11) DEFAULT NULL,
   `CD_USUARIO` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `coordenador`
+-- Fazendo dump de dados para tabela `coordenador`
 --
 
 INSERT INTO `coordenador` (`CD_COORDENADOR`, `NR_CPF`, `NM_COORDENADOR`, `US_PROFESSOR`, `CD_CURSO`, `CD_USUARIO`) VALUES
@@ -154,18 +153,18 @@ INSERT INTO `coordenador` (`CD_COORDENADOR`, `NR_CPF`, `NM_COORDENADOR`, `US_PRO
 -- --------------------------------------------------------
 
 --
--- Table structure for table `curso`
+-- Estrutura para tabela `curso`
 --
 
-CREATE TABLE `curso` (
+CREATE TABLE IF NOT EXISTS `curso` (
   `CD_CURSO` int(11) NOT NULL,
   `DS_CURSO` varchar(128) DEFAULT NULL,
   `TOT_PERIODO` int(11) DEFAULT NULL,
   `ST_CURSO` varchar(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `curso`
+-- Fazendo dump de dados para tabela `curso`
 --
 
 INSERT INTO `curso` (`CD_CURSO`, `DS_CURSO`, `TOT_PERIODO`, `ST_CURSO`) VALUES
@@ -174,39 +173,41 @@ INSERT INTO `curso` (`CD_CURSO`, `DS_CURSO`, `TOT_PERIODO`, `ST_CURSO`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `curtida_duvida_aluno`
+-- Estrutura para tabela `curtida_duvida_aluno`
 --
 
-CREATE TABLE `curtida_duvida_aluno` (
+CREATE TABLE IF NOT EXISTS `curtida_duvida_aluno` (
   `CD_DUVIDA` int(11) NOT NULL,
   `CURTIDA` int(11) NOT NULL,
   `CD_ALUNO` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `curtida_duvida_aluno`
+-- Fazendo dump de dados para tabela `curtida_duvida_aluno`
 --
 
 INSERT INTO `curtida_duvida_aluno` (`CD_DUVIDA`, `CURTIDA`, `CD_ALUNO`) VALUES
-(8, 1, 4);
+(8, 1, 4),
+(16, 0, 20),
+(16, 0, 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `disciplina`
+-- Estrutura para tabela `disciplina`
 --
 
-CREATE TABLE `disciplina` (
+CREATE TABLE IF NOT EXISTS `disciplina` (
   `CD_DISCIPLINA` varchar(11) NOT NULL,
   `CD_TURNO` varchar(1) NOT NULL,
   `NR_PERIODO` int(11) DEFAULT NULL,
   `DS_DISCIPLINA` varchar(128) DEFAULT NULL,
   `ST_DISCIPLINA` varchar(1) DEFAULT NULL,
   `CD_CURSO` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `disciplina`
+-- Fazendo dump de dados para tabela `disciplina`
 --
 
 INSERT INTO `disciplina` (`CD_DISCIPLINA`, `CD_TURNO`, `NR_PERIODO`, `DS_DISCIPLINA`, `ST_DISCIPLINA`, `CD_CURSO`) VALUES
@@ -259,10 +260,10 @@ INSERT INTO `disciplina` (`CD_DISCIPLINA`, `CD_TURNO`, `NR_PERIODO`, `DS_DISCIPL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `duvida`
+-- Estrutura para tabela `duvida`
 --
 
-CREATE TABLE `duvida` (
+CREATE TABLE IF NOT EXISTS `duvida` (
   `CD_DUVIDA` int(11) NOT NULL,
   `DS_TITULO` varchar(64) DEFAULT NULL,
   `CD_DESTAQUE` varchar(1) DEFAULT NULL,
@@ -273,37 +274,51 @@ CREATE TABLE `duvida` (
   `CD_ALUNO` int(11) DEFAULT NULL,
   `CD_PROFESSOR` int(11) DEFAULT NULL,
   `CD_DISCIPLINA` varchar(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+
+--
+-- Fazendo dump de dados para tabela `duvida`
+--
+
+INSERT INTO `duvida` (`CD_DUVIDA`, `DS_TITULO`, `CD_DESTAQUE`, `NR_CURTIDAS`, `TP_RESPOSTA`, `DT_HR`, `ST_DUVIDA`, `CD_ALUNO`, `CD_PROFESSOR`, `CD_DISCIPLINA`) VALUES
+(16, 'MER', 'S', 1, NULL, '2024-11-18 01:19:33', 'R', 18, 2, 'EGS19503');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pergunta`
+-- Estrutura para tabela `pergunta`
 --
 
-CREATE TABLE `pergunta` (
+CREATE TABLE IF NOT EXISTS `pergunta` (
   `CD_PERGUNTA` int(11) NOT NULL,
   `DS_PERGUNTA` varchar(3600) DEFAULT NULL,
   `IMAGEM` longtext DEFAULT NULL,
   `DT_HR` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `CD_DUVIDA` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+--
+-- Fazendo dump de dados para tabela `pergunta`
+--
+
+INSERT INTO `pergunta` (`CD_PERGUNTA`, `DS_PERGUNTA`, `IMAGEM`, `DT_HR`, `CD_DUVIDA`) VALUES
+(17, 'Estou com dúvidas sobre o conceito do MER, pode me dar um resumo?', '', '2024-11-18 01:19:33', 16);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `professor`
+-- Estrutura para tabela `professor`
 --
 
-CREATE TABLE `professor` (
+CREATE TABLE IF NOT EXISTS `professor` (
   `CD_PROFESSOR` int(11) NOT NULL,
   `NR_CPF` varchar(11) DEFAULT NULL,
   `NM_PROFESSOR` varchar(128) DEFAULT NULL,
   `CD_USUARIO` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `professor`
+-- Fazendo dump de dados para tabela `professor`
 --
 
 INSERT INTO `professor` (`CD_PROFESSOR`, `NR_CPF`, `NM_PROFESSOR`, `CD_USUARIO`) VALUES
@@ -312,19 +327,19 @@ INSERT INTO `professor` (`CD_PROFESSOR`, `NR_CPF`, `NM_PROFESSOR`, `CD_USUARIO`)
 -- --------------------------------------------------------
 
 --
--- Table structure for table `professor_disciplina`
+-- Estrutura para tabela `professor_disciplina`
 --
 
-CREATE TABLE `professor_disciplina` (
+CREATE TABLE IF NOT EXISTS `professor_disciplina` (
   `CD_PF_DISCIPLINA` int(11) NOT NULL,
   `ST_PF_DISCIPLINA` varchar(1) DEFAULT NULL,
   `CD_USUARIO` int(11) DEFAULT NULL,
   `CD_CURSO` int(11) DEFAULT NULL,
   `CD_DISCIPLINA` varchar(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `professor_disciplina`
+-- Fazendo dump de dados para tabela `professor_disciplina`
 --
 
 INSERT INTO `professor_disciplina` (`CD_PF_DISCIPLINA`, `ST_PF_DISCIPLINA`, `CD_USUARIO`, `CD_CURSO`, `CD_DISCIPLINA`) VALUES
@@ -333,24 +348,31 @@ INSERT INTO `professor_disciplina` (`CD_PF_DISCIPLINA`, `ST_PF_DISCIPLINA`, `CD_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `resposta`
+-- Estrutura para tabela `resposta`
 --
 
-CREATE TABLE `resposta` (
+CREATE TABLE IF NOT EXISTS `resposta` (
   `CD_RESPOSTA` int(11) NOT NULL,
   `DS_RESPOSTA` varchar(3600) DEFAULT NULL,
   `IMAGEM` longtext DEFAULT NULL,
   `DT_HR` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `CD_PERGUNTA` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+--
+-- Fazendo dump de dados para tabela `resposta`
+--
+
+INSERT INTO `resposta` (`CD_RESPOSTA`, `DS_RESPOSTA`, `IMAGEM`, `DT_HR`, `CD_PERGUNTA`) VALUES
+(10, 'O Modelo Entidade-Relacionamento (MER) é uma técnica de modelagem de dados que representa graficamente a estrutura lógica de um banco de dados. Ele inclui entidades (objetos do mundo real), atributos (propriedades das entidades) e relacionamentos (associações entre entidades).', '', '2024-11-18 01:20:45', 17);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tamanho_imagens`
+-- Estrutura para tabela `tamanho_imagens`
 --
 
-CREATE TABLE `tamanho_imagens` (
+CREATE TABLE IF NOT EXISTS `tamanho_imagens` (
   `id_tamanho_imagens` int(11) NOT NULL,
   `tabela` varchar(100) DEFAULT NULL,
   `campo` varchar(100) DEFAULT NULL,
@@ -358,10 +380,10 @@ CREATE TABLE `tamanho_imagens` (
   `altura` varchar(45) DEFAULT NULL,
   `largura_thumb` varchar(45) DEFAULT NULL,
   `altura_thumb` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tamanho_imagens`
+-- Fazendo dump de dados para tabela `tamanho_imagens`
 --
 
 INSERT INTO `tamanho_imagens` (`id_tamanho_imagens`, `tabela`, `campo`, `largura`, `altura`, `largura_thumb`, `altura_thumb`) VALUES
@@ -371,19 +393,19 @@ INSERT INTO `tamanho_imagens` (`id_tamanho_imagens`, `tabela`, `campo`, `largura
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estrutura para tabela `usuario`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE IF NOT EXISTS `usuario` (
   `CD_USUARIO` int(11) NOT NULL,
   `TP_USUARIO` varchar(1) DEFAULT NULL,
   `NM_USUARIO` varchar(25) DEFAULT NULL,
   `SN_USUARIO` varchar(64) DEFAULT NULL,
   `ST_USUARIO` varchar(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `usuario`
+-- Fazendo dump de dados para tabela `usuario`
 --
 
 INSERT INTO `usuario` (`CD_USUARIO`, `TP_USUARIO`, `NM_USUARIO`, `SN_USUARIO`, `ST_USUARIO`) VALUES
@@ -425,224 +447,193 @@ INSERT INTO `usuario` (`CD_USUARIO`, `TP_USUARIO`, `NM_USUARIO`, `SN_USUARIO`, `
 (36, 'A', 'wyllyanribiski', 'ribiskiwyllyan', 'A');
 
 --
--- Indexes for dumped tables
+-- Índices de tabelas apagadas
 --
 
 --
--- Indexes for table `aluno`
+-- Índices de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  ADD PRIMARY KEY (`CD_ALUNO`),
-  ADD UNIQUE KEY `RA_ALUNO` (`RA_ALUNO`),
-  ADD KEY `CD_USUARIO` (`CD_USUARIO`);
+  ADD PRIMARY KEY (`CD_ALUNO`), ADD UNIQUE KEY `RA_ALUNO` (`RA_ALUNO`), ADD KEY `CD_USUARIO` (`CD_USUARIO`);
 
 --
--- Indexes for table `aluno_disciplina`
+-- Índices de tabela `aluno_disciplina`
 --
 ALTER TABLE `aluno_disciplina`
-  ADD PRIMARY KEY (`CD_AL_DISCIPLINA`),
-  ADD KEY `CD_USUARIO` (`CD_USUARIO`),
-  ADD KEY `CD_CURSO` (`CD_CURSO`),
-  ADD KEY `CD_DISCIPLINA` (`CD_DISCIPLINA`);
+  ADD PRIMARY KEY (`CD_AL_DISCIPLINA`), ADD KEY `CD_USUARIO` (`CD_USUARIO`), ADD KEY `CD_CURSO` (`CD_CURSO`), ADD KEY `CD_DISCIPLINA` (`CD_DISCIPLINA`);
 
 --
--- Indexes for table `coordenador`
+-- Índices de tabela `coordenador`
 --
 ALTER TABLE `coordenador`
-  ADD PRIMARY KEY (`CD_COORDENADOR`),
-  ADD UNIQUE KEY `NR_CPF` (`NR_CPF`),
-  ADD KEY `CD_CURSO` (`CD_CURSO`),
-  ADD KEY `CD_USUARIO` (`CD_USUARIO`);
+  ADD PRIMARY KEY (`CD_COORDENADOR`), ADD UNIQUE KEY `NR_CPF` (`NR_CPF`), ADD KEY `CD_CURSO` (`CD_CURSO`), ADD KEY `CD_USUARIO` (`CD_USUARIO`);
 
 --
--- Indexes for table `curso`
+-- Índices de tabela `curso`
 --
 ALTER TABLE `curso`
   ADD PRIMARY KEY (`CD_CURSO`);
 
 --
--- Indexes for table `disciplina`
+-- Índices de tabela `disciplina`
 --
 ALTER TABLE `disciplina`
-  ADD PRIMARY KEY (`CD_DISCIPLINA`),
-  ADD KEY `CD_CURSO` (`CD_CURSO`);
+  ADD PRIMARY KEY (`CD_DISCIPLINA`), ADD KEY `CD_CURSO` (`CD_CURSO`);
 
 --
--- Indexes for table `duvida`
+-- Índices de tabela `duvida`
 --
 ALTER TABLE `duvida`
-  ADD PRIMARY KEY (`CD_DUVIDA`),
-  ADD KEY `CD_ALUNO` (`CD_ALUNO`),
-  ADD KEY `CD_PROFESSOR` (`CD_PROFESSOR`),
-  ADD KEY `CD_DISCIPLINA` (`CD_DISCIPLINA`);
+  ADD PRIMARY KEY (`CD_DUVIDA`), ADD KEY `CD_ALUNO` (`CD_ALUNO`), ADD KEY `CD_PROFESSOR` (`CD_PROFESSOR`), ADD KEY `CD_DISCIPLINA` (`CD_DISCIPLINA`);
 
 --
--- Indexes for table `pergunta`
+-- Índices de tabela `pergunta`
 --
 ALTER TABLE `pergunta`
-  ADD PRIMARY KEY (`CD_PERGUNTA`),
-  ADD KEY `CD_DUVIDA` (`CD_DUVIDA`);
+  ADD PRIMARY KEY (`CD_PERGUNTA`), ADD KEY `CD_DUVIDA` (`CD_DUVIDA`);
 
 --
--- Indexes for table `professor`
+-- Índices de tabela `professor`
 --
 ALTER TABLE `professor`
-  ADD PRIMARY KEY (`CD_PROFESSOR`),
-  ADD UNIQUE KEY `NR_CPF` (`NR_CPF`),
-  ADD KEY `CD_USUARIO` (`CD_USUARIO`);
+  ADD PRIMARY KEY (`CD_PROFESSOR`), ADD UNIQUE KEY `NR_CPF` (`NR_CPF`), ADD KEY `CD_USUARIO` (`CD_USUARIO`);
 
 --
--- Indexes for table `professor_disciplina`
+-- Índices de tabela `professor_disciplina`
 --
 ALTER TABLE `professor_disciplina`
-  ADD PRIMARY KEY (`CD_PF_DISCIPLINA`),
-  ADD KEY `CD_USUARIO` (`CD_USUARIO`),
-  ADD KEY `CD_CURSO` (`CD_CURSO`),
-  ADD KEY `CD_DISCIPLINA` (`CD_DISCIPLINA`);
+  ADD PRIMARY KEY (`CD_PF_DISCIPLINA`), ADD KEY `CD_USUARIO` (`CD_USUARIO`), ADD KEY `CD_CURSO` (`CD_CURSO`), ADD KEY `CD_DISCIPLINA` (`CD_DISCIPLINA`);
 
 --
--- Indexes for table `resposta`
+-- Índices de tabela `resposta`
 --
 ALTER TABLE `resposta`
-  ADD PRIMARY KEY (`CD_RESPOSTA`),
-  ADD KEY `CD_PERGUNTA` (`CD_PERGUNTA`);
+  ADD PRIMARY KEY (`CD_RESPOSTA`), ADD KEY `CD_PERGUNTA` (`CD_PERGUNTA`);
 
 --
--- Indexes for table `usuario`
+-- Índices de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`CD_USUARIO`),
-  ADD UNIQUE KEY `NM_USUARIO` (`NM_USUARIO`);
+  ADD PRIMARY KEY (`CD_USUARIO`), ADD UNIQUE KEY `NM_USUARIO` (`NM_USUARIO`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de tabelas apagadas
 --
 
 --
--- AUTO_INCREMENT for table `aluno`
+-- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `CD_ALUNO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
-
+  MODIFY `CD_ALUNO` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
 --
--- AUTO_INCREMENT for table `aluno_disciplina`
+-- AUTO_INCREMENT de tabela `aluno_disciplina`
 --
 ALTER TABLE `aluno_disciplina`
-  MODIFY `CD_AL_DISCIPLINA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
-
+  MODIFY `CD_AL_DISCIPLINA` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
 --
--- AUTO_INCREMENT for table `coordenador`
+-- AUTO_INCREMENT de tabela `coordenador`
 --
 ALTER TABLE `coordenador`
-  MODIFY `CD_COORDENADOR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
+  MODIFY `CD_COORDENADOR` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `curso`
+-- AUTO_INCREMENT de tabela `curso`
 --
 ALTER TABLE `curso`
-  MODIFY `CD_CURSO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
+  MODIFY `CD_CURSO` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `duvida`
+-- AUTO_INCREMENT de tabela `duvida`
 --
 ALTER TABLE `duvida`
-  MODIFY `CD_DUVIDA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
+  MODIFY `CD_DUVIDA` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
 --
--- AUTO_INCREMENT for table `pergunta`
+-- AUTO_INCREMENT de tabela `pergunta`
 --
 ALTER TABLE `pergunta`
-  MODIFY `CD_PERGUNTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
+  MODIFY `CD_PERGUNTA` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
--- AUTO_INCREMENT for table `professor`
+-- AUTO_INCREMENT de tabela `professor`
 --
 ALTER TABLE `professor`
-  MODIFY `CD_PROFESSOR` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
+  MODIFY `CD_PROFESSOR` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
--- AUTO_INCREMENT for table `professor_disciplina`
+-- AUTO_INCREMENT de tabela `professor_disciplina`
 --
 ALTER TABLE `professor_disciplina`
-  MODIFY `CD_PF_DISCIPLINA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
-
+  MODIFY `CD_PF_DISCIPLINA` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=56;
 --
--- AUTO_INCREMENT for table `resposta`
+-- AUTO_INCREMENT de tabela `resposta`
 --
 ALTER TABLE `resposta`
-  MODIFY `CD_RESPOSTA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
+  MODIFY `CD_RESPOSTA` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
--- AUTO_INCREMENT for table `usuario`
+-- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `CD_USUARIO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `CD_USUARIO` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+--
+-- Restrições para dumps de tabelas
+--
 
 --
--- Constraints for dumped tables
---
-
---
--- Constraints for table `aluno`
+-- Restrições para tabelas `aluno`
 --
 ALTER TABLE `aluno`
-  ADD CONSTRAINT `aluno_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`);
+ADD CONSTRAINT `aluno_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`);
 
 --
--- Constraints for table `aluno_disciplina`
+-- Restrições para tabelas `aluno_disciplina`
 --
 ALTER TABLE `aluno_disciplina`
-  ADD CONSTRAINT `aluno_disciplina_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`),
-  ADD CONSTRAINT `aluno_disciplina_ibfk_2` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`),
-  ADD CONSTRAINT `aluno_disciplina_ibfk_3` FOREIGN KEY (`CD_DISCIPLINA`) REFERENCES `disciplina` (`CD_DISCIPLINA`);
+ADD CONSTRAINT `aluno_disciplina_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`),
+ADD CONSTRAINT `aluno_disciplina_ibfk_2` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`),
+ADD CONSTRAINT `aluno_disciplina_ibfk_3` FOREIGN KEY (`CD_DISCIPLINA`) REFERENCES `disciplina` (`CD_DISCIPLINA`);
 
 --
--- Constraints for table `coordenador`
+-- Restrições para tabelas `coordenador`
 --
 ALTER TABLE `coordenador`
-  ADD CONSTRAINT `coordenador_ibfk_1` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`),
-  ADD CONSTRAINT `coordenador_ibfk_2` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`);
+ADD CONSTRAINT `coordenador_ibfk_1` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`),
+ADD CONSTRAINT `coordenador_ibfk_2` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`);
 
 --
--- Constraints for table `disciplina`
+-- Restrições para tabelas `disciplina`
 --
 ALTER TABLE `disciplina`
-  ADD CONSTRAINT `disciplina_ibfk_1` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`);
+ADD CONSTRAINT `disciplina_ibfk_1` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`);
 
 --
--- Constraints for table `duvida`
+-- Restrições para tabelas `duvida`
 --
 ALTER TABLE `duvida`
-  ADD CONSTRAINT `duvida_ibfk_1` FOREIGN KEY (`CD_ALUNO`) REFERENCES `aluno_disciplina` (`CD_AL_DISCIPLINA`),
-  ADD CONSTRAINT `duvida_ibfk_2` FOREIGN KEY (`CD_PROFESSOR`) REFERENCES `professor_disciplina` (`CD_USUARIO`),
-  ADD CONSTRAINT `duvida_ibfk_3` FOREIGN KEY (`CD_DISCIPLINA`) REFERENCES `disciplina` (`CD_DISCIPLINA`);
+ADD CONSTRAINT `duvida_ibfk_1` FOREIGN KEY (`CD_ALUNO`) REFERENCES `aluno_disciplina` (`CD_AL_DISCIPLINA`),
+ADD CONSTRAINT `duvida_ibfk_2` FOREIGN KEY (`CD_PROFESSOR`) REFERENCES `professor_disciplina` (`CD_USUARIO`),
+ADD CONSTRAINT `duvida_ibfk_3` FOREIGN KEY (`CD_DISCIPLINA`) REFERENCES `disciplina` (`CD_DISCIPLINA`);
 
 --
--- Constraints for table `pergunta`
+-- Restrições para tabelas `pergunta`
 --
 ALTER TABLE `pergunta`
-  ADD CONSTRAINT `pergunta_ibfk_1` FOREIGN KEY (`CD_DUVIDA`) REFERENCES `duvida` (`CD_DUVIDA`);
+ADD CONSTRAINT `pergunta_ibfk_1` FOREIGN KEY (`CD_DUVIDA`) REFERENCES `duvida` (`CD_DUVIDA`);
 
 --
--- Constraints for table `professor`
+-- Restrições para tabelas `professor`
 --
 ALTER TABLE `professor`
-  ADD CONSTRAINT `professor_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`);
+ADD CONSTRAINT `professor_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`);
 
 --
--- Constraints for table `professor_disciplina`
+-- Restrições para tabelas `professor_disciplina`
 --
 ALTER TABLE `professor_disciplina`
-  ADD CONSTRAINT `professor_disciplina_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`),
-  ADD CONSTRAINT `professor_disciplina_ibfk_2` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`),
-  ADD CONSTRAINT `professor_disciplina_ibfk_3` FOREIGN KEY (`CD_DISCIPLINA`) REFERENCES `disciplina` (`CD_DISCIPLINA`);
+ADD CONSTRAINT `professor_disciplina_ibfk_1` FOREIGN KEY (`CD_USUARIO`) REFERENCES `usuario` (`CD_USUARIO`),
+ADD CONSTRAINT `professor_disciplina_ibfk_2` FOREIGN KEY (`CD_CURSO`) REFERENCES `curso` (`CD_CURSO`),
+ADD CONSTRAINT `professor_disciplina_ibfk_3` FOREIGN KEY (`CD_DISCIPLINA`) REFERENCES `disciplina` (`CD_DISCIPLINA`);
 
 --
--- Constraints for table `resposta`
+-- Restrições para tabelas `resposta`
 --
 ALTER TABLE `resposta`
-  ADD CONSTRAINT `resposta_ibfk_1` FOREIGN KEY (`CD_PERGUNTA`) REFERENCES `pergunta` (`CD_PERGUNTA`);
-COMMIT;
+ADD CONSTRAINT `resposta_ibfk_1` FOREIGN KEY (`CD_PERGUNTA`) REFERENCES `pergunta` (`CD_PERGUNTA`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
